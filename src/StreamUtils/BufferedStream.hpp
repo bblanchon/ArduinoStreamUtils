@@ -8,14 +8,22 @@ namespace StreamUtils {
 
 template <typename TUpstream, size_t capacity> class BufferedStream : Stream {
 public:
-  explicit BufferedStream(TUpstream &upstream) : _upstream(upstream) {}
+  explicit BufferedStream(TUpstream &upstream)
+      : _upstream(upstream), _begin(_buffer), _end(_buffer) {}
 
   size_t write(const uint8_t *buffer, size_t size) override {
     return _upstream.write(buffer, size);
   }
   size_t write(uint8_t data) override { return _upstream.write(data); }
   int available() override { return _upstream.available(); }
-  int read() override { return _upstream.read(); }
+
+  int read() override {
+    if (_begin >= _end) {
+      _begin = _buffer;
+      _end = _begin + _upstream.readBytes(_buffer, capacity);
+    }
+    return *_begin++;
+  }
 
   int peek() override { return _upstream.peek(); }
 
@@ -29,9 +37,9 @@ public:
 
 private:
   TUpstream &_upstream;
-  /*  char _buffer[capacity];
-    char *_writePtr;
-    char *_readPtr;*/
+  char _buffer[capacity];
+  char *_begin;
+  char *_end;
 };
 
 template <typename TUpstream>

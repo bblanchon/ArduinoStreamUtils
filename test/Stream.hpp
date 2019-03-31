@@ -18,5 +18,5 @@ struct Stream : Print {
   virtual void flush() = 0;
 
   // WARNING: most cores don't define this function as virtual
-  size_t readBytes(char *buffer, size_t length) { return length; }
+  size_t readBytes(char *buffer, size_t length);
 };
