@@ -14,15 +14,14 @@ public:
   size_t write(const uint8_t *buffer, size_t size) override {
     return _upstream.write(buffer, size);
   }
+
   size_t write(uint8_t data) override { return _upstream.write(data); }
-  int available() override { return _upstream.available(); }
+
+  int available() override { return _upstream.available() + _end - _begin; }
 
   int read() override {
-    if (_begin >= _end) {
-      _begin = _buffer;
-      _end = _begin + _upstream.readBytes(_buffer, capacity);
-    }
-    return *_begin++;
+    reloadIfEmpty();
+    return isEmpty() ? -1 : *_begin++;
   }
 
   int peek() override { return _upstream.peek(); }
@@ -36,6 +35,15 @@ public:
   }
 
 private:
+  bool isEmpty() const { return _begin >= _end; }
+
+  void reloadIfEmpty() {
+    if (!isEmpty())
+      return;
+    _begin = _buffer;
+    _end = _begin + _upstream.readBytes(_buffer, capacity);
+  }
+
   TUpstream &_upstream;
   char _buffer[capacity];
   char *_begin;

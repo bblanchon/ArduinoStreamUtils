@@ -68,22 +68,30 @@ private:
 
 class StreamStub {
 public:
-  StreamStub() : _data{"ABCDEFGH"} {}
+  void setup(const std::string &s) {
+    _data.str(s);
+    _available = s.length();
+  }
 
   virtual size_t write(const uint8_t *, size_t size) { return size; }
   virtual size_t write(uint8_t) { return 1; }
-  virtual int available() { return _data.peek() != EOF; }
-  virtual int read() { return _data.get(); }
+  virtual int available() { return _available; }
+  virtual int read() {
+    _available--;
+    return _data.get();
+  }
   virtual int peek() { return _data.peek(); }
   virtual void flush() {}
 
   size_t readBytes(char *buffer, size_t size) {
     _data.read(buffer, size);
+    _available -= size;
     return _data.gcount();
   }
 
 private:
   std::stringstream _data;
+  int _available;
 };
 
 template <typename TStream>
@@ -99,27 +107,41 @@ TEST_CASE("BufferedStream") {
   StreamSpy<StreamStub> spy{stub};
   BufferedStream<StreamSpy<StreamStub>, 4> stream{spy};
 
-  SUBCASE("read()") {
-    SUBCASE("x1") {
-      std::string result = callReadSeveralTimes(stream, 1);
+  SUBCASE("available()") {
+    stub.setup("ABCDEFGH");
 
-      CHECK(result == "A");
-      CHECK(spy.log() == "readBytes(4) -> 4");
+    SUBCASE("same a upstream") {
+      CHECK(stream.available() == 8);
+      CHECK(spy.log() == "available() -> 8");
     }
 
-    SUBCASE("x4") {
-      std::string result = callReadSeveralTimes(stream, 4);
+    SUBCASE("upstream + in buffer") {
+      stream.read();
 
-      CHECK(result == "ABCD");
-      CHECK(spy.log() == "readBytes(4) -> 4");
-    }
-
-    SUBCASE("x5") {
-      std::string result = callReadSeveralTimes(stream, 5);
-
-      CHECK(result == "ABCDE");
+      CHECK(stream.available() == 7);
       CHECK(spy.log() == "readBytes(4) -> 4"
-                         "readBytes(4) -> 4");
+                         "available() -> 4");
+    }
+  }
+
+  SUBCASE("read()") {
+
+    SUBCASE("reads 4 bytes at a time") {
+      stub.setup("ABCDEFG");
+      std::string result = callReadSeveralTimes(stream, 7);
+
+      CHECK(result == "ABCDEFG");
+      CHECK(spy.log() == "readBytes(4) -> 4"
+                         "readBytes(4) -> 3");
+    }
+
+    SUBCASE("returns -1 when empty") {
+      stub.setup("");
+
+      int result = stream.read();
+
+      CHECK(result == -1);
+      CHECK(spy.log() == "readBytes(4) -> 0");
     }
   }
 
