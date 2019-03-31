@@ -3,3 +3,5 @@
 // MIT License
 
 #include "StreamUtils/BufferedStream.hpp"
+
+using namespace StreamUtils;
