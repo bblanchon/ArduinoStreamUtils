@@ -30,7 +30,7 @@ class BufferedStream : Stream {
   }
 
   int peek() override {
-    return _upstream.peek();
+    return isEmpty() ? _upstream.peek() : *_begin;
   }
 
   void flush() override {

@@ -16,13 +16,6 @@
 
 using namespace StreamUtils;
 
-template <typename TStream>
-std::string callReadSeveralTimes(TStream stream, int times) {
-  std::string result;
-  for (int i = 0; i < times; i++) result += (char)stream.read();
-  return result;
-}
-
 TEST_CASE("BufferedStream") {
   StreamStub stub;
   StreamSpy<StreamStub> spy{stub};
@@ -46,10 +39,44 @@ TEST_CASE("BufferedStream") {
     }
   }
 
+  SUBCASE("peek()") {
+    SUBCASE("returns -1 when empty") {
+      stub.setup("");
+
+      int result = stream.peek();
+
+      CHECK(result == -1);
+      CHECK(spy.log() == "peek() -> -1");
+    }
+
+    SUBCASE("doesn't call readBytes() when buffer is empty") {
+      stub.setup("A");
+
+      int result = stream.peek();
+
+      CHECK(result == 'A');
+      CHECK(spy.log() == "peek() -> 65");
+    }
+
+    SUBCASE("doesn't call peek() when buffer is full") {
+      stub.setup("AB");
+
+      stream.read();
+      int result = stream.peek();
+
+      CHECK(result == 'B');
+      CHECK(spy.log() == "readBytes(4) -> 2");
+    }
+  }
+
   SUBCASE("read()") {
     SUBCASE("reads 4 bytes at a time") {
       stub.setup("ABCDEFG");
-      std::string result = callReadSeveralTimes(stream, 7);
+      std::string result;
+
+      for (int i = 0; i < 7; i++) {
+        result += (char)stream.read();
+      }
 
       CHECK(result == "ABCDEFG");
       CHECK(spy.log() ==
