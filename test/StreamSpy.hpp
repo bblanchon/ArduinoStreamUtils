@@ -9,8 +9,9 @@
 #include <sstream>
 #include <string>
 
-template <typename TUpstream> class StreamSpy {
-public:
+template <typename TUpstream>
+class StreamSpy {
+ public:
   StreamSpy(TUpstream &upstream) : _upstream(upstream) {}
 
   virtual size_t write(const uint8_t *buffer, size_t size) {
@@ -54,9 +55,11 @@ public:
     return result;
   }
 
-  std::string log() const { return _log.str(); }
+  std::string log() const {
+    return _log.str();
+  }
 
-private:
+ private:
   std::stringstream _log;
   TUpstream &_upstream;
 };

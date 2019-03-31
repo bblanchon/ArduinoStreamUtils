@@ -19,8 +19,7 @@ using namespace StreamUtils;
 template <typename TStream>
 std::string callReadSeveralTimes(TStream stream, int times) {
   std::string result;
-  for (int i = 0; i < times; i++)
-    result += (char)stream.read();
+  for (int i = 0; i < times; i++) result += (char)stream.read();
   return result;
 }
 
@@ -41,20 +40,21 @@ TEST_CASE("BufferedStream") {
       stream.read();
 
       CHECK(stream.available() == 7);
-      CHECK(spy.log() == "readBytes(4) -> 4"
-                         "available() -> 4");
+      CHECK(spy.log() ==
+            "readBytes(4) -> 4"
+            "available() -> 4");
     }
   }
 
   SUBCASE("read()") {
-
     SUBCASE("reads 4 bytes at a time") {
       stub.setup("ABCDEFG");
       std::string result = callReadSeveralTimes(stream, 7);
 
       CHECK(result == "ABCDEFG");
-      CHECK(spy.log() == "readBytes(4) -> 4"
-                         "readBytes(4) -> 3");
+      CHECK(spy.log() ==
+            "readBytes(4) -> 4"
+            "readBytes(4) -> 3");
     }
 
     SUBCASE("returns -1 when empty") {

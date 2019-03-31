@@ -6,8 +6,9 @@
 
 namespace StreamUtils {
 
-template <typename TUpstream, size_t capacity> class BufferedStream : Stream {
-public:
+template <typename TUpstream, size_t capacity>
+class BufferedStream : Stream {
+ public:
   explicit BufferedStream(TUpstream &upstream)
       : _upstream(upstream), _begin(_buffer), _end(_buffer) {}
 
@@ -15,18 +16,26 @@ public:
     return _upstream.write(buffer, size);
   }
 
-  size_t write(uint8_t data) override { return _upstream.write(data); }
+  size_t write(uint8_t data) override {
+    return _upstream.write(data);
+  }
 
-  int available() override { return _upstream.available() + _end - _begin; }
+  int available() override {
+    return _upstream.available() + _end - _begin;
+  }
 
   int read() override {
     reloadIfEmpty();
     return isEmpty() ? -1 : *_begin++;
   }
 
-  int peek() override { return _upstream.peek(); }
+  int peek() override {
+    return _upstream.peek();
+  }
 
-  void flush() override { _upstream.flush(); }
+  void flush() override {
+    _upstream.flush();
+  }
 
   // WARNING: we cannot use "override" because most cores don't define this
   // function as virtual
@@ -34,12 +43,13 @@ public:
     return _upstream.readBytes(buffer, length);
   }
 
-private:
-  bool isEmpty() const { return _begin >= _end; }
+ private:
+  bool isEmpty() const {
+    return _begin >= _end;
+  }
 
   void reloadIfEmpty() {
-    if (!isEmpty())
-      return;
+    if (!isEmpty()) return;
     _begin = _buffer;
     _end = _begin + _upstream.readBytes(_buffer, capacity);
   }
@@ -55,4 +65,4 @@ BufferedStream<TUpstream, 64> bufferizeInput(TUpstream &upstream) {
   return BufferedStream<TUpstream, 64>{upstream};
 }
 
-} // namespace StreamUtils
+}  // namespace StreamUtils
