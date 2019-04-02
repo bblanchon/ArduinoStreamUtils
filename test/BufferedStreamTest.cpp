@@ -95,6 +95,47 @@ TEST_CASE("BufferedStream") {
     }
   }
 
+  SUBCASE("readBytes()") {
+    SUBCASE("reads 4 bytes when requested one") {
+      stub.setup("ABCDEFG");
+
+      char c;
+      size_t result = stream.readBytes(&c, 1);
+
+      CHECK(c == 'A');
+      CHECK(result == 1);
+      CHECK(spy.log() == "readBytes(4) -> 4");
+    }
+
+    SUBCASE("copy content from buffer then bypass buffer") {
+      stub.setup("ABCDEFGH");
+      stream.read();  // load buffer
+
+      char c[8] = {0};
+      size_t result = stream.readBytes(c, 7);
+
+      CHECK(c == std::string("BCDEFGH"));
+      CHECK(result == 7);
+      CHECK(spy.log() ==
+            "readBytes(4) -> 4"
+            "readBytes(4) -> 4");
+    }
+
+    SUBCASE("copy content from buffer twice") {
+      stub.setup("ABCDEFGH");
+      stream.read();  // load buffer
+
+      char c[8] = {0};
+      size_t result = stream.readBytes(c, 4);
+
+      CHECK(c == std::string("BCDE"));
+      CHECK(result == 4);
+      CHECK(spy.log() ==
+            "readBytes(4) -> 4"
+            "readBytes(4) -> 4");
+    }
+  }
+
   SUBCASE("flush()") {
     stream.flush();
     CHECK(spy.log() == "flush()");

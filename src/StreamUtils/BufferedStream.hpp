@@ -42,8 +42,28 @@ class BufferedStream : public Stream {
 
   // WARNING: we cannot use "override" because most cores don't define this
   // function as virtual
-  virtual size_t readBytes(char *buffer, size_t length) {
-    return _upstream.readBytes(buffer, length);
+  virtual size_t readBytes(char *buffer, size_t size) {
+    size_t result = 0;
+
+    if (!isEmpty()) {
+      size_t bytesInBuffer = _end - _begin;
+      memcpy(buffer, _begin, bytesInBuffer);
+      _begin += bytesInBuffer;
+      result += bytesInBuffer;
+      buffer += bytesInBuffer;
+      size -= bytesInBuffer;
+    }
+
+    // at this point, the buffer is empty (or size is 0)
+    if (size < _capacity) {
+      reload();
+      memcpy(buffer, _begin, size);
+      _begin += size;
+      result += size;
+    } else {
+      result += _upstream.readBytes(buffer, size);
+    }
+    return result;
   }
 
  private:
@@ -53,6 +73,10 @@ class BufferedStream : public Stream {
 
   void reloadIfEmpty() {
     if (!isEmpty()) return;
+    reload();
+  }
+
+  void reload() {
     _begin = _buffer;
     _end = _begin + _upstream.readBytes(_buffer, _capacity);
   }
