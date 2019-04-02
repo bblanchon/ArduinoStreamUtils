@@ -7,7 +7,7 @@
 namespace StreamUtils {
 
 template <typename TUpstream, size_t capacity>
-class BufferedStream : Stream {
+class BufferedStream : public Stream {
  public:
   explicit BufferedStream(TUpstream &upstream)
       : _upstream(upstream), _begin(_buffer), _end(_buffer) {}

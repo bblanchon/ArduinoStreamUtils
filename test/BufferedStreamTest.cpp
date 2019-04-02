@@ -19,7 +19,8 @@ using namespace StreamUtils;
 TEST_CASE("BufferedStream") {
   StreamStub stub;
   StreamSpy<StreamStub> spy{stub};
-  BufferedStream<StreamSpy<StreamStub>, 4> stream{spy};
+  BufferedStream<StreamSpy<StreamStub>, 4> bufferedStream{spy};
+  Stream& stream = bufferedStream;
 
   SUBCASE("available()") {
     stub.setup("ABCDEFGH");
