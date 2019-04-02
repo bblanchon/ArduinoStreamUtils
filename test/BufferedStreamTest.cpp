@@ -18,8 +18,8 @@ using namespace StreamUtils;
 
 TEST_CASE("BufferedStream") {
   StreamStub stub;
-  StreamSpy<StreamStub> spy{stub};
-  BufferedStream<StreamSpy<StreamStub>, 4> bufferedStream{spy};
+  StreamSpy spy{stub};
+  BufferedStream<4> bufferedStream{spy};
   Stream& stream = bufferedStream;
 
   SUBCASE("available()") {

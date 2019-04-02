@@ -17,6 +17,22 @@ struct Stream : Print {
   virtual int peek() = 0;
   virtual void flush() = 0;
 
-  // WARNING: most cores don't define this function as virtual
-  size_t readBytes(char *buffer, size_t length);
+  // NOTE: most cores don't define this function as virtual
+  //
+  // | Core    | Virtual? |
+  // |---------|----------|
+  // | AVR     | No       |
+  // | SAMD    | No       |
+  // | ESP8266 | Yes      |
+  //
+  virtual size_t readBytes(char *buffer, size_t length) {
+    size_t count = 0;
+    while (count < length) {
+      int c = read();
+      if (c < 0) break;
+      *buffer++ = (char)c;
+      count++;
+    }
+    return count;
+  }
 };

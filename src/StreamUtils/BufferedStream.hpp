@@ -6,10 +6,10 @@
 
 namespace StreamUtils {
 
-template <typename TUpstream, size_t capacity>
+template <size_t capacity>
 class BufferedStream : public Stream {
  public:
-  explicit BufferedStream(TUpstream &upstream)
+  explicit BufferedStream(Stream &upstream)
       : _upstream(upstream), _begin(_buffer), _end(_buffer) {}
 
   size_t write(const uint8_t *buffer, size_t size) override {
@@ -54,15 +54,15 @@ class BufferedStream : public Stream {
     _end = _begin + _upstream.readBytes(_buffer, capacity);
   }
 
-  TUpstream &_upstream;
+  Stream &_upstream;
   char _buffer[capacity];
   char *_begin;
   char *_end;
 };
 
-template <typename TUpstream>
-BufferedStream<TUpstream, 64> bufferizeInput(TUpstream &upstream) {
-  return BufferedStream<TUpstream, 64>{upstream};
+template <typename Stream>
+BufferedStream<64> bufferizeInput(Stream &upstream) {
+  return BufferedStream<64>{upstream};
 }
 
 }  // namespace StreamUtils

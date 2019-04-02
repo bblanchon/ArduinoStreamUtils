@@ -6,7 +6,7 @@
 
 #include "Stream.hpp"
 
-class StreamStub {
+class StreamStub : public Stream {
  public:
   void setup(const std::string &s) {
     _data.str(s);
