@@ -19,7 +19,7 @@ using namespace StreamUtils;
 TEST_CASE("BufferedStream") {
   StreamStub stub;
   StreamSpy spy{stub};
-  BufferedStream<4> bufferedStream{spy};
+  StaticBufferedStream<4> bufferedStream{spy};
   Stream& stream = bufferedStream;
 
   SUBCASE("available()") {

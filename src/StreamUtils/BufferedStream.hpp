@@ -6,11 +6,14 @@
 
 namespace StreamUtils {
 
-template <size_t capacity>
 class BufferedStream : public Stream {
  public:
-  explicit BufferedStream(Stream &upstream)
-      : _upstream(upstream), _begin(_buffer), _end(_buffer) {}
+  explicit BufferedStream(Stream &upstream, char *buffer, size_t capacity)
+      : _upstream(upstream),
+        _buffer(buffer),
+        _capacity(capacity),
+        _begin(buffer),
+        _end(buffer) {}
 
   size_t write(const uint8_t *buffer, size_t size) override {
     return _upstream.write(buffer, size);
@@ -51,18 +54,29 @@ class BufferedStream : public Stream {
   void reloadIfEmpty() {
     if (!isEmpty()) return;
     _begin = _buffer;
-    _end = _begin + _upstream.readBytes(_buffer, capacity);
+    _end = _begin + _upstream.readBytes(_buffer, _capacity);
   }
 
   Stream &_upstream;
-  char _buffer[capacity];
+  char *_buffer;
+  size_t _capacity;
   char *_begin;
   char *_end;
 };
 
+template <size_t capacity>
+class StaticBufferedStream : public BufferedStream {
+ public:
+  explicit StaticBufferedStream(Stream &upstream)
+      : BufferedStream(upstream, _buffer, capacity) {}
+
+ private:
+  char _buffer[capacity];
+};
+
 template <typename Stream>
-BufferedStream<64> bufferizeInput(Stream &upstream) {
-  return BufferedStream<64>{upstream};
+StaticBufferedStream<64> bufferizeInput(Stream &upstream) {
+  return StaticBufferedStream<64>{upstream};
 }
 
 }  // namespace StreamUtils
