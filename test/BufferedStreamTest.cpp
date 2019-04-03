@@ -140,4 +140,16 @@ TEST_CASE("BufferedStream") {
     stream.flush();
     CHECK(spy.log() == "flush()");
   }
+
+  SUBCASE("copy constructor") {
+    stub.setup("ABCDEFGH");
+    bufferedStream.read();
+
+    auto dup = bufferedStream;
+
+    int result = dup.read();
+
+    CHECK(result == 'B');
+    CHECK(spy.log() == "readBytes(4) -> 4");
+  }
 }

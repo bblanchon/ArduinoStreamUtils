@@ -15,6 +15,15 @@ class BufferedStream : public Stream {
         _begin(buffer),
         _end(buffer) {}
 
+  BufferedStream(const BufferedStream &other, char *buffer, size_t capacity)
+      : _upstream(other._upstream),
+        _buffer(buffer),
+        _capacity(capacity),
+        _begin(buffer + (other._begin - other._buffer)),
+        _end(buffer + (other._end - other._buffer)) {
+    memcpy(_begin, other._begin, _end - _begin);
+  }
+
   BufferedStream(const BufferedStream &) = delete;
   BufferedStream &operator=(const BufferedStream &) = delete;
 
@@ -96,6 +105,9 @@ class StaticBufferedStream : public BufferedStream {
  public:
   explicit StaticBufferedStream(Stream &upstream)
       : BufferedStream(upstream, _buffer, capacity) {}
+
+  StaticBufferedStream(const StaticBufferedStream &other)
+      : BufferedStream(other, _buffer, capacity) {}
 
  private:
   char _buffer[capacity];
