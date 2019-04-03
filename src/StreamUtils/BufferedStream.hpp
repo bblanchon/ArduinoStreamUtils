@@ -15,6 +15,9 @@ class BufferedStream : public Stream {
         _begin(buffer),
         _end(buffer) {}
 
+  BufferedStream(const BufferedStream &) = delete;
+  BufferedStream &operator=(const BufferedStream &) = delete;
+
   size_t write(const uint8_t *buffer, size_t size) override {
     return _upstream.write(buffer, size);
   }
