@@ -3,5 +3,6 @@
 // MIT License
 
 #include "StreamUtils/BufferedStream.hpp"
+#include "StreamUtils/StreamLogger.hpp"
 
 using namespace StreamUtils;
