@@ -68,10 +68,11 @@ class BufferedStream : public Stream {
 
     // at this point, the buffer is empty (or size is 0)
     if (size < _capacity) {
-      reload();
-      memcpy(buffer, _begin, size);
-      _begin += size;
-      result += size;
+      size_t bytesRead = reload();
+      size_t bytesToCopy = size < bytesRead ? size : bytesRead;
+      memcpy(buffer, _begin, bytesToCopy);
+      _begin += bytesToCopy;
+      result += bytesToCopy;
     } else {
       result += _upstream.readBytes(buffer, size);
     }
@@ -88,9 +89,11 @@ class BufferedStream : public Stream {
     reload();
   }
 
-  void reload() {
+  size_t reload() {
+    size_t bytesRead = _upstream.readBytes(_buffer, _capacity);
     _begin = _buffer;
-    _end = _begin + _upstream.readBytes(_buffer, _capacity);
+    _end = _begin + bytesRead;
+    return bytesRead;
   }
 
   Stream &_upstream;

@@ -113,6 +113,16 @@ TEST_CASE("BufferedStream") {
   }
 
   SUBCASE("readBytes()") {
+    SUBCASE("empty input") {
+      stub.setup("");
+
+      char c;
+      size_t result = stream.readBytes(&c, 1);
+
+      CHECK(result == 0);
+      CHECK(spy.log() == "readBytes(4) -> 0");
+    }
+
     SUBCASE("reads 4 bytes when requested one") {
       stub.setup("ABCDEFG");
 
