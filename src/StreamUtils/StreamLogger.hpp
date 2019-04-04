@@ -10,7 +10,7 @@ class StreamLogger : public Stream {
   StreamLogger(Stream &target) : _target(target) {}
 
   // Pops the next byte from the stream
-  virtual int read() {
+  int read() override {
     // Delegate to the target
     int c = _target.read();
     // Log if something was returned
@@ -19,32 +19,43 @@ class StreamLogger : public Stream {
     return c;
   }
 
+  // WARNING: we cannot use "override" because most cores don't define this
+  // function as virtual
+  virtual size_t readBytes(char *buffer, size_t size) {
+    // Delegate to the target
+    size_t result = _target.readBytes(buffer, size);
+    // Log
+    Serial.write((const uint8_t *)buffer, result);
+    // Pretend nothing happened
+    return result;
+  }
+
   // Gets the number of bytes available
-  virtual int available() {
+  int available() override {
     // Delegate to target
     return _target.available();
   }
 
   // Gets the next byte in the stream (but doesn't pop it)
-  virtual int peek() {
+  int peek() override {
     // Delegate to target
     return _target.peek();
   }
 
   // Writes a single byte
-  virtual size_t write(uint8_t c) {
+  size_t write(uint8_t c) override {
     // Delegate to target
     return _target.write(c);
   }
 
   // Writes multiple bytes
-  virtual size_t write(const uint8_t *buffer, size_t size) {
+  size_t write(const uint8_t *buffer, size_t size) override {
     // Delegate to target
     return _target.write(buffer, size);
   }
 
   // Flushes temporary buffers
-  virtual void flush() {
+  void flush() override {
     // Delegate to target
     _target.flush();
   }
