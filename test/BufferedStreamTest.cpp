@@ -1,4 +1,4 @@
-// ArduinoJson - arduinojson.org
+// StreamUtils - github.com/bblanchon/StreamUtils
 // Copyright Benoit Blanchon 2019
 // MIT License
 
@@ -160,6 +160,19 @@ TEST_CASE("BufferedStream") {
       CHECK(spy.log() ==
             "readBytes(4) -> 4"
             "readBytes(4) -> 4");
+    }
+
+    SUBCASE("read past the end") {
+      stub.setup("A");
+
+      char c;
+      stream.readBytes(&c, 1);
+      size_t result = stream.readBytes(&c, 1);
+
+      CHECK(result == 0);
+      CHECK(spy.log() ==
+            "readBytes(4) -> 1"
+            "readBytes(4) -> 0");
     }
   }
 

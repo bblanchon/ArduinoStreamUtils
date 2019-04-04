@@ -1,4 +1,4 @@
-// ArduinoJson - arduinojson.org
+// StreamUtils - github.com/bblanchon/StreamUtils
 // Copyright Benoit Blanchon 2019
 // MIT License
 
