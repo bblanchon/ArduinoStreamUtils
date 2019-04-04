@@ -25,6 +25,23 @@ TEST_CASE("BufferedStream") {
   SUBCASE("available()") {
     stub.setup("ABCDEFGH");
 
+    SUBCASE("empty input") {
+      stub.setup("");
+      CHECK(stream.available() == 0);
+      CHECK(spy.log() == "available() -> 0");
+    }
+
+    SUBCASE("read empty input") {
+      stub.setup("");
+
+      stream.read();
+
+      CHECK(stream.available() == 0);
+      CHECK(spy.log() ==
+            "readBytes(4) -> 0"
+            "available() -> 0");
+    }
+
     SUBCASE("same a upstream") {
       CHECK(stream.available() == 8);
       CHECK(spy.log() == "available() -> 8");

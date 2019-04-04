@@ -33,7 +33,7 @@ class StreamStub : public Stream {
 
   size_t readBytes(char *buffer, size_t size) {
     _data.read(buffer, size);
-    _available -= size;
+    _available -= _data.gcount();
     return _data.gcount();
   }
 
