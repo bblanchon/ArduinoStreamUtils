@@ -57,25 +57,34 @@ class BufferedStream : public Stream {
   virtual size_t readBytes(char *buffer, size_t size) {
     size_t result = 0;
 
+    // can we read from buffer?
     if (!isEmpty()) {
       size_t bytesInBuffer = _end - _begin;
-      memcpy(buffer, _begin, bytesInBuffer);
-      _begin += bytesInBuffer;
-      result += bytesInBuffer;
-      buffer += bytesInBuffer;
-      size -= bytesInBuffer;
-    }
-
-    // at this point, the buffer is empty (or size is 0)
-    if (size < _capacity) {
-      size_t bytesRead = reload();
-      size_t bytesToCopy = size < bytesRead ? size : bytesRead;
+      size_t bytesToCopy = size < bytesInBuffer ? size : bytesInBuffer;
       memcpy(buffer, _begin, bytesToCopy);
       _begin += bytesToCopy;
       result += bytesToCopy;
-    } else {
-      result += _upstream.readBytes(buffer, size);
+      buffer += bytesToCopy;
+      size -= bytesToCopy;
     }
+
+    // still something to read?
+    if (size > 0) {
+      // (at this point, the buffer is empty)
+
+      // should we use the buffer?
+      if (size < _capacity) {
+        size_t bytesInBuffer = reload();
+        size_t bytesToCopy = size < bytesInBuffer ? size : bytesInBuffer;
+        memcpy(buffer, _begin, bytesToCopy);
+        _begin += bytesToCopy;
+        result += bytesToCopy;
+      } else {
+        // we can bypass the buffer
+        result += _upstream.readBytes(buffer, size);
+      }
+    }
+
     return result;
   }
 

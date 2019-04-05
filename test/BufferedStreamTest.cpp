@@ -134,6 +134,18 @@ TEST_CASE("BufferedStream") {
       CHECK(spy.log() == "readBytes(4) -> 4");
     }
 
+    SUBCASE("copy one byte from buffer") {
+      stub.setup("ABCDEFGH");
+      stream.read();  // load buffer
+
+      char c;
+      size_t result = stream.readBytes(&c, 1);
+
+      CHECK(c == 'B');
+      CHECK(result == 1);
+      CHECK(spy.log() == "readBytes(4) -> 4");
+    }
+
     SUBCASE("copy content from buffer then bypass buffer") {
       stub.setup("ABCDEFGH");
       stream.read();  // load buffer
@@ -192,4 +204,22 @@ TEST_CASE("BufferedStream") {
     CHECK(result == 'B');
     CHECK(spy.log() == "readBytes(4) -> 4");
   }
+}
+
+TEST_CASE("Real example") {
+  StreamStub stub;
+  StreamSpy spy{stub};
+  StaticBufferedStream<64> bufferedStream{spy};
+  Stream& stream = bufferedStream;
+
+  stub.setup("{\"helloWorld\":\"Hello World\"}");
+
+  char c[] = "ABCDEFGH";
+  CHECK(stream.readBytes(&c[0], 1) == 1);
+  CHECK(stream.readBytes(&c[1], 1) == 1);
+  CHECK(stream.readBytes(&c[2], 1) == 1);
+  CHECK(stream.readBytes(&c[3], 1) == 1);
+
+  CHECK(c == std::string("{\"heEFGH"));
+  CHECK(spy.log() == "readBytes(64) -> 28");
 }
