@@ -4,28 +4,34 @@
 
 #pragma once
 
+#include "DefaultAllocator.hpp"
+
 namespace StreamUtils {
 
-class BufferedStream : public Stream {
+template <typename TAllocator>
+class BasicStreamWithInputBuffer : public Stream {
  public:
-  explicit BufferedStream(Stream &upstream, char *buffer, size_t capacity)
-      : _upstream(upstream),
-        _buffer(buffer),
+  explicit BasicStreamWithInputBuffer(Stream &upstream, size_t capacity,
+                                      TAllocator allocator = TAllocator())
+      : _allocator(allocator),
+        _upstream(upstream),
+        _buffer(reinterpret_cast<char *>(allocator.allocate(capacity))),
         _capacity(capacity),
-        _begin(buffer),
-        _end(buffer) {}
+        _begin(_buffer),
+        _end(_buffer) {}
 
-  BufferedStream(const BufferedStream &other, char *buffer, size_t capacity)
-      : _upstream(other._upstream),
-        _buffer(buffer),
-        _capacity(capacity),
-        _begin(buffer + (other._begin - other._buffer)),
-        _end(buffer + (other._end - other._buffer)) {
-    memcpy(_begin, other._begin, _end - _begin);
+  BasicStreamWithInputBuffer(const BasicStreamWithInputBuffer &other)
+      : BasicStreamWithInputBuffer(other._upstream, other._capacity,
+                                   other._allocator) {
+    if (_buffer) {
+      size_t n = other._end - other._begin;
+      memcpy(_begin, other._begin, n);
+      _end += n;
+    }
   }
 
-  BufferedStream(const BufferedStream &) = delete;
-  BufferedStream &operator=(const BufferedStream &) = delete;
+  BasicStreamWithInputBuffer &operator=(const BasicStreamWithInputBuffer &) =
+      delete;
 
   size_t write(const uint8_t *buffer, size_t size) override {
     return _upstream.write(buffer, size);
@@ -55,6 +61,8 @@ class BufferedStream : public Stream {
   // WARNING: we cannot use "override" because most cores don't define this
   // function as virtual
   virtual size_t readBytes(char *buffer, size_t size) {
+    // TODO: if (_buffer == nullptr) return _upstream.readBytes(buffer, size);
+
     size_t result = 0;
 
     // can we read from buffer?
@@ -99,12 +107,14 @@ class BufferedStream : public Stream {
   }
 
   size_t reload() {
+    // TODO: if (_buffer == nullptr) return 0;
     size_t bytesRead = _upstream.readBytes(_buffer, _capacity);
     _begin = _buffer;
     _end = _begin + bytesRead;
     return bytesRead;
   }
 
+  TAllocator _allocator;
   Stream &_upstream;
   char *_buffer;
   size_t _capacity;
@@ -112,22 +122,9 @@ class BufferedStream : public Stream {
   char *_end;
 };
 
-template <size_t capacity>
-class StaticBufferedStream : public BufferedStream {
- public:
-  explicit StaticBufferedStream(Stream &upstream)
-      : BufferedStream(upstream, _buffer, capacity) {}
+using StreamWithInputBuffer = BasicStreamWithInputBuffer<DefaultAllocator>;
 
-  StaticBufferedStream(const StaticBufferedStream &other)
-      : BufferedStream(other, _buffer, capacity) {}
-
- private:
-  char _buffer[capacity];
-};
-
-template <typename Stream>
-StaticBufferedStream<64> bufferizeInput(Stream &upstream) {
-  return StaticBufferedStream<64>{upstream};
+StreamWithInputBuffer bufferizeInput(Stream &upstream, size_t capacity) {
+  return StreamWithInputBuffer(upstream, capacity);
 }
-
 }  // namespace StreamUtils

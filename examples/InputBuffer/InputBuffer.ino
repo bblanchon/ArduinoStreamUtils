@@ -25,7 +25,7 @@ void setup() {
 }
 
 void loop() {
-  auto serial = bufferizeInput(Serial);
+  auto serial = bufferizeInput(Serial, 64);
 
   // Even if it looks like the bytes are extracted one by one, they are actual
   // read by chunks in 64 bytes and placed in a buffer.

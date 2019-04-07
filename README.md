@@ -35,7 +35,7 @@ Then you simply need to insert one line to greatly improve the reading speed:
 
 ```c++
 File slowFile = SPIFFS.open("example.json", "r");
-auto fastFile = bufferizeInput(slowFile); // <- HERE
+auto fastFile = bufferizeInput(slowFile, 64); // <- HERE
 deserializeJson(doc, fastFile);
 ```
 

@@ -19,7 +19,7 @@ using namespace StreamUtils;
 TEST_CASE("BufferedStream") {
   StreamStub stub;
   StreamSpy spy{stub};
-  StaticBufferedStream<4> bufferedStream{spy};
+  auto bufferedStream = bufferizeInput(spy, 4);
   Stream& stream = bufferedStream;
 
   SUBCASE("available()") {
@@ -209,7 +209,7 @@ TEST_CASE("BufferedStream") {
 TEST_CASE("Real example") {
   StreamStub stub;
   StreamSpy spy{stub};
-  StaticBufferedStream<64> bufferedStream{spy};
+  auto bufferedStream = bufferizeInput(spy, 64);
   Stream& stream = bufferedStream;
 
   stub.setup("{\"helloWorld\":\"Hello World\"}");
