@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Buffer.hpp"
+#include "CircularBuffer.hpp"
 #include "DefaultAllocator.hpp"
 
 namespace StreamUtils {
@@ -14,16 +14,10 @@ class BasicStreamWithInputBuffer : public Stream {
  public:
   explicit BasicStreamWithInputBuffer(Stream &upstream, size_t capacity,
                                       TAllocator allocator = TAllocator())
-      : _upstream(upstream),
-        _buffer(capacity, allocator),
-        _begin(_buffer.data()),
-        _end(_buffer.data()) {}
+      : _upstream(upstream), _buffer(capacity, allocator) {}
 
   BasicStreamWithInputBuffer(const BasicStreamWithInputBuffer &other)
-      : _upstream(other._upstream), _buffer(other._buffer) {
-    _begin = _buffer.data() + (other._begin - other._buffer.data());
-    _end = _buffer.data() + (other._end - other._buffer.data());
-  }
+      : _upstream(other._upstream), _buffer(other._buffer) {}
 
   BasicStreamWithInputBuffer &operator=(const BasicStreamWithInputBuffer &) =
       delete;
@@ -37,17 +31,17 @@ class BasicStreamWithInputBuffer : public Stream {
   }
 
   int available() override {
-    return _upstream.available() + _end - _begin;
+    return _upstream.available() + _buffer.size();
   }
 
   int read() override {
     if (!_buffer) return _upstream.read();
     reloadIfEmpty();
-    return isEmpty() ? -1 : *_begin++;
+    return isEmpty() ? -1 : _buffer.read();
   }
 
   int peek() override {
-    return isEmpty() ? _upstream.peek() : *_begin;
+    return isEmpty() ? _upstream.peek() : _buffer.peek();
   }
 
   void flush() override {
@@ -62,14 +56,11 @@ class BasicStreamWithInputBuffer : public Stream {
     size_t result = 0;
 
     // can we read from buffer?
-    if (!isEmpty()) {
-      size_t bytesInBuffer = _end - _begin;
-      size_t bytesToCopy = size < bytesInBuffer ? size : bytesInBuffer;
-      memcpy(buffer, _begin, bytesToCopy);
-      _begin += bytesToCopy;
-      result += bytesToCopy;
-      buffer += bytesToCopy;
-      size -= bytesToCopy;
+    if (_buffer.size() > 0) {
+      size_t bytesRead = _buffer.readBytes(buffer, size);
+      result += bytesRead;
+      buffer += bytesRead;
+      size -= bytesRead;
     }
 
     // still something to read?
@@ -78,11 +69,9 @@ class BasicStreamWithInputBuffer : public Stream {
 
       // should we use the buffer?
       if (size < _buffer.capacity()) {
-        size_t bytesInBuffer = reload();
-        size_t bytesToCopy = size < bytesInBuffer ? size : bytesInBuffer;
-        memcpy(buffer, _begin, bytesToCopy);
-        _begin += bytesToCopy;
-        result += bytesToCopy;
+        reload();
+        size_t bytesRead = _buffer.readBytes(buffer, size);
+        result += bytesRead;
       } else {
         // we can bypass the buffer
         result += _upstream.readBytes(buffer, size);
@@ -98,7 +87,7 @@ class BasicStreamWithInputBuffer : public Stream {
 
  private:
   bool isEmpty() const {
-    return _begin >= _end;
+    return _buffer.size() == 0;
   }
 
   void reloadIfEmpty() {
@@ -106,17 +95,14 @@ class BasicStreamWithInputBuffer : public Stream {
     reload();
   }
 
-  size_t reload() {
-    size_t bytesRead = _upstream.readBytes(_buffer.data(), _buffer.capacity());
-    _begin = _buffer.data();
-    _end = _begin + bytesRead;
-    return bytesRead;
+  void reload() {
+    _buffer.reload([this](char *p, size_t n) {  //
+      return _upstream.readBytes(p, n);
+    });
   }
 
   Stream &_upstream;
-  Buffer<TAllocator> _buffer;
-  char *_begin;
-  char *_end;
+  CircularBuffer<TAllocator> _buffer;
 };
 
 using StreamWithInputBuffer = BasicStreamWithInputBuffer<DefaultAllocator>;
