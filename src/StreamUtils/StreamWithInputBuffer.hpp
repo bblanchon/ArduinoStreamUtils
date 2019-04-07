@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "Buffer.hpp"
 #include "DefaultAllocator.hpp"
 
 namespace StreamUtils {
@@ -13,21 +14,15 @@ class BasicStreamWithInputBuffer : public Stream {
  public:
   explicit BasicStreamWithInputBuffer(Stream &upstream, size_t capacity,
                                       TAllocator allocator = TAllocator())
-      : _allocator(allocator),
-        _upstream(upstream),
-        _buffer(reinterpret_cast<char *>(allocator.allocate(capacity))),
-        _capacity(capacity),
-        _begin(_buffer),
-        _end(_buffer) {}
+      : _upstream(upstream),
+        _buffer(capacity, allocator),
+        _begin(_buffer.data()),
+        _end(_buffer.data()) {}
 
   BasicStreamWithInputBuffer(const BasicStreamWithInputBuffer &other)
-      : BasicStreamWithInputBuffer(other._upstream, other._capacity,
-                                   other._allocator) {
-    if (_buffer) {
-      size_t n = other._end - other._begin;
-      memcpy(_begin, other._begin, n);
-      _end += n;
-    }
+      : _upstream(other._upstream), _buffer(other._buffer) {
+    _begin = _buffer.data() + (other._begin - other._buffer.data());
+    _end = _buffer.data() + (other._end - other._buffer.data());
   }
 
   BasicStreamWithInputBuffer &operator=(const BasicStreamWithInputBuffer &) =
@@ -46,6 +41,7 @@ class BasicStreamWithInputBuffer : public Stream {
   }
 
   int read() override {
+    if (!_buffer) return _upstream.read();
     reloadIfEmpty();
     return isEmpty() ? -1 : *_begin++;
   }
@@ -61,7 +57,7 @@ class BasicStreamWithInputBuffer : public Stream {
   // WARNING: we cannot use "override" because most cores don't define this
   // function as virtual
   virtual size_t readBytes(char *buffer, size_t size) {
-    // TODO: if (_buffer == nullptr) return _upstream.readBytes(buffer, size);
+    if (!_buffer) return _upstream.readBytes(buffer, size);
 
     size_t result = 0;
 
@@ -81,7 +77,7 @@ class BasicStreamWithInputBuffer : public Stream {
       // (at this point, the buffer is empty)
 
       // should we use the buffer?
-      if (size < _capacity) {
+      if (size < _buffer.capacity()) {
         size_t bytesInBuffer = reload();
         size_t bytesToCopy = size < bytesInBuffer ? size : bytesInBuffer;
         memcpy(buffer, _begin, bytesToCopy);
@@ -96,6 +92,10 @@ class BasicStreamWithInputBuffer : public Stream {
     return result;
   }
 
+  size_t capacity() const {
+    return _buffer.capacity();
+  }
+
  private:
   bool isEmpty() const {
     return _begin >= _end;
@@ -107,17 +107,14 @@ class BasicStreamWithInputBuffer : public Stream {
   }
 
   size_t reload() {
-    // TODO: if (_buffer == nullptr) return 0;
-    size_t bytesRead = _upstream.readBytes(_buffer, _capacity);
-    _begin = _buffer;
+    size_t bytesRead = _upstream.readBytes(_buffer.data(), _buffer.capacity());
+    _begin = _buffer.data();
     _end = _begin + bytesRead;
     return bytesRead;
   }
 
-  TAllocator _allocator;
   Stream &_upstream;
-  char *_buffer;
-  size_t _capacity;
+  Buffer<TAllocator> _buffer;
   char *_begin;
   char *_end;
 };

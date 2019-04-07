@@ -6,7 +6,7 @@
 #include "StreamSpy.hpp"
 #include "StreamStub.hpp"
 
-#include "StreamUtils/BufferedStream.hpp"
+#include "StreamUtils/StreamWithInputBuffer.hpp"
 
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
