@@ -7,7 +7,12 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
 endif()
 
 add_executable(StreamUtilsTest
-	BufferedStreamTest.cpp
+	FailingAllocator.hpp
+	Stream.hpp
+	StreamSpy.hpp
+	StreamStub.hpp
+	StreamWithInputBufferTest.cpp
+	doctest.h
 )
 
 add_test(StreamUtils StreamUtilsTest)
