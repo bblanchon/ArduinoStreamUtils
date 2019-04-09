@@ -2,6 +2,8 @@
 // Copyright Benoit Blanchon 2019
 // MIT License
 
+#pragma once
+
 namespace StreamUtils {
 // Adds logging to an instance of Stream
 class StreamLogger : public Stream {

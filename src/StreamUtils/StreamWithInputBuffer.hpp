@@ -31,7 +31,7 @@ class BasicStreamWithInputBuffer : public Stream {
   }
 
   int available() override {
-    return _upstream.available() + _buffer.size();
+    return _upstream.available() + _buffer.available();
   }
 
   int read() override {
@@ -56,7 +56,7 @@ class BasicStreamWithInputBuffer : public Stream {
     size_t result = 0;
 
     // can we read from buffer?
-    if (_buffer.size() > 0) {
+    if (_buffer.available() > 0) {
       size_t bytesRead = _buffer.readBytes(buffer, size);
       result += bytesRead;
       buffer += bytesRead;
@@ -87,7 +87,7 @@ class BasicStreamWithInputBuffer : public Stream {
 
  private:
   bool isEmpty() const {
-    return _buffer.size() == 0;
+    return _buffer.available() == 0;
   }
 
   void reloadIfEmpty() {
@@ -96,9 +96,7 @@ class BasicStreamWithInputBuffer : public Stream {
   }
 
   void reload() {
-    _buffer.reload([this](char *p, size_t n) {  //
-      return _upstream.readBytes(p, n);
-    });
+    _buffer.reloadFrom(_upstream);
   }
 
   Stream &_upstream;

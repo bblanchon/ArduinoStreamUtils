@@ -15,13 +15,17 @@ class StreamSpy : public Stream {
 
   virtual size_t write(const uint8_t *buffer, size_t size) {
     size_t result = _upstream.write(buffer, size);
-    _log << "write(" << size << ") -> " << result;
+    _log << "write('";
+    for (size_t i = 0; i < size; i++) {
+      _log << char(buffer[i]);
+    }
+    _log << "', " << size << ") -> " << result;
     return result;
   }
 
   virtual size_t write(uint8_t data) {
     size_t result = _upstream.write(data);
-    _log << "write(1) -> " << result;
+    _log << "write('" << char(data) << "') -> " << result;
     return result;
   }
 

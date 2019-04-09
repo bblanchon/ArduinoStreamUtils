@@ -12,6 +12,7 @@ add_executable(StreamUtilsTest
 	StreamSpy.hpp
 	StreamStub.hpp
 	StreamWithInputBufferTest.cpp
+	StreamWithOutputBufferTest.cpp
 	doctest.h
 	main.cpp
 )

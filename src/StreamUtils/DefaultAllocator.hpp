@@ -2,6 +2,8 @@
 // Copyright Benoit Blanchon 2019
 // MIT License
 
+#pragma once
+
 namespace StreamUtils {
 
 #include <stdlib.h>  // malloc, free, size_t
