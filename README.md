@@ -22,7 +22,7 @@ Buffering the input of a stream
 Sometimes, you can greatly improve performance by reading many bytes at once. 
 For example, [according to SPIFFS's wiki](https://github.com/pellepl/spiffs/wiki/Performance-and-Optimizing#reading-files), it's much faster to read files in chunks of 64 bytes than reading them one byte at a time.
 
-To buffer the input, simply pass your stream to `bufferizeInput()`, and it will return a new stream with an internal buffer.
+To buffer the input, simply pass your stream to `bufferInput()`, and it will return a new stream with an internal buffer.
 
 ![Input buffer](examples/InputBuffer/InputBuffer.svg)
 
@@ -37,7 +37,7 @@ Then you simply need to insert one line to greatly improve the reading speed:
 
 ```c++
 File file = SPIFFS.open("example.json", "r");
-auto bufferedFile = bufferizeInput(file, 64); // <- HERE
+auto bufferedFile = bufferInput(file, 64); // <- HERE
 deserializeJson(doc, bufferedFile);
 ```
 
@@ -52,7 +52,7 @@ Buffering the output of a stream
 Similarly, you can greatly improve performance by writing many bytes at once.
 For example, if you write to `WiFiClient` one bytes at a time, it will be very slow; it's much faster if you send large chunks.
 
-To buffer the output of a stream, pass it to `bufferizeOutput()`, and you'll receive a new stream with an internal buffer.
+To buffer the output of a stream, pass it to `bufferOutput()`, and you'll receive a new stream with an internal buffer.
 
 ![Output buffer](examples/OutputBuffer/OutputBuffer.svg)
 
@@ -65,9 +65,7 @@ serializeJson(doc, wifiClient);
 Then, you just need to add two lines:
 
 ```c++
-auto bufferedWifiClient = bufferizeOutput(wifiClient, 64);
-serializeJson(doc, bufferedWifiClient);
-bufferedWifiClient.flush();  // <- OPTIONAL
+
 ```
 
 Calling `flush()` is recommended but not mandatory. If you don't call it, the destructor of `StreamWithOutputBuffer` (the class of `bufferedWifiClient`) will do it for you.

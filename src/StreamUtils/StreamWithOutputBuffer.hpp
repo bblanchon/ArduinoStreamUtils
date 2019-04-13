@@ -98,7 +98,7 @@ class BasicStreamWithOutputBuffer : public Stream {
 
 using StreamWithOutputBuffer = BasicStreamWithOutputBuffer<DefaultAllocator>;
 
-StreamWithOutputBuffer bufferizeOutput(Stream &upstream, size_t capacity) {
+StreamWithOutputBuffer bufferOutput(Stream &upstream, size_t capacity) {
   return StreamWithOutputBuffer(upstream, capacity);
 }
 }  // namespace StreamUtils

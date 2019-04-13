@@ -105,7 +105,7 @@ class BasicStreamWithInputBuffer : public Stream {
 
 using StreamWithInputBuffer = BasicStreamWithInputBuffer<DefaultAllocator>;
 
-StreamWithInputBuffer bufferizeInput(Stream &upstream, size_t capacity) {
+StreamWithInputBuffer bufferInput(Stream &upstream, size_t capacity) {
   return StreamWithInputBuffer(upstream, capacity);
 }
 }  // namespace StreamUtils

@@ -18,6 +18,8 @@
 
 #include <StreamUtils.h>
 
+auto bufferedSerial = bufferInput(Serial, 64);
+
 void setup() {
   // Initialize serial port
   Serial.begin(9600);
@@ -25,11 +27,9 @@ void setup() {
 }
 
 void loop() {
-  auto serial = bufferizeInput(Serial, 64);
-
   // Even if it looks like the bytes are extracted one by one, they are actual
   // read by chunks in 64 bytes and placed in a buffer.
-  while (serial.available()) {
-    Serial.write(serial.read());
+  while (bufferedSerial.available()) {
+    Serial.write(bufferedSerial.read());
   }
 }

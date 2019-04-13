@@ -21,7 +21,7 @@ TEST_CASE("StreamWithInputBuffer") {
   StreamSpy spy{stub};
 
   SUBCASE("capacity = 4") {
-    auto bufferedStream = bufferizeInput(spy, 4);
+    auto bufferedStream = bufferInput(spy, 4);
     Stream& stream = bufferedStream;
 
     SUBCASE("available()") {
@@ -252,7 +252,7 @@ TEST_CASE("StreamWithInputBuffer") {
   }
 
   SUBCASE("Real example") {
-    auto bufferedStream = bufferizeInput(spy, 64);
+    auto bufferedStream = bufferInput(spy, 64);
     Stream& stream = bufferedStream;
 
     stub.setup("{\"helloWorld\":\"Hello World\"}");

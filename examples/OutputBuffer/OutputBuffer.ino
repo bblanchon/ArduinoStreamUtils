@@ -13,7 +13,7 @@
 
 #include <StreamUtils.h>
 
-auto bufferedSerial = bufferizeOutput(Serial, 8);
+auto bufferedSerial = bufferOutput(Serial, 8);
 
 void setup() {
   // Initialize serial port
