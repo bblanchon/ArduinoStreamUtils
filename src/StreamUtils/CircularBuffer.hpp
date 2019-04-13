@@ -16,21 +16,16 @@ class CircularBuffer {
       : _allocator(allocator) {
     _data = reinterpret_cast<char *>(_allocator.allocate(capacity));
     _capacity = _data ? capacity : 0;
-    _begin = _data ? _data : nullptr;
-    _end = _begin;
+    _begin = _end = _size = 0;
   }
 
-  CircularBuffer(const CircularBuffer &src) : _allocator(src._allocator) {
-    _data = reinterpret_cast<char *>(_allocator.allocate(src._capacity));
+  CircularBuffer(const CircularBuffer &src)
+      : CircularBuffer(src._capacity, src._allocator) {
     if (_data != nullptr) {
-      _capacity = src._capacity;
-      memcpy(_data, src._begin, src.available());
-      _begin = _data;
-      _end = _data + _capacity;
-    } else {
-      _capacity = 0;
-      _begin = nullptr;
-      _end = nullptr;
+      memcpy(_data, src._data, _capacity);
+      _begin = src._begin;
+      _end = src._end;
+      _size = src._size;
     }
   }
 
@@ -43,72 +38,80 @@ class CircularBuffer {
   }
 
   size_t available() const {
-    return _end - _begin;
+    return _size;
   }
 
   size_t capacity() const {
     return _capacity;
   }
 
+  void clear() {
+    _begin = _end = _size = 0;
+  }
+
   bool isEmpty() const {
-    return available() == 0;
+    return _size == 0;
   }
 
   bool isFull() const {
-    return available() == capacity();
+    return _size == _capacity;
   }
 
   operator bool() const {
-    return _capacity > 0;
+    return capacity() > 0;
   }
 
   char peek() const {
-    return *_begin;
+    assert(_size > 0);
+    return _data[_begin];
   }
 
   char read() {
-    return *_begin++;
+    assert(_size > 0);
+    char result = _data[_begin];
+    _begin = (_begin + 1) % _capacity;
+    _size--;
+    return result;
   }
 
-  size_t readBytes(char *dstPtr, size_t dstSize) {
-    size_t srcSize = available();
-    size_t n = srcSize < dstSize ? srcSize : dstSize;
-    memcpy(dstPtr, _begin, n);
-    _begin += n;
-    return n;
+  size_t readBytes(char *data, size_t size) {
+    // don't read more that available
+    if (size > _size)
+      size = _size;
+
+    for (size_t i = 0; i < size; i++)
+      data[i] = read();
+
+    return size;
   }
 
   size_t write(uint8_t data) {
-    assert(!isFull());
-    *_end++ = data;
+    assert(_size < _capacity);
+    _data[_end] = data;
+    _end = (_end + 1) % _capacity;
+    _size++;
     return 1;
   }
 
   size_t write(const uint8_t *data, size_t size) {
-    size_t roomLeft = capacity() - available();
-    if (size > roomLeft) size = roomLeft;
-    memcpy(_end, data, size);
-    _end += size;
+    // don't read more that available
+    size_t roomLeft = _capacity - _size;
+    if (size > roomLeft)
+      size = roomLeft;
+
+    for (size_t i = 0; i < size; i++)
+      write(data[i]);
+
     return size;
-  }
-
-  void reloadFrom(Stream &source) {
-    size_t n = source.readBytes(_data, _capacity);
-    _begin = _data;
-    _end = _data + n;
-  }
-
-  void flushInto(Print &destination) {
-    if (_begin != _end) destination.write(_begin, _end - _begin);
-    _begin = _end = _data;
   }
 
  private:
   TAllocator _allocator;
-  size_t _capacity;
   char *_data;
-  char *_begin;
-  char *_end;
-};
+  size_t _capacity;
+  size_t _size;
+  size_t _begin;
+  size_t _end;
+};  // namespace StreamUtils
 
 }  // namespace StreamUtils

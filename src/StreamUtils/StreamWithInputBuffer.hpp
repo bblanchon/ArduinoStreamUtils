@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "CircularBuffer.hpp"
 #include "DefaultAllocator.hpp"
+#include "LinearBuffer.hpp"
 
 namespace StreamUtils {
 
@@ -35,7 +35,8 @@ class BasicStreamWithInputBuffer : public Stream {
   }
 
   int read() override {
-    if (!_buffer) return _upstream.read();
+    if (!_buffer)
+      return _upstream.read();
     reloadIfEmpty();
     return isEmpty() ? -1 : _buffer.read();
   }
@@ -51,7 +52,8 @@ class BasicStreamWithInputBuffer : public Stream {
   // WARNING: we cannot use "override" because most cores don't define this
   // function as virtual
   virtual size_t readBytes(char *buffer, size_t size) {
-    if (!_buffer) return _upstream.readBytes(buffer, size);
+    if (!_buffer)
+      return _upstream.readBytes(buffer, size);
 
     size_t result = 0;
 
@@ -91,7 +93,8 @@ class BasicStreamWithInputBuffer : public Stream {
   }
 
   void reloadIfEmpty() {
-    if (!isEmpty()) return;
+    if (!isEmpty())
+      return;
     reload();
   }
 
@@ -100,12 +103,12 @@ class BasicStreamWithInputBuffer : public Stream {
   }
 
   Stream &_upstream;
-  CircularBuffer<TAllocator> _buffer;
+  LinearBuffer<TAllocator> _buffer;
 };
 
 using StreamWithInputBuffer = BasicStreamWithInputBuffer<DefaultAllocator>;
 
-StreamWithInputBuffer bufferInput(Stream &upstream, size_t capacity) {
+inline StreamWithInputBuffer bufferInput(Stream &upstream, size_t capacity) {
   return StreamWithInputBuffer(upstream, capacity);
 }
 }  // namespace StreamUtils

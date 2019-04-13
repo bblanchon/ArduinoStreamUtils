@@ -5,26 +5,23 @@
 #include "FailingAllocator.hpp"
 #include "Stream.hpp"
 #include "StreamSpy.hpp"
-#include "StreamStub.hpp"
 
+#include "StreamUtils/MemoryStream.hpp"
 #include "StreamUtils/StreamWithOutputBuffer.hpp"
 
 #include "doctest.h"
 
-#include <sstream>
-#include <string>
-
 using namespace StreamUtils;
 
 TEST_CASE("StreamWithOutputBuffer") {
-  StreamStub input;
-  StreamSpy spy{input};
+  MemoryStream upstream(64);
+  StreamSpy spy{upstream};
 
   GIVEN("capacity is 4") {
     StreamWithOutputBuffer stream{spy, 4};
 
     SUBCASE("available()") {
-      input.setup("ABC");
+      upstream.print("ABC");
 
       CHECK(stream.available() == 3);
       CHECK(spy.log() == "available() -> 3");
@@ -50,21 +47,21 @@ TEST_CASE("StreamWithOutputBuffer") {
     }
 
     SUBCASE("peek()") {
-      input.setup("ABC");
+      upstream.print("ABC");
 
       CHECK(stream.peek() == 'A');
       CHECK(spy.log() == "peek() -> 65");
     }
 
     SUBCASE("read()") {
-      input.setup("ABC");
+      upstream.print("ABC");
 
       CHECK(stream.read() == 'A');
       CHECK(spy.log() == "read() -> 65");
     }
 
     SUBCASE("readBytes()") {
-      input.setup("ABC");
+      upstream.print("ABC");
 
       char s[4] = {0};
       int n = stream.readBytes(s, 3);

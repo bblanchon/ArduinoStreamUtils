@@ -5,6 +5,9 @@
 #pragma once
 
 #include <stdint.h>
+#include <string>
+
+using String = std::string;
 
 struct Print {
   virtual size_t write(const uint8_t *buffer, size_t size) = 0;
@@ -12,6 +15,10 @@ struct Print {
 
   size_t write(const char *buffer, size_t size) {
     return write((const uint8_t *)buffer, size);
+  }
+
+  size_t print(const String &s) {
+    return write(s.c_str(), s.size());
   }
 };
 

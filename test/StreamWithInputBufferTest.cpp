@@ -5,36 +5,33 @@
 #include "FailingAllocator.hpp"
 #include "Stream.hpp"
 #include "StreamSpy.hpp"
-#include "StreamStub.hpp"
 
+#include "StreamUtils/MemoryStream.hpp"
 #include "StreamUtils/StreamWithInputBuffer.hpp"
 
 #include "doctest.h"
 
-#include <sstream>
-#include <string>
-
 using namespace StreamUtils;
 
 TEST_CASE("StreamWithInputBuffer") {
-  StreamStub stub;
-  StreamSpy spy{stub};
+  MemoryStream upstream(64);
+  StreamSpy spy{upstream};
 
   SUBCASE("capacity = 4") {
     auto bufferedStream = bufferInput(spy, 4);
     Stream& stream = bufferedStream;
 
     SUBCASE("available()") {
-      stub.setup("ABCDEFGH");
+      upstream.print("ABCDEFGH");
 
       SUBCASE("empty input") {
-        stub.setup("");
+        upstream.flush();
         CHECK(stream.available() == 0);
         CHECK(spy.log() == "available() -> 0");
       }
 
       SUBCASE("read empty input") {
-        stub.setup("");
+        upstream.flush();
 
         stream.read();
 
@@ -61,7 +58,7 @@ TEST_CASE("StreamWithInputBuffer") {
 
     SUBCASE("peek()") {
       SUBCASE("returns -1 when empty") {
-        stub.setup("");
+        upstream.flush();
 
         int result = stream.peek();
 
@@ -70,7 +67,7 @@ TEST_CASE("StreamWithInputBuffer") {
       }
 
       SUBCASE("doesn't call readBytes() when buffer is empty") {
-        stub.setup("A");
+        upstream.print("A");
 
         int result = stream.peek();
 
@@ -79,7 +76,7 @@ TEST_CASE("StreamWithInputBuffer") {
       }
 
       SUBCASE("doesn't call peek() when buffer is full") {
-        stub.setup("AB");
+        upstream.print("AB");
 
         stream.read();
         int result = stream.peek();
@@ -91,7 +88,7 @@ TEST_CASE("StreamWithInputBuffer") {
 
     SUBCASE("read()") {
       SUBCASE("reads 4 bytes at a time") {
-        stub.setup("ABCDEFG");
+        upstream.print("ABCDEFG");
         std::string result;
 
         for (int i = 0; i < 7; i++) {
@@ -105,7 +102,7 @@ TEST_CASE("StreamWithInputBuffer") {
       }
 
       SUBCASE("returns -1 when empty") {
-        stub.setup("");
+        upstream.flush();
 
         int result = stream.read();
 
@@ -116,7 +113,7 @@ TEST_CASE("StreamWithInputBuffer") {
 
     SUBCASE("readBytes()") {
       SUBCASE("empty input") {
-        stub.setup("");
+        upstream.flush();
 
         char c;
         size_t result = stream.readBytes(&c, 1);
@@ -126,7 +123,7 @@ TEST_CASE("StreamWithInputBuffer") {
       }
 
       SUBCASE("reads 4 bytes when requested one") {
-        stub.setup("ABCDEFG");
+        upstream.print("ABCDEFG");
 
         char c;
         size_t result = stream.readBytes(&c, 1);
@@ -137,7 +134,7 @@ TEST_CASE("StreamWithInputBuffer") {
       }
 
       SUBCASE("copy one byte from buffer") {
-        stub.setup("ABCDEFGH");
+        upstream.print("ABCDEFGH");
         stream.read();  // load buffer
 
         char c;
@@ -149,7 +146,7 @@ TEST_CASE("StreamWithInputBuffer") {
       }
 
       SUBCASE("copy content from buffer then bypass buffer") {
-        stub.setup("ABCDEFGH");
+        upstream.print("ABCDEFGH");
         stream.read();  // load buffer
 
         char c[8] = {0};
@@ -163,7 +160,7 @@ TEST_CASE("StreamWithInputBuffer") {
       }
 
       SUBCASE("copy content from buffer twice") {
-        stub.setup("ABCDEFGH");
+        upstream.print("ABCDEFGH");
         stream.read();  // load buffer
 
         char c[8] = {0};
@@ -177,7 +174,7 @@ TEST_CASE("StreamWithInputBuffer") {
       }
 
       SUBCASE("read past the end") {
-        stub.setup("A");
+        upstream.print("A");
 
         char c;
         stream.readBytes(&c, 1);
@@ -196,7 +193,7 @@ TEST_CASE("StreamWithInputBuffer") {
     }
 
     SUBCASE("copy constructor") {
-      stub.setup("ABCDEFGH");
+      upstream.print("ABCDEFGH");
       bufferedStream.read();
 
       auto dup = bufferedStream;
@@ -212,7 +209,7 @@ TEST_CASE("StreamWithInputBuffer") {
     BasicStreamWithInputBuffer<FailingAllocator> stream(spy, 4);
 
     SUBCASE("available()") {
-      stub.setup("ABC");
+      upstream.print("ABC");
 
       CHECK(stream.available() == 3);
     }
@@ -222,7 +219,7 @@ TEST_CASE("StreamWithInputBuffer") {
     }
 
     SUBCASE("peek()") {
-      stub.setup("ABC");
+      upstream.print("ABC");
 
       int c = stream.peek();
 
@@ -231,7 +228,7 @@ TEST_CASE("StreamWithInputBuffer") {
     }
 
     SUBCASE("read()") {
-      stub.setup("ABC");
+      upstream.print("ABC");
 
       int c = stream.read();
 
@@ -240,7 +237,7 @@ TEST_CASE("StreamWithInputBuffer") {
     }
 
     SUBCASE("readBytes()") {
-      stub.setup("ABC");
+      upstream.print("ABC");
 
       char s[4] = {0};
       int n = stream.readBytes(s, 3);
@@ -255,7 +252,7 @@ TEST_CASE("StreamWithInputBuffer") {
     auto bufferedStream = bufferInput(spy, 64);
     Stream& stream = bufferedStream;
 
-    stub.setup("{\"helloWorld\":\"Hello World\"}");
+    upstream.print("{\"helloWorld\":\"Hello World\"}");
 
     char c[] = "ABCDEFGH";
     CHECK(stream.readBytes(&c[0], 1) == 1);

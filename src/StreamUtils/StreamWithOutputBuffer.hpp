@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "CircularBuffer.hpp"
 #include "DefaultAllocator.hpp"
+#include "LinearBuffer.hpp"
 
 namespace StreamUtils {
 
@@ -57,10 +57,12 @@ class BasicStreamWithOutputBuffer : public Stream {
   }
 
   size_t write(uint8_t data) override {
-    if (!_buffer) return _upstream.write(data);
+    if (!_buffer)
+      return _upstream.write(data);
 
     _buffer.write(data);
-    if (_buffer.isFull()) _buffer.flushInto(_upstream);
+    if (_buffer.isFull())
+      _buffer.flushInto(_upstream);
     return 1;
   }
 
@@ -93,12 +95,12 @@ class BasicStreamWithOutputBuffer : public Stream {
 
  private:
   Stream &_upstream;
-  CircularBuffer<TAllocator> _buffer;
+  LinearBuffer<TAllocator> _buffer;
 };  // namespace StreamUtils
 
 using StreamWithOutputBuffer = BasicStreamWithOutputBuffer<DefaultAllocator>;
 
-StreamWithOutputBuffer bufferOutput(Stream &upstream, size_t capacity) {
+inline StreamWithOutputBuffer bufferOutput(Stream &upstream, size_t capacity) {
   return StreamWithOutputBuffer(upstream, capacity);
 }
 }  // namespace StreamUtils
