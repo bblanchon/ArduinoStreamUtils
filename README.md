@@ -24,7 +24,9 @@ For example, [according to SPIFFS's wiki](https://github.com/pellepl/spiffs/wiki
 
 To buffer the input, simply pass your stream to `bufferizeInput()`, and it will return a new stream with an internal buffer.
 
-For example, suppose you program reads a JSON document from SPIFFS, like that:
+![Input buffer](examples/InputBuffer/InputBuffer.svg)
+
+For example, suppose your program reads a JSON document from SPIFFS, like that:
 
 ```c++
 File file = SPIFFS.open("example.json", "r");
@@ -34,12 +36,39 @@ deserializeJson(doc, file);
 Then you simply need to insert one line to greatly improve the reading speed:
 
 ```c++
-File slowFile = SPIFFS.open("example.json", "r");
-auto fastFile = bufferizeInput(slowFile, 64); // <- HERE
-deserializeJson(doc, fastFile);
+File file = SPIFFS.open("example.json", "r");
+auto bufferedFile = bufferizeInput(file, 64); // <- HERE
+deserializeJson(doc, bufferedFile);
 ```
 
 Unfortunately, this optimization is only possible if:
 
 1. `Stream.readBytes()` is declared `virtual` in your Arduino Code (as it's the case for ESP8266), and
 2. the derived class has an optimized implementation of `readBytes()` (as it's the case for SPIFFS' `File`).
+
+Buffering the output of a stream
+--------------------------------
+
+Similarly, you can greatly improve performance by writing many bytes at once.
+For example, if you write to `WiFiClient` one bytes at a time, it will be very slow; it's much faster if you send large chunks.
+
+To buffer the output of a stream, pass it to `bufferizeOutput()`, and you'll receive a new stream with an internal buffer.
+
+![Output buffer](examples/OutputBuffer/OutputBuffer.svg)
+
+For example, if you program send a JSON document via `WiFiClient`, like that:
+
+```c++
+serializeJson(doc, wifiClient);
+```
+
+Then, you just need to add two lines:
+
+```c++
+auto bufferedWifiClient = bufferizeOutput(wifiClient, 64);
+serializeJson(doc, bufferedWifiClient);
+bufferedWifiClient.flush();  // <- OPTIONAL
+```
+
+Calling `flush()` is recommended but not mandatory. If you don't call it, the destructor of `StreamWithOutputBuffer` (the class of `bufferedWifiClient`) will do it for you.
+
