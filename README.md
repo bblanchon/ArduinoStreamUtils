@@ -95,3 +95,27 @@ loggingClient.println("User-Agent: Arduino");
 
 Everything you write to `loggingClient` is written to `client` and logged to `Serial`.
 
+Logging read operations
+-----------------------
+
+Similarly, you often want to see what the HTTP server sent back. With this library you can decorate the `EthernetStream` or the `WiFiStream` to log everything to the serial.
+
+![Read logger](examples/ReadLogger/ReadLogger.svg)
+
+For example, if you program is:
+
+```c++
+char response[256];
+client.readBytes(response, 256);
+```
+
+Then, you just need to create the decorator, and update the calls to `readBytes()`:
+
+```c++
+ReadLoggingStream loggingClient(client, Serial);
+char response[256];
+loggingClient.readBytes(response, 256);
+// ...
+```
+
+`loggingClient` forwards all operations to `client` and logs read operation to `Serial`.

@@ -8,7 +8,7 @@
 
 // Create a new stream that will forward all calls to Serial, and log to Serial.
 // Everything will be written twice to the Serial!
-WriteLoggingStream loggedStream(Serial, Serial);
+WriteLoggingStream loggingStream(Serial, Serial);
 
 void setup() {
   // Initialize serial port
@@ -18,9 +18,10 @@ void setup() {
 }
 
 void loop() {
-  // Even if it looks like the bytes are extracted one by one, they are actual
-  // read by chunks in 64 bytes and placed in a buffer.
-  while (Serial.available()) {
-    loggedStream.write(Serial.read());
+  // Read from the serial port and write back.
+  // Because loggingStream logs each write operation, everything is written
+  // twice.
+  while (loggingStream.available()) {
+    loggingStream.read();
   }
 }

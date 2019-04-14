@@ -20,6 +20,34 @@
   <defs
      id="defs2">
     <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker2295"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(0.6) rotate(180) translate(0,0)"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#e47128;stroke-opacity:1;fill:#e47128;fill-opacity:1"
+         id="path2293" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="marker2207"
+       style="overflow:visible;"
+       inkscape:isstock="true">
+      <path
+         id="path2205"
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#00878f;stroke-opacity:1;fill:#00878f;fill-opacity:1"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(0.6) rotate(180) translate(0,0)" />
+    </marker>
+    <marker
        inkscape:stockid="Arrow2Mend"
        orient="auto"
        refY="0.0"
@@ -186,7 +214,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
      inkscape:cx="346.13216"
-     inkscape:cy="605.26343"
+     inkscape:cy="376.692"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -406,5 +434,30 @@
        id="path1129"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
+    <use
+       height="100%"
+       width="100%"
+       transform="translate(0,166.68753)"
+       id="use2195"
+       xlink:href="#g1984"
+       y="0"
+       x="0" />
+    <text
+       id="text2199"
+       y="208.55363"
+       x="94.829575"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;line-height:125%;font-family:Consolas;-inkscape-font-specification:Consolas;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:4.93888903px;stroke-width:0.26458332px"
+         y="208.55363"
+         x="94.829575"
+         id="tspan2197"
+         sodipodi:role="line">log</tspan></text>
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path2201"
+       d="m 114.54022,197.40635 c -12.35301,0.0361 -13.22835,2.36406 -14.03016,7.48967"
+       style="fill:none;fill-rule:evenodd;stroke:#e47128;stroke-width:0.40000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2295)" />
   </g>
 </svg>

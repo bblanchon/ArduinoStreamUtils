@@ -3,6 +3,7 @@
 // MIT License
 
 #include "StreamUtils/ReadBufferingStream.hpp"
+#include "StreamUtils/ReadLoggingStream.hpp"
 #include "StreamUtils/WriteBufferingStream.hpp"
 #include "StreamUtils/WriteLoggingStream.hpp"
 
