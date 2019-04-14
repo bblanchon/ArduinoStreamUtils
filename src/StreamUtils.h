@@ -3,6 +3,7 @@
 // MIT License
 
 #include "StreamUtils/StreamLogger.hpp"
+#include "StreamUtils/StreamOutputLogger.hpp"
 #include "StreamUtils/StreamWithInputBuffer.hpp"
 #include "StreamUtils/StreamWithOutputBuffer.hpp"
 

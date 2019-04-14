@@ -52,4 +52,8 @@ class StreamOutputLogger : public Stream {
   Stream &_upstream;
   Stream &_log;
 };
+
+inline StreamOutputLogger logOutput(Stream &upstream, Stream &log) {
+  return StreamOutputLogger(upstream, log);
+}
 }  // namespace StreamUtils

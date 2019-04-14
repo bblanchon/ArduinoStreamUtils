@@ -69,4 +69,3 @@ Then, you just need to add two lines:
 ```
 
 Calling `flush()` is recommended but not mandatory. If you don't call it, the destructor of `StreamWithOutputBuffer` (the class of `bufferedWifiClient`) will do it for you.
-
