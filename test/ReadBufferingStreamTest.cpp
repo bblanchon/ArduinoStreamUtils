@@ -7,18 +7,18 @@
 #include "StreamSpy.hpp"
 
 #include "StreamUtils/MemoryStream.hpp"
-#include "StreamUtils/StreamWithInputBuffer.hpp"
+#include "StreamUtils/ReadBufferingStream.hpp"
 
 #include "doctest.h"
 
 using namespace StreamUtils;
 
-TEST_CASE("StreamWithInputBuffer") {
+TEST_CASE("ReadBufferingStream") {
   MemoryStream upstream(64);
   StreamSpy spy{upstream};
 
   SUBCASE("capacity = 4") {
-    auto bufferedStream = bufferInput(spy, 4);
+    ReadBufferingStream bufferedStream{spy, 4};
     Stream& stream = bufferedStream;
 
     SUBCASE("available()") {
@@ -206,7 +206,7 @@ TEST_CASE("StreamWithInputBuffer") {
   }
 
   SUBCASE("No memory") {
-    BasicStreamWithInputBuffer<FailingAllocator> stream(spy, 4);
+    BasicReadBufferingStream<FailingAllocator> stream(spy, 4);
 
     SUBCASE("available()") {
       upstream.print("ABC");
@@ -249,7 +249,7 @@ TEST_CASE("StreamWithInputBuffer") {
   }
 
   SUBCASE("Real example") {
-    auto bufferedStream = bufferInput(spy, 64);
+    ReadBufferingStream bufferedStream{spy, 64};
     Stream& stream = bufferedStream;
 
     upstream.print("{\"helloWorld\":\"Hello World\"}");

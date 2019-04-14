@@ -10,16 +10,16 @@
 namespace StreamUtils {
 
 template <typename TAllocator>
-class BasicStreamWithInputBuffer : public Stream {
+class BasicReadBufferingStream : public Stream {
  public:
-  explicit BasicStreamWithInputBuffer(Stream &upstream, size_t capacity,
-                                      TAllocator allocator = TAllocator())
+  explicit BasicReadBufferingStream(Stream &upstream, size_t capacity,
+                                    TAllocator allocator = TAllocator())
       : _upstream(upstream), _buffer(capacity, allocator) {}
 
-  BasicStreamWithInputBuffer(const BasicStreamWithInputBuffer &other)
+  BasicReadBufferingStream(const BasicReadBufferingStream &other)
       : _upstream(other._upstream), _buffer(other._buffer) {}
 
-  BasicStreamWithInputBuffer &operator=(const BasicStreamWithInputBuffer &) =
+  BasicReadBufferingStream &operator=(const BasicReadBufferingStream &) =
       delete;
 
   size_t write(const uint8_t *buffer, size_t size) override {
@@ -106,9 +106,5 @@ class BasicStreamWithInputBuffer : public Stream {
   LinearBuffer<TAllocator> _buffer;
 };
 
-using StreamWithInputBuffer = BasicStreamWithInputBuffer<DefaultAllocator>;
-
-inline StreamWithInputBuffer bufferInput(Stream &upstream, size_t capacity) {
-  return StreamWithInputBuffer(upstream, capacity);
-}
+using ReadBufferingStream = BasicReadBufferingStream<DefaultAllocator>;
 }  // namespace StreamUtils

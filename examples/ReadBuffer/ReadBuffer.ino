@@ -2,7 +2,7 @@
 // Copyright Benoit Blanchon 2019
 // MIT License
 //
-// This example shows how to buffer the input of a stream.
+// This example shows how to buffer the read operations of a stream.
 //
 // Like "echo," it reads from the serial port and prints back the same thing.
 // What's interesting with this program is that it reads the input in chunks of
@@ -18,12 +18,13 @@
 
 #include <StreamUtils.h>
 
-auto bufferedSerial = bufferInput(Serial, 64);
+ReadBufferingStream bufferedSerial{Serial, 64};
 
 void setup() {
   // Initialize serial port
   Serial.begin(9600);
-  while (!Serial) continue;
+  while (!Serial)
+    continue;
 }
 
 void loop() {
