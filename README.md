@@ -46,17 +46,15 @@ Unfortunately, this optimization is only possible if:
 1. `Stream.readBytes()` is declared `virtual` in your Arduino Code (as it's the case for ESP8266), and
 2. the derived class has an optimized implementation of `readBytes()` (as it's the case for SPIFFS' `File`).
 
-Buffering the output of a stream
---------------------------------
+Buffering what's written to a stream
+------------------------------------
 
 Similarly, you can greatly improve performance by writing many bytes at once.
 For example, if you write to `WiFiClient` one bytes at a time, it will be very slow; it's much faster if you send large chunks.
 
-To buffer the output of a stream, pass it to `bufferOutput()`, and you'll receive a new stream with an internal buffer.
+![Output buffer](examples/WriteBuffer/WriteBuffer.svg)
 
-![Output buffer](examples/OutputBuffer/OutputBuffer.svg)
-
-For example, if you program send a JSON document via `WiFiClient`, like that:
+To add a buffer, decorate the original `Stream` with  `WriteBufferingStream`. For example, if you program send a JSON document via `WiFiClient`, like that:
 
 ```c++
 serializeJson(doc, wifiClient);
@@ -65,12 +63,12 @@ serializeJson(doc, wifiClient);
 Then, you just need to add two lines:
 
 ```c++
-auto bufferedWifiClient = bufferizeOutput(wifiClient, 64);
+WriteBufferingStream bufferedWifiClient{wifiClient, 64};
 serializeJson(doc, bufferedWifiClient);
 bufferedWifiClient.flush();  // <- OPTIONAL
 ```
 
-Calling `flush()` is recommended but not mandatory. If you don't call it, the destructor of `StreamWithOutputBuffer` (the class of `bufferedWifiClient`) will do it for you.
+Calling `flush()` is recommended but not mandatory. If you don't call it, the destructor of `WriteBufferingStream` will do it for you.
 
 
 Logging what's written to a Stream

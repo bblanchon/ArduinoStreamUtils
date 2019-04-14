@@ -5,6 +5,6 @@
 #include "StreamUtils/StreamLogger.hpp"
 #include "StreamUtils/StreamOutputLogger.hpp"
 #include "StreamUtils/StreamWithInputBuffer.hpp"
-#include "StreamUtils/StreamWithOutputBuffer.hpp"
+#include "StreamUtils/WriteBufferingStream.hpp"
 
 using namespace StreamUtils;

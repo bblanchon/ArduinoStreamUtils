@@ -7,18 +7,18 @@
 #include "StreamSpy.hpp"
 
 #include "StreamUtils/MemoryStream.hpp"
-#include "StreamUtils/StreamWithOutputBuffer.hpp"
+#include "StreamUtils/WriteBufferingStream.hpp"
 
 #include "doctest.h"
 
 using namespace StreamUtils;
 
-TEST_CASE("StreamWithOutputBuffer") {
+TEST_CASE("WriteBufferingStream") {
   MemoryStream upstream(64);
   StreamSpy spy{upstream};
 
   GIVEN("capacity is 4") {
-    StreamWithOutputBuffer stream{spy, 4};
+    WriteBufferingStream stream{spy, 4};
 
     SUBCASE("available()") {
       upstream.print("ABC");
@@ -132,7 +132,7 @@ TEST_CASE("StreamWithOutputBuffer") {
   }
 
   GIVEN("capacity is 0") {
-    StreamWithOutputBuffer stream{spy, 0};
+    WriteBufferingStream stream{spy, 0};
 
     SUBCASE("capacity()") {
       CHECK(stream.capacity() == 0);
@@ -161,7 +161,7 @@ TEST_CASE("StreamWithOutputBuffer") {
 
   SUBCASE("Destructor should flush") {
     {
-      StreamWithOutputBuffer stream{spy, 10};
+      WriteBufferingStream stream{spy, 10};
       stream.write("ABC", 3);
     }
 

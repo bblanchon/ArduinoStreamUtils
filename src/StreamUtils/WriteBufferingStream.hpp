@@ -10,19 +10,19 @@
 namespace StreamUtils {
 
 template <typename TAllocator>
-class BasicStreamWithOutputBuffer : public Stream {
+class BasicWriteBufferingStream : public Stream {
  public:
-  explicit BasicStreamWithOutputBuffer(Stream &upstream, size_t capacity,
-                                       TAllocator allocator = TAllocator())
+  explicit BasicWriteBufferingStream(Stream &upstream, size_t capacity,
+                                     TAllocator allocator = TAllocator())
       : _upstream(upstream), _buffer(capacity, allocator) {}
 
-  BasicStreamWithOutputBuffer(const BasicStreamWithOutputBuffer &other)
+  BasicWriteBufferingStream(const BasicWriteBufferingStream &other)
       : _upstream(other._upstream), _buffer(other._buffer) {}
 
-  BasicStreamWithOutputBuffer &operator=(const BasicStreamWithOutputBuffer &) =
+  BasicWriteBufferingStream &operator=(const BasicWriteBufferingStream &) =
       delete;
 
-  ~BasicStreamWithOutputBuffer() {
+  ~BasicWriteBufferingStream() {
     _buffer.flushInto(_upstream);
   }
 
@@ -98,9 +98,5 @@ class BasicStreamWithOutputBuffer : public Stream {
   LinearBuffer<TAllocator> _buffer;
 };  // namespace StreamUtils
 
-using StreamWithOutputBuffer = BasicStreamWithOutputBuffer<DefaultAllocator>;
-
-inline StreamWithOutputBuffer bufferOutput(Stream &upstream, size_t capacity) {
-  return StreamWithOutputBuffer(upstream, capacity);
-}
+using WriteBufferingStream = BasicWriteBufferingStream<DefaultAllocator>;
 }  // namespace StreamUtils

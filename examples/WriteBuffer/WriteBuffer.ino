@@ -2,7 +2,7 @@
 // Copyright Benoit Blanchon 2019
 // MIT License
 //
-// This example shows how to buffer the output of a stream.
+// This example shows how to buffer writes to a stream.
 //
 // Like "echo," it reads from the serial port and prints back the same thing.
 // What's interesting with this program is that it writes in chunks of
@@ -13,19 +13,21 @@
 
 #include <StreamUtils.h>
 
-auto bufferedSerial = bufferOutput(Serial, 8);
+// Create a new Stream that buffers all writes to Serial
+WriteBufferingStream bufferedSerial{Serial, 8};
 
 void setup() {
   // Initialize serial port
   Serial.begin(9600);
-  while (!Serial) continue;
+  while (!Serial)
+    continue;
 
   Serial.println(F("Send at least 8 bytes to see the result"));
 }
 
 void loop() {
-  // Even if it looks like the bytes are extracted one by one, they are actual
-  // read by chunks in 64 bytes and placed in a buffer.
+  // Even if it looks like the bytes are sent one by one, they are actual
+  // written in chunks of 8 bytes.
   while (Serial.available()) {
     bufferedSerial.write(Serial.read());
   }
