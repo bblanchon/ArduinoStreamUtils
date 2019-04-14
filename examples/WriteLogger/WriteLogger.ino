@@ -6,8 +6,9 @@
 
 #include <StreamUtils.h>
 
-// Everything we write to serial, will be written twice
-auto loggedStream = logOutput(Serial, Serial);
+// Create a new stream that will forward all calls to Serial, and log to Serial.
+// Everything will be written twice to the Serial!
+WriteLoggingStream loggedStream(Serial, Serial);
 
 void setup() {
   // Initialize serial port

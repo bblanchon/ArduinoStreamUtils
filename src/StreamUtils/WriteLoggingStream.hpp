@@ -6,9 +6,9 @@
 
 namespace StreamUtils {
 
-class StreamOutputLogger : public Stream {
+class WriteLoggingStream : public Stream {
  public:
-  StreamOutputLogger(Stream &upstream, Stream &log)
+  WriteLoggingStream(Stream &upstream, Stream &log)
       : _upstream(upstream), _log(log) {}
 
   int available() override {
@@ -52,8 +52,4 @@ class StreamOutputLogger : public Stream {
   Stream &_upstream;
   Stream &_log;
 };
-
-inline StreamOutputLogger logOutput(Stream &upstream, Stream &log) {
-  return StreamOutputLogger(upstream, log);
-}
 }  // namespace StreamUtils

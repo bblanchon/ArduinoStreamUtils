@@ -7,18 +7,18 @@
 #include "StreamSpy.hpp"
 
 #include "StreamUtils/MemoryStream.hpp"
-#include "StreamUtils/StreamOutputLogger.hpp"
+#include "StreamUtils/WriteLoggingStream.hpp"
 
 #include "doctest.h"
 
 using namespace StreamUtils;
 
-TEST_CASE("StreamOutputLogger") {
+TEST_CASE("WriteLoggingStream") {
   MemoryStream upstream(4);
   StreamSpy upstreamSpy{upstream};
   MemoryStream log(64);
   StreamSpy logSpy{log};
-  StreamOutputLogger copier{upstreamSpy, logSpy};
+  WriteLoggingStream copier{upstreamSpy, logSpy};
 
   SUBCASE("available()") {
     upstream.print("ABC");

@@ -22,7 +22,7 @@ Buffering read operations
 Sometimes, you can greatly improve performance by reading many bytes at once. 
 For example, [according to SPIFFS's wiki](https://github.com/pellepl/spiffs/wiki/Performance-and-Optimizing#reading-files), it's much faster to read files in chunks of 64 bytes than reading them one byte at a time.
 
-![Input buffer](examples/ReadBuffer/ReadBuffer.svg)
+![Read buffer](examples/ReadBuffer/ReadBuffer.svg)
 
 To buffer the input, simply decorate the original `Stream` with `ReadBufferingStream`. For example, suppose your program reads a JSON document from SPIFFS, like that:
 
@@ -50,7 +50,7 @@ Buffering write operations
 Similarly, you can greatly improve performance by writing many bytes at once.
 For example, if you write to `WiFiClient` one bytes at a time, it will be very slow; it's much faster if you send large chunks.
 
-![Output buffer](examples/WriteBuffer/WriteBuffer.svg)
+![Write buffer](examples/WriteBuffer/WriteBuffer.svg)
 
 To add a buffer, decorate the original `Stream` with  `WriteBufferingStream`. For example, if you program send a JSON document via `WiFiClient`, like that:
 
@@ -69,12 +69,12 @@ bufferedWifiClient.flush();  // <- OPTIONAL
 Calling `flush()` is recommended but not mandatory. If you don't call it, the destructor of `WriteBufferingStream` will do it for you.
 
 
-Logging what's written to a Stream
-----------------------------------
+Logging write operations
+------------------------
 
-When debugging a program that makes HTTP request, the first thing you want to check is that the request is correct. With this library you can decorate the `EthernetStream` or the `WiFiStream` to log everything to the serial.
+When debugging a program that makes HTTP requests, the first thing you want to check is that the request is correct. With this library you can decorate the `EthernetStream` or the `WiFiStream` to log everything to the serial.
 
-![Output logger](examples/OutputLogger/OutputLogger.svg)
+![Write logger](examples/WriteLogger/WriteLogger.svg)
 
 For example, if you program is:
 
@@ -84,10 +84,10 @@ client.println("User-Agent: Arduino");
 // ...
 ```
 
-Then, call `logOuput()` to decorate the original stream:
+Then, you just need to create the decorator, and update the calls to `println()`:
 
 ```c++
-auto loggingClient = logOutput(client, Serial);
+WriteLoggingStream loggingClient(client, Serial);
 loggingClient.println("GET / HTTP/1.1");
 loggingClient.println("User-Agent: Arduino");
 // ...
