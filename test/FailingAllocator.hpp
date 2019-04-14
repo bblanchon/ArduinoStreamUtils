@@ -1,4 +1,4 @@
-// StreamUtils - github.com/bblanchon/StreamUtils
+// StreamUtils - github.com/bblanchon/ArduinoStreamUtils
 // Copyright Benoit Blanchon 2019
 // MIT License
 

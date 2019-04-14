@@ -1,4 +1,4 @@
-// StreamUtils - github.com/bblanchon/StreamUtils
+// StreamUtils - github.com/bblanchon/ArduinoStreamUtils
 // Copyright Benoit Blanchon 2019
 // MIT License
 
@@ -40,7 +40,8 @@ struct Stream : Print {
     size_t count = 0;
     while (count < length) {
       int c = read();
-      if (c < 0) break;
+      if (c < 0)
+        break;
       *buffer++ = (char)c;
       count++;
     }
