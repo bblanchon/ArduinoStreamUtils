@@ -65,7 +65,37 @@ serializeJson(doc, wifiClient);
 Then, you just need to add two lines:
 
 ```c++
-
+auto bufferedWifiClient = bufferizeOutput(wifiClient, 64);
+serializeJson(doc, bufferedWifiClient);
+bufferedWifiClient.flush();  // <- OPTIONAL
 ```
 
 Calling `flush()` is recommended but not mandatory. If you don't call it, the destructor of `StreamWithOutputBuffer` (the class of `bufferedWifiClient`) will do it for you.
+
+
+Logging what's written to a Stream
+----------------------------------
+
+When debugging a program that makes HTTP request, the first thing you want to check is that the request is correct. With this library you can decorate the `EthernetStream` or the `WiFiStream` to log everything to the serial.
+
+![Output logger](examples/OutputLogger/OutputLogger.svg)
+
+For example, if you program is:
+
+```c++
+client.println("GET / HTTP/1.1");
+client.println("User-Agent: Arduino");
+// ...
+```
+
+Then, call `logOuput()` to decorate the original stream:
+
+```c++
+auto loggingClient = logOutput(client, Serial);
+loggingClient.println("GET / HTTP/1.1");
+loggingClient.println("User-Agent: Arduino");
+// ...
+```
+
+Everything you write to `loggingClient` is written to `client` and logged to `Serial`.
+

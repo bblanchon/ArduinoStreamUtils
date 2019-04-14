@@ -20,13 +20,56 @@
   <defs
      id="defs2">
     <marker
+       inkscape:stockid="Arrow2Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="marker1209"
+       style="overflow:visible;"
+       inkscape:isstock="true">
+      <path
+         id="path1207"
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#00878f;stroke-opacity:1;fill:#00878f;fill-opacity:1"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(0.6) rotate(180) translate(0,0)" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker1133"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(0.6) rotate(180) translate(0,0)"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#e47128;stroke-opacity:1;fill:#e47128;fill-opacity:1"
+         id="path1131" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="marker922"
+       style="overflow:visible;"
+       inkscape:isstock="true">
+      <path
+         id="path920"
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#00878f;stroke-opacity:1;fill:#00878f;fill-opacity:1"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(0.6) rotate(180) translate(0,0)" />
+    </marker>
+    <marker
        inkscape:isstock="true"
        style="overflow:visible;"
        id="marker3279"
        refX="0.0"
        refY="0.0"
        orient="auto"
-       inkscape:stockid="Arrow2Mend">
+       inkscape:stockid="Arrow2Mend"
+       inkscape:collect="always">
       <path
          transform="scale(0.6) rotate(180) translate(0,0)"
          d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
@@ -141,9 +184,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="246.63417"
-     inkscape:cy="765.35662"
+     inkscape:zoom="1.4"
+     inkscape:cx="346.13216"
+     inkscape:cy="605.26343"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -160,7 +203,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -318,14 +361,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;line-height:125%;font-family:Consolas;-inkscape-font-specification:Consolas;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="93.317673"
+       x="94.829575"
        y="145.05357"
        id="text2126"><tspan
          sodipodi:role="line"
          id="tspan2124"
-         x="93.317673"
+         x="94.829575"
          y="145.05357"
-         style="font-size:4.93888903px;stroke-width:0.26458332px">copy</tspan></text>
+         style="font-size:4.93888903px;stroke-width:0.26458332px">log</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#e47128;stroke-width:0.40000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2337)"
        d="m 114.54022,133.90631 c -12.35301,0.0361 -13.22835,2.36406 -14.03016,7.48967"
@@ -338,5 +381,30 @@
        id="path3275"
        d="m 82.170385,128.59313 c 12.353006,0.0361 14.564694,7.64263 15.366504,12.76824"
        style="fill:none;fill-rule:evenodd;stroke:#00878f;stroke-width:0.40000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker3279)" />
+    <use
+       height="100%"
+       width="100%"
+       transform="translate(0,133.87935)"
+       id="use1121"
+       xlink:href="#g1984"
+       y="0"
+       x="0" />
+    <text
+       id="text1125"
+       y="175.74483"
+       x="94.829575"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;line-height:125%;font-family:Consolas;-inkscape-font-specification:Consolas;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:4.93888903px;stroke-width:0.26458332px"
+         y="175.74483"
+         x="94.829575"
+         id="tspan1123"
+         sodipodi:role="line">log</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#00878f;stroke-width:0.40000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1209)"
+       d="m 82.170385,159.28499 c 12.353006,0.0361 14.564694,7.64263 15.366504,12.76824"
+       id="path1129"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
   </g>
 </svg>
