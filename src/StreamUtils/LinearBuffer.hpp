@@ -4,8 +4,7 @@
 
 #pragma once
 
-#include <assert.h>
-#include <stdlib.h>  // size_t, memcpy
+#include "CharArray.hpp"
 
 namespace StreamUtils {
 
@@ -13,33 +12,20 @@ template <typename TAllocator>
 class LinearBuffer {
  public:
   LinearBuffer(size_t capacity, TAllocator allocator = TAllocator())
-      : _allocator(allocator) {
-    _data = reinterpret_cast<char *>(_allocator.allocate(capacity));
-    _capacity = _data ? capacity : 0;
-    _begin = _data ? _data : nullptr;
+      : _data(capacity, allocator) {
+    _begin = _data ? &_data : nullptr;
     _end = _begin;
   }
 
-  LinearBuffer(const LinearBuffer &src) : _allocator(src._allocator) {
-    _data = reinterpret_cast<char *>(_allocator.allocate(src._capacity));
-    if (_data != nullptr) {
-      _capacity = src._capacity;
-      memcpy(_data, src._begin, src.available());
-      _begin = _data;
-      _end = _data + _capacity;
+  LinearBuffer(const LinearBuffer &src) : _data(src._data) {
+    if (_data) {
+      memcpy(&_data, src._begin, src.available());
+      _begin = &_data;
+      _end = &_data + src.available();
     } else {
-      _capacity = 0;
       _begin = nullptr;
       _end = nullptr;
     }
-  }
-
-  ~LinearBuffer() {
-    _allocator.deallocate(_data);
-  }
-
-  char *data() const {
-    return reinterpret_cast<char *>(_data);
   }
 
   size_t available() const {
@@ -47,7 +33,7 @@ class LinearBuffer {
   }
 
   size_t capacity() const {
-    return _capacity;
+    return _data.size();
   }
 
   void clear() {
@@ -63,7 +49,7 @@ class LinearBuffer {
   }
 
   operator bool() const {
-    return _capacity > 0;
+    return _data;
   }
 
   char peek() const {
@@ -98,21 +84,19 @@ class LinearBuffer {
   }
 
   void reloadFrom(Stream &source) {
-    size_t n = source.readBytes(_data, _capacity);
-    _begin = _data;
-    _end = _data + n;
+    size_t n = source.readBytes(&_data, _data.size());
+    _begin = &_data;
+    _end = &_data + n;
   }
 
   void flushInto(Print &destination) {
     if (_begin != _end)
       destination.write(_begin, _end - _begin);
-    _begin = _end = _data;
+    _begin = _end = &_data;
   }
 
  private:
-  TAllocator _allocator;
-  size_t _capacity;
-  char *_data;
+  CharArray<TAllocator> _data;
   char *_begin;
   char *_end;
 };
