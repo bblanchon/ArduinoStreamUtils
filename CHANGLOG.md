@@ -1,8 +1,8 @@
 StreamUtils - Changelog
 =======================
 
-HEAD
-----
+1.1.0 (2019/04/20)
+-----
 
 * Add `LoggingStream` (=`ReadLoggingStream` + `WriteLoggingStream`)
 
