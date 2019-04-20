@@ -1,5 +1,6 @@
-ReadLoggingStream	KEYWORD1
+LoggingStream	KEYWORD1
 ReadBufferingStream	KEYWORD1
+ReadLoggingStream	KEYWORD1
+ReadThrottlingStream	KEYWORD1
 WriteBufferingStream	KEYWORD1
 WriteLoggingStream	KEYWORD1
-LoggingStream	KEYWORD1
