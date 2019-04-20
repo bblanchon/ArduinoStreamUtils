@@ -2,3 +2,4 @@ ReadLoggingStream	KEYWORD1
 ReadBufferingStream	KEYWORD1
 WriteBufferingStream	KEYWORD1
 WriteLoggingStream	KEYWORD1
+LoggingStream	KEYWORD1

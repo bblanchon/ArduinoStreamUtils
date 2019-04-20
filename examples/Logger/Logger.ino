@@ -2,13 +2,14 @@
 // Copyright Benoit Blanchon 2019
 // MIT License
 //
-// This example shows how to log what written to a Stream
+// This example shows how to log what goes through a Stream, both reads and
+// writes operations.
 
 #include <StreamUtils.h>
 
 // Create a new stream that will forward all calls to Serial, and log to Serial.
 // Everything will be written twice to the Serial!
-WriteLoggingStream loggingStream(Serial, Serial);
+LoggingStream loggingStream(Serial, Serial);
 
 void setup() {
   // Initialize serial port
@@ -23,5 +24,10 @@ void setup() {
 }
 
 void loop() {
-  // not used in this example
+  // Read from the serial port.
+  // Because loggingStream logs each read operation, everything we read is
+  // printed back to the serial port.
+  while (loggingStream.available()) {
+    loggingStream.read();
+  }
 }
