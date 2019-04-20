@@ -8,6 +8,7 @@ endif()
 
 add_executable(StreamUtilsTest
 	FailingAllocator.hpp
+	LoggingStreamTest.cpp
 	MemoryStreamTest.cpp
 	ReadBufferingStreamTest.cpp
 	ReadLoggingStreamTest.cpp
