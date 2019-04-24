@@ -15,7 +15,7 @@ class BasicReadThrottlingStream : public Stream {
  public:
   BasicReadThrottlingStream(Stream &upstream,
                             TThrottler throttler = TThrottler())
-      : _upstream(upstream), _throttler(std::move(throttler)) {}
+      : _upstream(upstream), _throttler(throttler) {}
 
   int available() override {
     return _upstream.available();
