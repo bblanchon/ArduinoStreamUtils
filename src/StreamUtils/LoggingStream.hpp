@@ -4,57 +4,16 @@
 
 #pragma once
 
+#include "ReadLoggingPolicy.hpp"
+#include "StreamProxy.hpp"
+#include "WriteLoggingPolicy.hpp"
+
 namespace StreamUtils {
 
-class LoggingStream : public Stream {
- public:
-  LoggingStream(Stream &upstream, Stream &log)
-      : _upstream(upstream), _log(log) {}
-
-  int available() override {
-    return _upstream.available();
-  }
-
-  void flush() override {
-    _upstream.flush();
-    _log.flush();
-  }
-
-  int peek() override {
-    return _upstream.peek();
-  }
-
-  int read() override {
-    int result = _upstream.read();
-    if (result >= 0)
-      _log.write(result);
-    return result;
-  }
-
-  // WARNING: we cannot use "override" because most cores don't define this
-  // function as virtual
-  virtual size_t readBytes(char *buffer, size_t size) {
-    size_t result = _upstream.readBytes(buffer, size);
-    _log.write(buffer, result);
-    return result;
-  }
-
-  size_t write(uint8_t c) override {
-    size_t result = _upstream.write(c);
-    _log.write(c);
-    return result;
-  }
-
-  size_t write(const uint8_t *buffer, size_t size) override {
-    size_t result = _upstream.write(buffer, size);
-    _log.write(buffer, result);
-    return result;
-  }
-
-  using Stream::write;
-
- private:
-  Stream &_upstream;
-  Stream &_log;
+struct LoggingStream : StreamProxy<ReadLoggingPolicy, WriteLoggingPolicy> {
+  LoggingStream(Stream& upstream, Stream& log)
+      : StreamProxy<ReadLoggingPolicy, WriteLoggingPolicy>(
+            upstream, ReadLoggingPolicy{log}, WriteLoggingPolicy{log}) {}
 };
+
 }  // namespace StreamUtils

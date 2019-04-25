@@ -214,9 +214,9 @@ TEST_CASE("ReadBufferingStream") {
       CHECK(stream.available() == 3);
     }
 
-    SUBCASE("capacity()") {
-      CHECK(stream.capacity() == 0);
-    }
+    // SUBCASE("capacity()") {
+    //   CHECK(stream.capacity() == 0);
+    // }
 
     SUBCASE("peek()") {
       upstream.print("ABC");

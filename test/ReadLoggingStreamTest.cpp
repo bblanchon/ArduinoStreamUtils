@@ -81,6 +81,5 @@ TEST_CASE("ReadLoggingStream") {
     copier.flush();
 
     CHECK(upstreamSpy.log() == "flush()");
-    CHECK(logSpy.log() == "flush()");
   }
 }
