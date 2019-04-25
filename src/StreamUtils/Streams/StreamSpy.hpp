@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include "Stream.hpp"
-
 class StreamSpy : public Stream {
  public:
   StreamSpy(Stream &upstream, Stream &log) : _upstream(upstream), _log(log) {}

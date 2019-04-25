@@ -13,7 +13,6 @@ add_executable(StreamUtilsTest
 	ReadBufferingStreamTest.cpp
 	ReadLoggingStreamTest.cpp
 	Stream.hpp
-	StreamSpy.hpp
 	WriteBufferingStreamTest.cpp
 	WriteLoggingStreamTest.cpp
 

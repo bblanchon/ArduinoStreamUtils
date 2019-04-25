@@ -4,9 +4,9 @@
 
 #include "FailingAllocator.hpp"
 #include "Stream.hpp"
-#include "StreamSpy.hpp"
 
 #include "StreamUtils/Streams/MemoryStream.hpp"
+#include "StreamUtils/Streams/StreamSpy.hpp"
 
 #include "doctest.h"
 
