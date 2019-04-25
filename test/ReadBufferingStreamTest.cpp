@@ -7,7 +7,7 @@
 
 #include "StreamUtils/Streams/MemoryStream.hpp"
 #include "StreamUtils/Streams/ReadBufferingStream.hpp"
-#include "StreamUtils/Streams/StreamSpy.hpp"
+#include "StreamUtils/Streams/SpyingStream.hpp"
 
 #include "doctest.h"
 
@@ -16,7 +16,7 @@ using namespace StreamUtils;
 TEST_CASE("ReadBufferingStream") {
   MemoryStream upstream(64);
   MemoryStream history(64);
-  StreamSpy spy{upstream, history};
+  SpyingStream spy{upstream, history};
 
   SUBCASE("capacity = 4") {
     ReadBufferingStream bufferedStream{spy, 4};

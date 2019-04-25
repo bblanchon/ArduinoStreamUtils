@@ -6,7 +6,7 @@
 #include "Stream.hpp"
 
 #include "StreamUtils/Streams/MemoryStream.hpp"
-#include "StreamUtils/Streams/StreamSpy.hpp"
+#include "StreamUtils/Streams/SpyingStream.hpp"
 
 #include "doctest.h"
 

@@ -6,7 +6,7 @@
 #include "Stream.hpp"
 
 #include "StreamUtils/Streams/MemoryStream.hpp"
-#include "StreamUtils/Streams/StreamSpy.hpp"
+#include "StreamUtils/Streams/SpyingStream.hpp"
 #include "StreamUtils/Streams/WriteBufferingStream.hpp"
 
 #include "doctest.h"
@@ -17,7 +17,7 @@ TEST_CASE("WriteBufferingStream") {
   MemoryStream upstream(64);
 
   MemoryStream history(64);
-  StreamSpy spy{upstream, history};
+  SpyingStream spy{upstream, history};
 
   GIVEN("capacity is 4") {
     WriteBufferingStream stream{spy, 4};

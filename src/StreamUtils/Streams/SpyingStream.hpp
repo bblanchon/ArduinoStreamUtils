@@ -10,8 +10,8 @@
 
 namespace StreamUtils {
 
-struct StreamSpy : StreamProxy<ReadSpyingPolicy, WriteSpyingPolicy> {
-  StreamSpy(Stream &upstream, Stream &log)
+struct SpyingStream : StreamProxy<ReadSpyingPolicy, WriteSpyingPolicy> {
+  SpyingStream(Stream &upstream, Stream &log)
       : StreamProxy<ReadSpyingPolicy, WriteSpyingPolicy>(upstream, {log},
                                                          {log}) {}
 };

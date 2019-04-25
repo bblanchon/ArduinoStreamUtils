@@ -7,7 +7,7 @@
 
 #include "StreamUtils/Streams/MemoryStream.hpp"
 #include "StreamUtils/Streams/ReadLoggingStream.hpp"
-#include "StreamUtils/Streams/StreamSpy.hpp"
+#include "StreamUtils/Streams/SpyingStream.hpp"
 
 #include "doctest.h"
 
@@ -17,7 +17,7 @@ TEST_CASE("ReadLoggingStream") {
   MemoryStream upstream(4);
 
   MemoryStream history(64);
-  StreamSpy upstreamSpy{upstream, history};
+  SpyingStream upstreamSpy{upstream, history};
 
   MemoryStream log(64);
   ReadLoggingStream loggingStream{upstreamSpy, log};
