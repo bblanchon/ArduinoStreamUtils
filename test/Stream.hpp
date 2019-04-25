@@ -30,6 +30,11 @@ struct Print {
   size_t print(const T &value) {
     return print(std::to_string(value));
   }
+
+  template <typename T>
+  size_t println(const T &value) {
+    return print(value);
+  }
 };
 
 struct Stream : Print {

@@ -13,21 +13,21 @@ class ReadSpyingPolicy {
   int available(Stream &stream) {
     int result = stream.available();
     _log.print("available() -> ");
-    _log.print(result);
+    _log.println(result);
     return result;
   }
 
   int read(Stream &stream) {
     int result = stream.read();
     _log.print("read() -> ");
-    _log.print(result);
+    _log.println(result);
     return result;
   }
 
   int peek(Stream &stream) {
     int result = stream.peek();
     _log.print("peek() -> ");
-    _log.print(result);
+    _log.println(result);
     return result;
   }
 
@@ -36,7 +36,7 @@ class ReadSpyingPolicy {
     _log.print("readBytes(");
     _log.print(size);
     _log.print(") -> ");
-    _log.print(result);
+    _log.println(result);
     return result;
   }
 

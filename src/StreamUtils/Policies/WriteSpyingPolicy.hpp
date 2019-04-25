@@ -19,7 +19,7 @@ class WriteSpyingPolicy {
     _log.print("', ");
     _log.print(size);
     _log.print(") -> ");
-    _log.print(result);
+    _log.println(result);
     return result;
   }
 
@@ -28,12 +28,12 @@ class WriteSpyingPolicy {
     _log.print("write('");
     _log.write(data);
     _log.print("') -> ");
-    _log.print(result);
+    _log.println(result);
     return result;
   }
 
   void flush(Stream &stream) {
-    _log.print("flush()");
+    _log.println("flush()");
     stream.flush();
   }
 
