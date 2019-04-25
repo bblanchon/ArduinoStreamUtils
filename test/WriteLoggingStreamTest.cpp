@@ -15,10 +15,12 @@ using namespace StreamUtils;
 
 TEST_CASE("WriteLoggingStream") {
   MemoryStream upstream(4);
-  StreamSpy upstreamSpy{upstream};
+
+  MemoryStream history(64);
+  StreamSpy upstreamSpy{upstream, history};
+
   MemoryStream log(64);
-  StreamSpy logSpy{log};
-  WriteLoggingStream copier{upstreamSpy, logSpy};
+  WriteLoggingStream copier{upstreamSpy, log};
 
   SUBCASE("available()") {
     upstream.print("ABC");
@@ -26,8 +28,8 @@ TEST_CASE("WriteLoggingStream") {
     size_t n = copier.available();
 
     CHECK(n == 3);
-    CHECK(upstreamSpy.log() == "available() -> 3");
-    CHECK(logSpy.log() == "");
+    CHECK(history.readString() == "available() -> 3");
+    CHECK(log.readString() == "");
   }
 
   SUBCASE("peek()") {
@@ -36,8 +38,8 @@ TEST_CASE("WriteLoggingStream") {
     int n = copier.peek();
 
     CHECK(n == 'A');
-    CHECK(upstreamSpy.log() == "peek() -> 65");
-    CHECK(logSpy.log() == "");
+    CHECK(history.readString() == "peek() -> 65");
+    CHECK(log.readString() == "");
   }
 
   SUBCASE("read()") {
@@ -46,8 +48,8 @@ TEST_CASE("WriteLoggingStream") {
     int n = copier.read();
 
     CHECK(n == 'A');
-    CHECK(upstreamSpy.log() == "read() -> 65");
-    CHECK(logSpy.log() == "");
+    CHECK(history.readString() == "read() -> 65");
+    CHECK(log.readString() == "");
   }
 
   SUBCASE("readBytes()") {
@@ -57,30 +59,30 @@ TEST_CASE("WriteLoggingStream") {
     size_t n = copier.readBytes(s, 4);
 
     CHECK(n == 3);
-    CHECK(upstreamSpy.log() == "readBytes(4) -> 3");
-    CHECK(logSpy.log() == "");
+    CHECK(history.readString() == "readBytes(4) -> 3");
+    CHECK(log.readString() == "");
   }
 
   SUBCASE("write(char)") {
     int n = copier.write('A');
 
     CHECK(n == 1);
-    CHECK(upstreamSpy.log() == "write('A') -> 1");
-    CHECK(logSpy.log() == "write('A') -> 1");
+    CHECK(history.readString() == "write('A') -> 1");
+    CHECK(log.readString() == "A");
   }
 
   SUBCASE("write(char*,size_t)") {
     int n = copier.write("ABCDEF", 6);
 
     CHECK(n == 4);
-    CHECK(upstreamSpy.log() == "write('ABCDEF', 6) -> 4");
-    CHECK(logSpy.log() == "write('ABCD', 4) -> 4");
+    CHECK(history.readString() == "write('ABCDEF', 6) -> 4");
+    CHECK(log.readString() == "ABCD");
   }
 
   SUBCASE("flush()") {
     copier.flush();
 
-    CHECK(upstreamSpy.log() == "flush()");
-    CHECK(logSpy.log() == "flush()");
+    CHECK(history.readString() == "flush()");
+    CHECK(log.readString() == "");
   }
 }

@@ -5,6 +5,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <cstring>
 #include <string>
 
 using String = std::string;
@@ -19,6 +20,15 @@ struct Print {
 
   size_t print(const String &s) {
     return write(s.c_str(), s.size());
+  }
+
+  size_t print(const char *s) {
+    return write(s, std::strlen(s));
+  }
+
+  template <typename T>
+  size_t print(const T &value) {
+    return print(std::to_string(value));
   }
 };
 
@@ -46,5 +56,14 @@ struct Stream : Print {
       count++;
     }
     return count;
+  }
+
+  String readString() {
+    size_t n = available();
+    std::string result;
+    result.resize(n);
+    n = readBytes(&result[0], n);
+    result.resize(n);
+    return result;
   }
 };

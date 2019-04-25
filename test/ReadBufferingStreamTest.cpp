@@ -15,7 +15,8 @@ using namespace StreamUtils;
 
 TEST_CASE("ReadBufferingStream") {
   MemoryStream upstream(64);
-  StreamSpy spy{upstream};
+  MemoryStream history(64);
+  StreamSpy spy{upstream, history};
 
   SUBCASE("capacity = 4") {
     ReadBufferingStream bufferedStream{spy, 4};
@@ -27,7 +28,7 @@ TEST_CASE("ReadBufferingStream") {
       SUBCASE("empty input") {
         upstream.flush();
         CHECK(stream.available() == 0);
-        CHECK(spy.log() == "available() -> 0");
+        CHECK(history.readString() == "available() -> 0");
       }
 
       SUBCASE("read empty input") {
@@ -36,21 +37,21 @@ TEST_CASE("ReadBufferingStream") {
         stream.read();
 
         CHECK(stream.available() == 0);
-        CHECK(spy.log() ==
+        CHECK(history.readString() ==
               "readBytes(4) -> 0"
               "available() -> 0");
       }
 
       SUBCASE("same a upstream") {
         CHECK(stream.available() == 8);
-        CHECK(spy.log() == "available() -> 8");
+        CHECK(history.readString() == "available() -> 8");
       }
 
       SUBCASE("upstream + in buffer") {
         stream.read();
 
         CHECK(stream.available() == 7);
-        CHECK(spy.log() ==
+        CHECK(history.readString() ==
               "readBytes(4) -> 4"
               "available() -> 4");
       }
@@ -63,7 +64,7 @@ TEST_CASE("ReadBufferingStream") {
         int result = stream.peek();
 
         CHECK(result == -1);
-        CHECK(spy.log() == "peek() -> -1");
+        CHECK(history.readString() == "peek() -> -1");
       }
 
       SUBCASE("doesn't call readBytes() when buffer is empty") {
@@ -72,7 +73,7 @@ TEST_CASE("ReadBufferingStream") {
         int result = stream.peek();
 
         CHECK(result == 'A');
-        CHECK(spy.log() == "peek() -> 65");
+        CHECK(history.readString() == "peek() -> 65");
       }
 
       SUBCASE("doesn't call peek() when buffer is full") {
@@ -82,7 +83,7 @@ TEST_CASE("ReadBufferingStream") {
         int result = stream.peek();
 
         CHECK(result == 'B');
-        CHECK(spy.log() == "readBytes(4) -> 2");
+        CHECK(history.readString() == "readBytes(4) -> 2");
       }
     }
 
@@ -96,7 +97,7 @@ TEST_CASE("ReadBufferingStream") {
         }
 
         CHECK(result == "ABCDEFG");
-        CHECK(spy.log() ==
+        CHECK(history.readString() ==
               "readBytes(4) -> 4"
               "readBytes(4) -> 3");
       }
@@ -107,7 +108,7 @@ TEST_CASE("ReadBufferingStream") {
         int result = stream.read();
 
         CHECK(result == -1);
-        CHECK(spy.log() == "readBytes(4) -> 0");
+        CHECK(history.readString() == "readBytes(4) -> 0");
       }
     }
 
@@ -119,7 +120,7 @@ TEST_CASE("ReadBufferingStream") {
         size_t result = stream.readBytes(&c, 1);
 
         CHECK(result == 0);
-        CHECK(spy.log() == "readBytes(4) -> 0");
+        CHECK(history.readString() == "readBytes(4) -> 0");
       }
 
       SUBCASE("reads 4 bytes when requested one") {
@@ -130,7 +131,7 @@ TEST_CASE("ReadBufferingStream") {
 
         CHECK(c == 'A');
         CHECK(result == 1);
-        CHECK(spy.log() == "readBytes(4) -> 4");
+        CHECK(history.readString() == "readBytes(4) -> 4");
       }
 
       SUBCASE("copy one byte from buffer") {
@@ -142,7 +143,7 @@ TEST_CASE("ReadBufferingStream") {
 
         CHECK(c == 'B');
         CHECK(result == 1);
-        CHECK(spy.log() == "readBytes(4) -> 4");
+        CHECK(history.readString() == "readBytes(4) -> 4");
       }
 
       SUBCASE("copy content from buffer then bypass buffer") {
@@ -154,7 +155,7 @@ TEST_CASE("ReadBufferingStream") {
 
         CHECK(c == std::string("BCDEFGH"));
         CHECK(result == 7);
-        CHECK(spy.log() ==
+        CHECK(history.readString() ==
               "readBytes(4) -> 4"
               "readBytes(4) -> 4");
       }
@@ -168,7 +169,7 @@ TEST_CASE("ReadBufferingStream") {
 
         CHECK(c == std::string("BCDE"));
         CHECK(result == 4);
-        CHECK(spy.log() ==
+        CHECK(history.readString() ==
               "readBytes(4) -> 4"
               "readBytes(4) -> 4");
       }
@@ -181,7 +182,7 @@ TEST_CASE("ReadBufferingStream") {
         size_t result = stream.readBytes(&c, 1);
 
         CHECK(result == 0);
-        CHECK(spy.log() ==
+        CHECK(history.readString() ==
               "readBytes(4) -> 1"
               "readBytes(4) -> 0");
       }
@@ -189,7 +190,7 @@ TEST_CASE("ReadBufferingStream") {
 
     SUBCASE("flush()") {
       stream.flush();
-      CHECK(spy.log() == "flush()");
+      CHECK(history.readString() == "flush()");
     }
 
     SUBCASE("copy constructor") {
@@ -201,7 +202,7 @@ TEST_CASE("ReadBufferingStream") {
       int result = dup.read();
 
       CHECK(result == 'B');
-      CHECK(spy.log() == "readBytes(4) -> 4");
+      CHECK(history.readString() == "readBytes(4) -> 4");
     }
   }
 
@@ -224,7 +225,7 @@ TEST_CASE("ReadBufferingStream") {
       int c = stream.peek();
 
       CHECK(c == 'A');
-      CHECK(spy.log() == "peek() -> 65");
+      CHECK(history.readString() == "peek() -> 65");
     }
 
     SUBCASE("read()") {
@@ -233,7 +234,7 @@ TEST_CASE("ReadBufferingStream") {
       int c = stream.read();
 
       CHECK(c == 'A');
-      CHECK(spy.log() == "read() -> 65");
+      CHECK(history.readString() == "read() -> 65");
     }
 
     SUBCASE("readBytes()") {
@@ -244,7 +245,7 @@ TEST_CASE("ReadBufferingStream") {
 
       CHECK(n == 3);
       CHECK(s == std::string("ABC"));
-      CHECK(spy.log() == "readBytes(3) -> 3");
+      CHECK(history.readString() == "readBytes(3) -> 3");
     }
   }
 
@@ -261,6 +262,6 @@ TEST_CASE("ReadBufferingStream") {
     CHECK(stream.readBytes(&c[3], 1) == 1);
 
     CHECK(c == std::string("{\"heEFGH"));
-    CHECK(spy.log() == "readBytes(64) -> 28");
+    CHECK(history.readString() == "readBytes(64) -> 28");
   }
 }
