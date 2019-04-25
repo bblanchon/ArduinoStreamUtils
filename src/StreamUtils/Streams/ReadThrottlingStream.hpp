@@ -4,12 +4,12 @@
 
 #pragma once
 
-#include "ReadThrottlingPolicy.hpp"
+#include "../Policies/ReadThrottlingPolicy.hpp"
+#include "../Policies/WriteForwardingPolicy.hpp"
 #include "StreamProxy.hpp"
-#include "WriteForwardingPolicy.hpp"
 
 #ifdef ARDUINO
-#include "DefaultThrottler.hpp"
+#include "../Ports/DefaultThrottler.hpp"
 #endif
 
 namespace StreamUtils {

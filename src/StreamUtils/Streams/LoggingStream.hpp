@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "ReadLoggingPolicy.hpp"
+#include "../Policies/ReadLoggingPolicy.hpp"
+#include "../Policies/WriteLoggingPolicy.hpp"
 #include "StreamProxy.hpp"
-#include "WriteLoggingPolicy.hpp"
 
 namespace StreamUtils {
 

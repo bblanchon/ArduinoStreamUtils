@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "CircularBuffer.hpp"
-#include "DefaultAllocator.hpp"
+#include "../Buffers/CircularBuffer.hpp"
+#include "../Ports/DefaultAllocator.hpp"
 
 namespace StreamUtils {
 

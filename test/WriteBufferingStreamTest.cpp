@@ -6,8 +6,8 @@
 #include "Stream.hpp"
 #include "StreamSpy.hpp"
 
-#include "StreamUtils/MemoryStream.hpp"
-#include "StreamUtils/WriteBufferingStream.hpp"
+#include "StreamUtils/Streams/MemoryStream.hpp"
+#include "StreamUtils/Streams/WriteBufferingStream.hpp"
 
 #include "doctest.h"
 

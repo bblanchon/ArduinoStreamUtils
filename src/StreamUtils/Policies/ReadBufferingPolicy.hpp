@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "LinearBuffer.hpp"
+#include "../Buffers/LinearBuffer.hpp"
 
 namespace StreamUtils {
 

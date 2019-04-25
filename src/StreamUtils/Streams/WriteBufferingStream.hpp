@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include "DefaultAllocator.hpp"
-#include "ReadForwardingPolicy.hpp"
+#include "../Policies/ReadForwardingPolicy.hpp"
+#include "../Policies/WriteBufferingPolicy.hpp"
+#include "../Ports/DefaultAllocator.hpp"
 #include "StreamProxy.hpp"
-#include "WriteBufferingPolicy.hpp"
 
 namespace StreamUtils {
 

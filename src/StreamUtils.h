@@ -2,11 +2,11 @@
 // Copyright Benoit Blanchon 2019
 // MIT License
 
-#include "StreamUtils/LoggingStream.hpp"
-#include "StreamUtils/ReadBufferingStream.hpp"
-#include "StreamUtils/ReadLoggingStream.hpp"
-#include "StreamUtils/ReadThrottlingStream.hpp"
-#include "StreamUtils/WriteBufferingStream.hpp"
-#include "StreamUtils/WriteLoggingStream.hpp"
+#include "StreamUtils/Streams/LoggingStream.hpp"
+#include "StreamUtils/Streams/ReadBufferingStream.hpp"
+#include "StreamUtils/Streams/ReadLoggingStream.hpp"
+#include "StreamUtils/Streams/ReadThrottlingStream.hpp"
+#include "StreamUtils/Streams/WriteBufferingStream.hpp"
+#include "StreamUtils/Streams/WriteLoggingStream.hpp"
 
 using namespace StreamUtils;
