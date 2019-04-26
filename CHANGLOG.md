@@ -1,6 +1,11 @@
 StreamUtils - Changelog
 =======================
 
+HEAD
+----
+
+* Add `LoggingPrint`
+
 1.1.0 (2019/04/20)
 -----
 
