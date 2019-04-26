@@ -26,7 +26,8 @@ class WriteLoggingPolicy {
     target.flush();
   }
 
-  void detach(Stream &) {}
+  void flush(Print &) {}
+  void detach(Print &) {}
 
  private:
   Print &_log;

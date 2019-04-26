@@ -37,7 +37,7 @@ class WriteSpyingPolicy {
     stream.flush();
   }
 
-  void detach(Stream &) {}
+  void detach(Print &) {}
 
  private:
   Stream &_log;

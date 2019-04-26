@@ -15,6 +15,7 @@ add_executable(StreamUtilsTest
 	Stream.hpp
 	WriteBufferingStreamTest.cpp
 	LoggingPrintTest.cpp
+	BufferingPrintTest.cpp
 	WriteLoggingStreamTest.cpp
 
 	doctest.h

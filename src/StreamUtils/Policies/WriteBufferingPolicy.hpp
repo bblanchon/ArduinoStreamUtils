@@ -14,7 +14,7 @@ struct WriteBufferingPolicy {
   WriteBufferingPolicy(size_t capacity, TAllocator allocator)
       : _buffer(capacity, allocator) {}
 
-  size_t write(Stream &stream, const uint8_t *data, size_t size) {
+  size_t write(Print &target, const uint8_t *data, size_t size) {
     size_t result = 0;
 
     // continue to fill the buffer?
@@ -26,7 +26,7 @@ struct WriteBufferingPolicy {
 
       // time to flush?
       if (_buffer.isFull()) {
-        _buffer.flushInto(stream);
+        _buffer.flushInto(target);
       }
     }
 
@@ -34,7 +34,7 @@ struct WriteBufferingPolicy {
     if (size > 0) {
       // can we bypass the buffer?
       if (size >= _buffer.capacity()) {
-        result += stream.write(data, size);
+        result += target.write(data, size);
       } else {
         result += _buffer.write(data, size);
       }
@@ -42,23 +42,28 @@ struct WriteBufferingPolicy {
     return result;
   }
 
-  size_t write(Stream &stream, uint8_t data) {
+  size_t write(Print &target, uint8_t data) {
     if (!_buffer)
-      return stream.write(data);
+      return target.write(data);
 
     _buffer.write(data);
     if (_buffer.isFull())
-      _buffer.flushInto(stream);
+      _buffer.flushInto(target);
     return 1;
   }
 
-  void flush(Stream &stream) {
-    _buffer.flushInto(stream);
-    stream.flush();
+  void flush(Stream &target) {
+    _buffer.flushInto(target);
+    target.flush();
   }
 
-  void detach(Stream &stream) {
-    _buffer.flushInto(stream);
+  void flush(Print &target) {
+    _buffer.flushInto(target);
+    // no Print::flush() on most cores
+  }
+
+  void detach(Print &target) {
+    _buffer.flushInto(target);
   }
 
  private:
