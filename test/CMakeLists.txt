@@ -9,16 +9,18 @@ endif()
 include_directories(include)
 
 add_executable(StreamUtilsTest
+	BufferingPrintTest.cpp
 	FailingAllocator.hpp
+	LoggingPrintTest.cpp
 	LoggingStreamTest.cpp
 	MemoryStreamTest.cpp
 	ReadBufferingStreamTest.cpp
 	ReadLoggingStreamTest.cpp
 	WriteBufferingStreamTest.cpp
-	LoggingPrintTest.cpp
-	BufferingPrintTest.cpp
+	WriteLoggingClientTest.cpp
 	WriteLoggingStreamTest.cpp
 
+	include/Client.h
 	include/Print.h
 	include/Stream.h
 

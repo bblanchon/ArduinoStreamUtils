@@ -5,6 +5,7 @@
 #pragma once
 
 #include <Stream.h>
+#include "../Configuration.hpp"
 
 namespace StreamUtils {
 
@@ -27,6 +28,12 @@ class WriteLoggingPolicy {
   void flush(Stream &target) {
     target.flush();
   }
+
+#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
+  bool flush(Client &target, unsigned timeout) {
+    return target.flush(timeout);
+  }
+#endif
 
   void flush(Print &) {}
   void detach(Print &) {}

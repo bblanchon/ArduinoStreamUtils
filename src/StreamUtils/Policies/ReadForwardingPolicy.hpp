@@ -4,25 +4,29 @@
 
 #pragma once
 
-#include <Stream.h>
+#include <Client.h>
 
 namespace StreamUtils {
 
 struct ReadForwardingPolicy {
-  int available(Stream &stream) {
-    return stream.available();
+  int available(Stream &target) {
+    return target.available();
   }
 
-  int read(Stream &stream) {
-    return stream.read();
+  int read(Stream &target) {
+    return target.read();
   }
 
-  int peek(Stream &stream) {
-    return stream.peek();
+  int peek(Stream &target) {
+    return target.peek();
   }
 
-  size_t readBytes(Stream &stream, char *buffer, size_t size) {
-    return stream.readBytes(buffer, size);
+  size_t readBytes(Stream &target, char *buffer, size_t size) {
+    return target.readBytes(buffer, size);
+  }
+
+  size_t read(Client &target, uint8_t *buffer, size_t size) {
+    return target.read(buffer, size);
   }
 };
 

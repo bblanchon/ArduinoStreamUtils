@@ -9,12 +9,9 @@
 namespace StreamUtils {
 
 struct WriteForwardingPolicy {
-  size_t write(Stream &stream, const uint8_t *buffer, size_t size) {
-    return stream.write(buffer, size);
-  }
-
-  size_t write(Stream &stream, uint8_t data) {
-    return stream.write(data);
+  template <typename... Args>
+  size_t write(Stream &stream, Args... args) {
+    return stream.write(args...);
   }
 
   void flush(Stream &stream) {

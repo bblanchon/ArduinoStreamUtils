@@ -152,13 +152,13 @@ loggingClient.readBytes(response, 256);
 Other classes
 -------------
 
-Some of the proxies are also available for the `Print` class.
+Some of the proxies are also available for the `Print` and `Client` classes.
 See the equivalence table below.
 
-| Stream               | Print          |
-|:---------------------|:---------------|
-| WriteLoggingStream   | LoggingPrint   |
-| ReadLoggingStream    |                |
-| LoggingStream        |                |
-| WriteBufferingStream | BufferingPrint |
-| ReadBufferingStream  |                |
+| `Client`             | `Stream`               | `Print`          |
+|:---------------------|:-----------------------|:-----------------|
+| `WriteLoggingClient` | `WriteLoggingStream`   | `LoggingPrint`   |
+|                      | `ReadLoggingStream`    |                  |
+|                      | `LoggingStream`        |                  |
+|                      | `WriteBufferingStream` | `BufferingPrint` |
+|                      | `ReadBufferingStream`  |                  |

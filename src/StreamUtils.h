@@ -2,6 +2,7 @@
 // Copyright Benoit Blanchon 2019
 // MIT License
 
+#include "StreamUtils/Clients/WriteLoggingClient.hpp"
 #include "StreamUtils/Prints/BufferingPrint.hpp"
 #include "StreamUtils/Prints/LoggingPrint.hpp"
 #include "StreamUtils/Streams/LoggingStream.hpp"
