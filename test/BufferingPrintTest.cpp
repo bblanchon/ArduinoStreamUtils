@@ -3,7 +3,6 @@
 // MIT License
 
 #include "FailingAllocator.hpp"
-#include "Stream.hpp"
 
 #include "StreamUtils/Prints/BufferingPrint.hpp"
 #include "StreamUtils/Streams/MemoryStream.hpp"

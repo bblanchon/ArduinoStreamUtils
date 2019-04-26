@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <Stream.h>
+
 #include "../Buffers/CircularBuffer.hpp"
 #include "../Ports/DefaultAllocator.hpp"
 

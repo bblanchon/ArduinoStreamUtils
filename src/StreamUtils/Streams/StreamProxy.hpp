@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <Stream.h>
+
 namespace StreamUtils {
 
 template <typename ReadPolicy, typename WritePolicy>

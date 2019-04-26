@@ -6,17 +6,21 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
 	add_compile_options(-Wall -Wextra -Werror)
 endif()
 
+include_directories(include)
+
 add_executable(StreamUtilsTest
 	FailingAllocator.hpp
 	LoggingStreamTest.cpp
 	MemoryStreamTest.cpp
 	ReadBufferingStreamTest.cpp
 	ReadLoggingStreamTest.cpp
-	Stream.hpp
 	WriteBufferingStreamTest.cpp
 	LoggingPrintTest.cpp
 	BufferingPrintTest.cpp
 	WriteLoggingStreamTest.cpp
+
+	include/Print.h
+	include/Stream.h
 
 	doctest.h
 	main.cpp

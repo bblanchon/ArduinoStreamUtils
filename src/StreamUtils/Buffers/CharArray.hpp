@@ -5,7 +5,8 @@
 #pragma once
 
 #include <assert.h>
-#include <stdlib.h>  // size_t, memcpy
+#include <stdlib.h>  // size_t
+#include <string.h>  // memcpy
 
 namespace StreamUtils {
 

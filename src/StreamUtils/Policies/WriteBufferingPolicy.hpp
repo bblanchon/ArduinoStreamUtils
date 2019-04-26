@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <Stream.h>
+
 #include "../Buffers/LinearBuffer.hpp"
 
 namespace StreamUtils {

@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <stdint.h>
+
 #include "CharArray.hpp"
 
 namespace StreamUtils {
