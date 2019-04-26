@@ -149,4 +149,16 @@ char response[256];
 loggingClient.readBytes(response, 256);
 ```
 
+Other classes
+-------------
 
+Some of the proxies are also available for the `Print` class.
+See the equivalence table below.
+
+| Stream               | Print          |
+|:---------------------|:---------------|
+| WriteLoggingStream   | LoggingPrint   |
+| ReadLoggingStream    |                |
+| LoggingStream        |                |
+| WriteBufferingStream | BufferingPrint |
+| ReadBufferingStream  |                |
