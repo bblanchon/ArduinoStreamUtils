@@ -11,9 +11,9 @@
 namespace StreamUtils {
 
 struct LoggingStream : StreamProxy<ReadLoggingPolicy, WriteLoggingPolicy> {
-  LoggingStream(Stream& upstream, Stream& log)
+  LoggingStream(Stream& target, Print& log)
       : StreamProxy<ReadLoggingPolicy, WriteLoggingPolicy>(
-            upstream, ReadLoggingPolicy{log}, WriteLoggingPolicy{log}) {}
+            target, ReadLoggingPolicy{log}, WriteLoggingPolicy{log}) {}
 };
 
 }  // namespace StreamUtils

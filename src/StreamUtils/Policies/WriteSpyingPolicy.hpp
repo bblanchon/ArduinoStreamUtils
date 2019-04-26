@@ -10,7 +10,7 @@ namespace StreamUtils {
 
 class WriteSpyingPolicy {
  public:
-  WriteSpyingPolicy(Stream &log) : _log(log) {}
+  WriteSpyingPolicy(Print &log) : _log(log) {}
 
   size_t write(Stream &stream, const uint8_t *buffer, size_t size) {
     size_t result = stream.write(buffer, size);
@@ -42,7 +42,7 @@ class WriteSpyingPolicy {
   void detach(Print &) {}
 
  private:
-  Stream &_log;
+  Print &_log;
 };
 
 }  // namespace StreamUtils

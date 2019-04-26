@@ -12,9 +12,9 @@ namespace StreamUtils {
 
 struct WriteLoggingStream
     : StreamProxy<ReadForwardingPolicy, WriteLoggingPolicy> {
-  WriteLoggingStream(Stream &upstream, Stream &log)
+  WriteLoggingStream(Stream &target, Print &log)
       : StreamProxy<ReadForwardingPolicy, WriteLoggingPolicy>(
-            upstream, ReadForwardingPolicy{}, WriteLoggingPolicy{log}) {}
+            target, ReadForwardingPolicy{}, WriteLoggingPolicy{log}) {}
 };
 
 }  // namespace StreamUtils

@@ -11,9 +11,9 @@
 namespace StreamUtils {
 
 struct SpyingStream : StreamProxy<ReadSpyingPolicy, WriteSpyingPolicy> {
-  SpyingStream(Stream &upstream, Stream &log)
-      : StreamProxy<ReadSpyingPolicy, WriteSpyingPolicy>(upstream, {log},
-                                                         {log}) {}
+  SpyingStream(Stream &target, Print &log)
+      : StreamProxy<ReadSpyingPolicy, WriteSpyingPolicy>(
+            target, ReadSpyingPolicy{log}, WriteSpyingPolicy{log}) {}
 };
 
 }  // namespace StreamUtils

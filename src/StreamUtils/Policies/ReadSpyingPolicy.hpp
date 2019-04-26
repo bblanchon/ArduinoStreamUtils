@@ -10,7 +10,7 @@ namespace StreamUtils {
 
 class ReadSpyingPolicy {
  public:
-  ReadSpyingPolicy(Stream &log) : _log(log) {}
+  ReadSpyingPolicy(Print &log) : _log(log) {}
 
   int available(Stream &stream) {
     int result = stream.available();
@@ -43,7 +43,7 @@ class ReadSpyingPolicy {
   }
 
  private:
-  Stream &_log;
+  Print &_log;
 };
 
 }  // namespace StreamUtils
