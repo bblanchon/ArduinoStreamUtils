@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <Stream.h>
+#include <Client.h>
 #include "../Configuration.hpp"
 
 namespace StreamUtils {

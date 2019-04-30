@@ -47,10 +47,21 @@ class ConnectSpyingPolicy {
     return result;
   }
 
+#if STREAMUTILS_CLIENT_STOP_TAKES_TIMEOUT
+  bool stop(Client& target, unsigned timeout) {
+    _log.print("stop(");
+    _log.print(timeout);
+    _log.print(") -> ");
+    bool result = target.stop();
+    _log.println(result ? "true" : "false");
+    return result;
+  }
+#else
   void stop(Client& target) {
     _log.print("stop()");
-    return target.stop();
+    target.stop();
   }
+#endif
 
   bool operator_bool(Client& target) {
     _log.print("operator bool() -> ");

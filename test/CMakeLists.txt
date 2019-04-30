@@ -32,3 +32,14 @@ add_executable(StreamUtilsTestAvr ${SOURCES})
 target_link_libraries(StreamUtilsTestAvr AvrCore)
 
 add_test(Avr StreamUtilsTestAvr)
+
+########## ESP8266 ##########
+
+add_library(Esp8266Core INTERFACE)
+target_include_directories(Esp8266Core INTERFACE cores/esp8266/)
+target_compile_definitions(Esp8266Core INTERFACE ARDUINO_ARCH_ESP8266)
+
+add_executable(StreamUtilsTestEsp8266 ${SOURCES})
+target_link_libraries(StreamUtilsTestEsp8266 Esp8266Core)
+
+add_test(Esp8266 StreamUtilsTestEsp8266)

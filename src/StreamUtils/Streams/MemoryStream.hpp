@@ -33,7 +33,7 @@ class BasicMemoryStream : public Stream {
 
   // WARNING: we cannot use "override" because most cores don't define this
   // function as virtual
-  size_t readBytes(char *data, size_t size) override {
+  virtual size_t readBytes(char *data, size_t size) {
     return _buffer.readBytes(data, size);
   }
 
