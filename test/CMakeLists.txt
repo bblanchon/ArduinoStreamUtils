@@ -6,9 +6,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
 	add_compile_options(-Wall -Wextra -Werror)
 endif()
 
-include_directories(include)
-
-add_executable(StreamUtilsTest
+set(SOURCES
 	BufferingPrintTest.cpp
 	FailingAllocator.hpp
 	LoggingPrintTest.cpp
@@ -20,12 +18,17 @@ add_executable(StreamUtilsTest
 	WriteLoggingClientTest.cpp
 	WriteLoggingStreamTest.cpp
 
-	include/Client.h
-	include/Print.h
-	include/Stream.h
-
 	doctest.h
 	main.cpp
 )
 
-add_test(StreamUtils StreamUtilsTest)
+########## AVR ##########
+
+add_library(AvrCore INTERFACE)
+target_include_directories(AvrCore INTERFACE cores/avr/)
+target_compile_definitions(AvrCore INTERFACE ARDUINO_ARCH_AVR)
+
+add_executable(StreamUtilsTestAvr ${SOURCES})
+target_link_libraries(StreamUtilsTestAvr AvrCore)
+
+add_test(Avr StreamUtilsTestAvr)
