@@ -165,5 +165,19 @@ See the equivalence table below.
 | `WriteBufferingClient` | `WriteBufferingStream` | `BufferingPrint` |
 | `ReadBufferingClient`  | `ReadBufferingStream`  |                  |
 
-When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client::read()` often provides an optimized implementation.*
-*
+When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client::read()` often provides an optimized implementation.
+
+
+Portability
+-----------
+
+This library relies on the definition on `Client`, `Print`, and `Stream`, which unfortunately differ from core to core.
+
+It has been tested on the following cores:
+
+* AVR
+* SAMD
+* ESP8266
+
+If your core is not supported, please [open an issue](https://github.com/bblanchon/ArduinoStreamUtils/issues/new).
+Thank you for your understanding.

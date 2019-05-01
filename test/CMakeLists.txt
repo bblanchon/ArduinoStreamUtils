@@ -47,3 +47,14 @@ add_executable(StreamUtilsTestEsp8266 ${SOURCES})
 target_link_libraries(StreamUtilsTestEsp8266 Esp8266Core)
 
 add_test(Esp8266 StreamUtilsTestEsp8266)
+
+########## SAMD ##########
+
+add_library(SamdCore INTERFACE)
+target_include_directories(SamdCore INTERFACE cores/samd/)
+target_compile_definitions(SamdCore INTERFACE ARDUINO_ARCH_SAMD)
+
+add_executable(StreamUtilsTestSamd ${SOURCES})
+target_link_libraries(StreamUtilsTestSamd SamdCore)
+
+add_test(Samd StreamUtilsTestSamd)
