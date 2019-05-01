@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include <Client.h>
+#include <Stream.h>
+
 #include "CharArray.hpp"
 
 namespace StreamUtils {
@@ -85,6 +88,12 @@ class LinearBuffer {
 
   void reloadFrom(Stream &source) {
     size_t n = source.readBytes(&_data, _data.size());
+    _begin = &_data;
+    _end = &_data + n;
+  }
+
+  void reloadFrom(Client &source) {
+    size_t n = source.read(reinterpret_cast<uint8_t *>(&_data), _data.size());
     _begin = &_data;
     _end = &_data + n;
   }

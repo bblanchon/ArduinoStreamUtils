@@ -161,4 +161,4 @@ See the equivalence table below.
 | `ReadLoggingClient`    | `ReadLoggingStream`    |                  |
 | `LoggingClient`        | `LoggingStream`        |                  |
 | `WriteBufferingClient` | `WriteBufferingStream` | `BufferingPrint` |
-|                        | `ReadBufferingStream`  |                  |
+| `ReadBufferingClient`  | `ReadBufferingStream`  |                  |

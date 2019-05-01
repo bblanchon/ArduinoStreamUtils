@@ -7,7 +7,7 @@ HEAD
 * Add `LoggingPrint`
 * Add `BufferingPrint`
 * Add `WriteLoggingClient`, `ReadLoggingClient`, and `LoggingClient`
-* Add `WriteBufferingClient`
+* Add `WriteBufferingClient` and `ReadBufferingClient`
 
 1.1.0 (2019/04/20)
 -----

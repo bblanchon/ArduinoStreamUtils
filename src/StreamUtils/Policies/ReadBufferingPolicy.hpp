@@ -22,10 +22,11 @@ struct ReadBufferingPolicy {
     return stream.available() + _buffer.available();
   }
 
-  int read(Stream &stream) {
+  template <typename TTarget>  // Stream or Client
+  int read(TTarget &target) {
     if (!_buffer)
-      return stream.read();
-    reloadIfEmpty(stream);
+      return target.read();
+    reloadIfEmpty(target);
     return isEmpty() ? -1 : _buffer.read();
   }
 
@@ -33,11 +34,10 @@ struct ReadBufferingPolicy {
     return isEmpty() ? stream.peek() : _buffer.peek();
   }
 
-  // WARNING: we cannot use "override" because most cores don't define this
-  // function as virtual
-  size_t readBytes(Stream &stream, char *buffer, size_t size) {
+  template <typename TTarget>  // Stream or Client
+  size_t readBytes(TTarget &target, char *buffer, size_t size) {
     if (!_buffer)
-      return stream.readBytes(buffer, size);
+      return readDirectly(target, buffer, size);
 
     size_t result = 0;
 
@@ -55,31 +55,45 @@ struct ReadBufferingPolicy {
 
       // should we use the buffer?
       if (size < _buffer.capacity()) {
-        reload(stream);
+        reload(target);
         size_t bytesRead = _buffer.readBytes(buffer, size);
         result += bytesRead;
       } else {
         // we can bypass the buffer
-        result += stream.readBytes(buffer, size);
+        result += readDirectly(target, buffer, size);
       }
     }
 
     return result;
   }
 
+  size_t read(Client &client, uint8_t *buffer, size_t size) {
+    return readBytes(client, reinterpret_cast<char *>(buffer), size);
+  }
+
  private:
+  size_t readDirectly(Client &client, char *buffer, size_t size) {
+    return client.read(reinterpret_cast<uint8_t *>(buffer), size);
+  }
+
+  size_t readDirectly(Stream &stream, char *buffer, size_t size) {
+    return stream.readBytes(buffer, size);
+  }
+
   bool isEmpty() const {
     return _buffer.available() == 0;
   }
 
-  void reloadIfEmpty(Stream &stream) {
+  template <typename TTarget>  // Stream or Client
+  void reloadIfEmpty(TTarget &target) {
     if (!isEmpty())
       return;
-    reload(stream);
+    reload(target);
   }
 
-  void reload(Stream &stream) {
-    _buffer.reloadFrom(stream);
+  template <typename TTarget>  // Stream or Client
+  void reload(TTarget &target) {
+    _buffer.reloadFrom(target);
   }
 
   LinearBuffer<TAllocator> _buffer;

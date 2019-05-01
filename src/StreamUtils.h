@@ -3,6 +3,7 @@
 // MIT License
 
 #include "StreamUtils/Clients/LoggingClient.hpp"
+#include "StreamUtils/Clients/ReadBufferingClient.hpp"
 #include "StreamUtils/Clients/ReadLoggingClient.hpp"
 #include "StreamUtils/Clients/WriteBufferingClient.hpp"
 #include "StreamUtils/Clients/WriteLoggingClient.hpp"
