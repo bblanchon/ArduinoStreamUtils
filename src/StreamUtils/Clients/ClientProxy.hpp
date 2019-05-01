@@ -61,11 +61,11 @@ class ClientProxy : public Client {
     _writer.flush(_target);
   }
 
-  // WARNING: we cannot use "override" because most cores don't define this
-  // function as virtual
-  virtual size_t readBytes(char *buffer, size_t size) {
+#if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
+  size_t readBytes(char *buffer, size_t size) override {
     return _reader.readBytes(_target, buffer, size);
   }
+#endif
 
   // --- Client ---
 

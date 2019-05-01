@@ -12,8 +12,7 @@ struct Stream : Print {
   virtual int peek() = 0;
   virtual void flush() = 0;
 
-  // TODO: not virtual on AVR
-  virtual size_t readBytes(char *buffer, size_t length) {
+  size_t readBytes(char *buffer, size_t length) {
     size_t count = 0;
     while (count < length) {
       int c = read();

@@ -58,8 +58,10 @@ TEST_CASE("ReadLoggingStream") {
     size_t n = loggingStream.readBytes(s, 4);
 
     CHECK(n == 3);
-    CHECK(history.readString() == "readBytes(4) -> 3");
     CHECK(log.readString() == "ABC");
+#if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
+    CHECK(history.readString() == "readBytes(4) -> 3");
+#endif
   }
 
   SUBCASE("write(char)") {

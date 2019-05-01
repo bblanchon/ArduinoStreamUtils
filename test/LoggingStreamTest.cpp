@@ -63,7 +63,9 @@ TEST_CASE("LoggingStream") {
     size_t n = loggingStream.readBytes(s, 4);
 
     CHECK(n == 3);
+#if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
     CHECK(upstreamHistory.readString() == "readBytes(4) -> 3");
+#endif
     CHECK(log.readString() == "ABC");
   }
 

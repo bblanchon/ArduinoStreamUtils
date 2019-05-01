@@ -244,7 +244,7 @@ TEST_CASE("ReadBufferingClient") {
       CHECK(actions.readString() == "read() -> 65");
     }
 
-    SUBCASE("read()") {
+    SUBCASE("readBytes()") {
       target.print("ABC");
 
       char s[4] = {0};
@@ -252,7 +252,9 @@ TEST_CASE("ReadBufferingClient") {
 
       CHECK(n == 3);
       CHECK(s == std::string("ABC"));
+#if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
       CHECK(actions.readString() == "read(3) -> 3");
+#endif
     }
   }
 

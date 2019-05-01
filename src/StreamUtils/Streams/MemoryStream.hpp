@@ -7,6 +7,7 @@
 #include <Stream.h>
 
 #include "../Buffers/CircularBuffer.hpp"
+#include "../Configuration.hpp"
 #include "../Ports/DefaultAllocator.hpp"
 
 namespace StreamUtils {
@@ -31,11 +32,11 @@ class BasicMemoryStream : public Stream {
     return _buffer.isEmpty() ? -1 : _buffer.read();
   }
 
-  // WARNING: we cannot use "override" because most cores don't define this
-  // function as virtual
-  virtual size_t readBytes(char *data, size_t size) {
+#if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
+  size_t readBytes(char *data, size_t size) override {
     return _buffer.readBytes(data, size);
   }
+#endif
 
   size_t write(uint8_t data) {
     return _buffer.isFull() ? 0 : _buffer.write(data);

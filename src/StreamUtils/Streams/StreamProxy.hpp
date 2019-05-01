@@ -49,11 +49,11 @@ class StreamProxy : public Stream {
     _writer.flush(_upstream);
   }
 
-  // WARNING: we cannot use "override" because most cores don't define this
-  // function as virtual
+#if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
   virtual size_t readBytes(char *buffer, size_t size) {
     return _reader.readBytes(_upstream, buffer, size);
   }
+#endif
 
  private:
   Stream &_upstream;

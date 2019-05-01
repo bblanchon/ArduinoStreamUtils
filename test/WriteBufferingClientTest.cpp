@@ -123,7 +123,9 @@ TEST_CASE("WriteBufferingClient") {
 
       CHECK(n == 3);
       CHECK(s == std::string("ABC"));
+#if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
       CHECK(actions.readString() == "readBytes(3) -> 3");
+#endif
     }
 
     GIVEN("the buffer is empty") {
