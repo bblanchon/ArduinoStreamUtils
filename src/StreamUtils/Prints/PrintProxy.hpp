@@ -29,7 +29,11 @@ class PrintProxy : public Print {
     return _writer.write(_target, data);
   }
 
+#if STREAMUTILS_PRINT_FLUSH_EXISTS
+  void flush() override {
+#else
   void flush() {
+#endif
     _writer.flush(_target);
   }
 

@@ -7,6 +7,8 @@
 #include <Client.h>
 #include <Stream.h>
 
+#include "../Configuration.hpp"
+
 namespace StreamUtils {
 
 struct WriteForwardingPolicy {

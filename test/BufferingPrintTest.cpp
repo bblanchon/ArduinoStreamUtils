@@ -25,7 +25,13 @@ TEST_CASE("BufferingPrint") {
       bufferingPrint.write("ABC", 3);
       bufferingPrint.flush();
 
+#if STREAMUTILS_PRINT_FLUSH_EXISTS
+      CHECK(actions.readString() ==
+            "write('ABC', 3) -> 3"
+            "flush()");
+#else
       CHECK(actions.readString() == "write('ABC', 3) -> 3");
+#endif
     }
 
     GIVEN("the buffer is empty") {
@@ -109,10 +115,14 @@ TEST_CASE("BufferingPrint") {
       CHECK(actions.readString() == "write('A', 1) -> 1");
     }
 
-    SUBCASE("flush() does nothing") {
+    SUBCASE("flush()") {
       bufferingPrint.flush();
 
+#if STREAMUTILS_PRINT_FLUSH_EXISTS
+      CHECK(actions.readString() == "flush()");
+#else
       CHECK(actions.readString() == "");
+#endif
     }
   }
 

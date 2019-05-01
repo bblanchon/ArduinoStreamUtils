@@ -6,6 +6,8 @@
 
 #include <Stream.h>
 
+#include "../Configuration.hpp"
+
 namespace StreamUtils {
 
 class WriteSpyingPolicy {
