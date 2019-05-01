@@ -144,7 +144,11 @@ TEST_CASE("LoggingClient") {
   SUBCASE("flush()") {
     loggingClient.flush();
 
-    CHECK(actions.readString() == "flush()");
     CHECK(log.readString() == "");
+#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
+    CHECK(actions.readString() == "flush(0) -> true");
+#else
+    CHECK(actions.readString() == "flush()");
+#endif
   }
 }

@@ -89,7 +89,11 @@ TEST_CASE("WriteBufferingClient") {
     SUBCASE("flush() forwards to target)") {
       bufferingClient.flush();
 
+#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
+      CHECK(actions.readString() == "flush(0) -> true");
+#else
       CHECK(actions.readString() == "flush()");
+#endif
     }
 
     SUBCASE("flush() calls write() and flush()") {
@@ -98,7 +102,11 @@ TEST_CASE("WriteBufferingClient") {
 
       CHECK(actions.readString() ==
             "write('ABC', 3) -> 3"
+#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
+            "flush(0) -> true");
+#else
             "flush()");
+#endif
     }
 
     SUBCASE("peek()") {
@@ -208,7 +216,11 @@ TEST_CASE("WriteBufferingClient") {
     SUBCASE("flush() forwards to target") {
       bufferingClient.flush();
 
+#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
+      CHECK(actions.readString() == "flush(0) -> true");
+#else
       CHECK(actions.readString() == "flush()");
+#endif
     }
   }
 

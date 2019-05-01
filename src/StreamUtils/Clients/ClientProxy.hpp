@@ -57,10 +57,6 @@ class ClientProxy : public Client {
     return _reader.peek(_target);
   }
 
-  void flush() override {
-    _writer.flush(_target);
-  }
-
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
   size_t readBytes(char *buffer, size_t size) override {
     return _reader.readBytes(_target, buffer, size);
@@ -86,7 +82,7 @@ class ClientProxy : public Client {
   }
 
 #if STREAMUTILS_CLIENT_STOP_TAKES_TIMEOUT
-  bool stop(unsigned timeout) override {
+  bool stop(unsigned timeout = 0) override {
     _writer.implicitFlush(_target);
     return _connection.stop(_target, timeout);
   }
@@ -106,8 +102,12 @@ class ClientProxy : public Client {
   }
 
 #if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
-  bool flush(unsigned timeout) override {
+  bool flush(unsigned timeout = 0) override {
     return _writer.flush(_target, timeout);
+  }
+#else
+  void flush() override {
+    _writer.flush(_target);
   }
 #endif
 
