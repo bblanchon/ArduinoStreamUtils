@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <Client.h>
 #include <Stream.h>
 
 namespace StreamUtils {
@@ -17,6 +18,12 @@ struct WriteForwardingPolicy {
   void flush(Stream &stream) {
     stream.flush();
   }
+
+#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
+  bool flush(Client &client, unsigned timeout) {
+    return client.flush(timeout);
+  }
+#endif
 
   void detach(Stream &) {}
 };

@@ -158,7 +158,7 @@ See the equivalence table below.
 | `Client`             | `Stream`               | `Print`          |
 |:---------------------|:-----------------------|:-----------------|
 | `WriteLoggingClient` | `WriteLoggingStream`   | `LoggingPrint`   |
-|                      | `ReadLoggingStream`    |                  |
+| `ReadLoggingClient`  | `ReadLoggingStream`    |                  |
 |                      | `LoggingStream`        |                  |
 |                      | `WriteBufferingStream` | `BufferingPrint` |
 |                      | `ReadBufferingStream`  |                  |
