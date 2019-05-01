@@ -20,7 +20,7 @@ class StreamProxy : public Stream {
         _writer(other._writer) {}
 
   ~StreamProxy() {
-    _writer.detach(_upstream);
+    _writer.implicitFlush(_upstream);
   }
 
   size_t write(const uint8_t *buffer, size_t size) override {

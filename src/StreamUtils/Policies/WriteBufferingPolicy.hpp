@@ -61,10 +61,18 @@ struct WriteBufferingPolicy {
 
   void flush(Print &target) {
     _buffer.flushInto(target);
+    // TODO: should call target.flush() on ESP8266
     // no Print::flush() on most cores
   }
 
-  void detach(Print &target) {
+#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
+  bool flush(Client &target, unsigned timeout) {
+    _buffer.flushInto(target);
+    return target.flush(timeout);
+  }
+#endif
+
+  void implicitFlush(Print &target) {
     _buffer.flushInto(target);
   }
 

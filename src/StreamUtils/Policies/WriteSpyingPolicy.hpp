@@ -50,13 +50,13 @@ class WriteSpyingPolicy {
     _log.print(") -> ");
 
     bool result = client.flush(timeout);
-    _log.println(result);
+    _log.println(result ? "true" : "false");
 
     return result;
   }
 #endif
 
-  void detach(Print &) {}
+  void implicitFlush(Print &) {}
 
  private:
   Print &_log;

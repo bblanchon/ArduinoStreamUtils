@@ -18,7 +18,7 @@ class PrintProxy : public Print {
       : _target(other._target), _writer(other._writer) {}
 
   ~PrintProxy() {
-    _writer.detach(_target);
+    _writer.implicitFlush(_target);
   }
 
   size_t write(const uint8_t *buffer, size_t size) override {

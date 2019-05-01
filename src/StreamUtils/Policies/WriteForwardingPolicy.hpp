@@ -25,7 +25,7 @@ struct WriteForwardingPolicy {
   }
 #endif
 
-  void detach(Stream &) {}
+  void implicitFlush(Stream &) {}
 };
 
 }  // namespace StreamUtils

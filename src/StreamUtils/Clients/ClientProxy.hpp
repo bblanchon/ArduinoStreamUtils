@@ -28,7 +28,7 @@ class ClientProxy : public Client {
         _connection(other._connection) {}
 
   ~ClientProxy() {
-    _writer.detach(_target);
+    _writer.implicitFlush(_target);
   }
 
   // --- Print ---
@@ -87,10 +87,12 @@ class ClientProxy : public Client {
 
 #if STREAMUTILS_CLIENT_STOP_TAKES_TIMEOUT
   bool stop(unsigned timeout) override {
+    _writer.implicitFlush(_target);
     return _connection.stop(_target, timeout);
   }
 #else
   void stop() override {
+    _writer.implicitFlush(_target);
     _connection.stop(_target);
   }
 #endif

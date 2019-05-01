@@ -28,10 +28,6 @@ TEST_CASE("WriteBufferingStream") {
       CHECK(history.readString() == "available() -> 3");
     }
 
-    // SUBCASE("capacity()") {
-    //   CHECK(stream.capacity() == 4);
-    // }
-
     SUBCASE("flush() forwards to upstream)") {
       stream.flush();
 
@@ -134,10 +130,6 @@ TEST_CASE("WriteBufferingStream") {
 
   GIVEN("capacity is 0") {
     WriteBufferingStream stream{spy, 0};
-
-    // SUBCASE("capacity()") {
-    //   CHECK(stream.capacity() == 0);
-    // }
 
     SUBCASE("write(uint8_t) forwards to upstream") {
       int n = stream.write('X');

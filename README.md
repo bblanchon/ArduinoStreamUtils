@@ -155,10 +155,10 @@ Other classes
 Some of the proxies are also available for the `Print` and `Client` classes.
 See the equivalence table below.
 
-| `Client`             | `Stream`               | `Print`          |
-|:---------------------|:-----------------------|:-----------------|
-| `WriteLoggingClient` | `WriteLoggingStream`   | `LoggingPrint`   |
-| `ReadLoggingClient`  | `ReadLoggingStream`    |                  |
-| `LoggingClient`      | `LoggingStream`        |                  |
-|                      | `WriteBufferingStream` | `BufferingPrint` |
-|                      | `ReadBufferingStream`  |                  |
+| `Client`               | `Stream`               | `Print`          |
+|:-----------------------|:-----------------------|:-----------------|
+| `WriteLoggingClient`   | `WriteLoggingStream`   | `LoggingPrint`   |
+| `ReadLoggingClient`    | `ReadLoggingStream`    |                  |
+| `LoggingClient`        | `LoggingStream`        |                  |
+| `WriteBufferingClient` | `WriteBufferingStream` | `BufferingPrint` |
+|                        | `ReadBufferingStream`  |                  |

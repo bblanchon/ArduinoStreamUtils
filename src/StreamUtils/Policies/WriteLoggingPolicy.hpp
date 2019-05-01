@@ -36,7 +36,7 @@ class WriteLoggingPolicy {
 #endif
 
   void flush(Print &) {}
-  void detach(Print &) {}
+  void implicitFlush(Print &) {}
 
  private:
   Print &_log;
