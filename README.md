@@ -19,7 +19,7 @@ Read on, to see how StreamUtils can help your program.
 Buffering read operations
 -------------------------
 
-Sometimes, you can greatly improve performance by reading many bytes at once. 
+Sometimes, you can significantly improve performance by reading many bytes at once. 
 For example, [according to SPIFFS's wiki](https://github.com/pellepl/spiffs/wiki/Performance-and-Optimizing#reading-files), it's much faster to read files in chunks of 64 bytes than reading them one byte at a time.
 
 ![ReadBufferingStream](examples/ReadBuffer/ReadBuffer.svg)
@@ -44,15 +44,17 @@ Unfortunately, this optimization is only possible if:
 1. `Stream.readBytes()` is declared `virtual` in your Arduino Code (as it's the case for ESP8266), and
 2. the derived class has an optimized implementation of `readBytes()` (as it's the case for SPIFFS' `File`).
 
+When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client` defines a `read()` method similar to `readBytes`, excepts that this one is `virtual` on all platforms.
+
 Buffering write operations
 --------------------------
 
-Similarly, you can greatly improve performance by writing many bytes at once.
+Similarly, you can greatly significantly performance by writing many bytes at once.
 For example, if you write to `WiFiClient` one bytes at a time, it will be very slow; it's much faster if you send large chunks.
 
 ![WriteBufferingStream](examples/WriteBuffer/WriteBuffer.svg)
 
-To add a buffer, decorate the original `Stream` with  `WriteBufferingStream`. For example, if you program send a JSON document via `WiFiClient`, like that:
+To add a buffer, decorate the original `Stream` with  `WriteBufferingStream`. For example, if your program sends a JSON document via `WiFiClient`, like that:
 
 ```c++
 serializeJson(doc, wifiClient);
@@ -72,7 +74,7 @@ Calling `flush()` is recommended but not mandatory. If you don't call it, the de
 Logging write operations
 ------------------------
 
-When debugging a program that makes HTTP requests, the first thing you want to check is that the request is correct. With this library you can decorate the `EthernetStream` or the `WiFiStream` to log everything to the serial.
+When debugging a program that makes HTTP requests, the first thing you want to check is that the request is correct. With this library, you can decorate the `EthernetClient` or the `WiFiClient` to log everything to the serial.
 
 ![WriteLoggingStream](examples/WriteLogger/WriteLogger.svg)
 
@@ -98,7 +100,7 @@ Everything you write to `loggingClient` is written to `client` and logged to `Se
 Logging read operations
 -----------------------
 
-Similarly, you often want to see what the HTTP server sent back. With this library you can decorate the `EthernetStream` or the `WiFiStream` to log everything to the serial.
+Similarly, you often want to see what the HTTP server sent back. With this library, you can decorate the `EthernetClient` or the `WiFiClient` to log everything to the serial.
 
 ![ReadLoggingStream](examples/ReadLogger/ReadLogger.svg)
 
@@ -162,3 +164,6 @@ See the equivalence table below.
 | `LoggingClient`        | `LoggingStream`        |                  |
 | `WriteBufferingClient` | `WriteBufferingStream` | `BufferingPrint` |
 | `ReadBufferingClient`  | `ReadBufferingStream`  |                  |
+
+When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client::read()` often provides an optimized implementation.*
+*
