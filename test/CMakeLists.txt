@@ -9,12 +9,13 @@ endif()
 set(SOURCES
 	BufferingPrintTest.cpp
 	FailingAllocator.hpp
+	LoggingClientTest.cpp
 	LoggingPrintTest.cpp
 	LoggingStreamTest.cpp
 	MemoryStreamTest.cpp
 	ReadBufferingStreamTest.cpp
-	ReadLoggingStreamTest.cpp
 	ReadLoggingClientTest.cpp
+	ReadLoggingStreamTest.cpp
 	WriteBufferingStreamTest.cpp
 	WriteLoggingClientTest.cpp
 	WriteLoggingStreamTest.cpp

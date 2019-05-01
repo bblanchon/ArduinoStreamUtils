@@ -159,6 +159,6 @@ See the equivalence table below.
 |:---------------------|:-----------------------|:-----------------|
 | `WriteLoggingClient` | `WriteLoggingStream`   | `LoggingPrint`   |
 | `ReadLoggingClient`  | `ReadLoggingStream`    |                  |
-|                      | `LoggingStream`        |                  |
+| `LoggingClient`      | `LoggingStream`        |                  |
 |                      | `WriteBufferingStream` | `BufferingPrint` |
 |                      | `ReadBufferingStream`  |                  |
