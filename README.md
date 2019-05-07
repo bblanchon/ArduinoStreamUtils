@@ -1,6 +1,8 @@
 StreamUtils: Power-ups for Arduino Streams
 ==========================================
 
+[![arduino-library-badge](https://www.ardu-badge.com/badge/StreamUtils.svg?version=1.2.0)](https://www.ardu-badge.com/StreamUtils/1.2.0)
+
 The *stream* is an essential abstraction of Arduino, we find it in many places:
 
 * `HardwareSerial`
@@ -35,7 +37,7 @@ Then you simply need to insert one line to greatly improve the reading speed:
 
 ```c++
 File file = SPIFFS.open("example.json", "r");
-ReadBufferingStream bufferedSerial{Serial, 64};  // <- HERE
+ReadBufferingStream bufferedFile{file, 64};  // <- HERE
 deserializeJson(doc, bufferedFile);
 ```
 
@@ -154,7 +156,7 @@ loggingClient.readBytes(response, 256);
 Other classes
 -------------
 
-Some of the proxies are also available for the `Print` and `Client` classes.
+Some of the decorators are also available for the `Print` and `Client` classes.
 See the equivalence table below.
 
 | `Client`               | `Stream`               | `Print`          |
