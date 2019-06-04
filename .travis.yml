@@ -1,0 +1,10 @@
+sudo: false
+language: cpp
+matrix:
+  include:
+    - env: SCRIPT=platformio BOARD=uno
+    - env: SCRIPT=platformio BOARD=huzzah
+cache:
+  directories:
+    - "~/.platformio"
+script: scripts/travis/$SCRIPT.sh
