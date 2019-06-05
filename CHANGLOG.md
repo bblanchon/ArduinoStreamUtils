@@ -1,8 +1,8 @@
 StreamUtils - Changelog
 =======================
 
-HEAD
-----
+1.2.1 (2019/06/05)
+-----
 
 * Remove workaround for ESP8266 core 2.5.0
 * Fix compatibility with ESP8266 core 2.5.1+
