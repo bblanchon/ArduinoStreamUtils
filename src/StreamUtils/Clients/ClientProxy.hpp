@@ -65,11 +65,7 @@ class ClientProxy : public Client {
 
   // --- Client ---
 
-#if STREAMUTILS_CLIENT_CONNECT_TAKE_CONST_REF
-  int connect(const IPAddress &ip, uint16_t port) override {
-#else
   int connect(IPAddress ip, uint16_t port) override {
-#endif
     return _connection.connect(_target, ip, port);
   }
 
@@ -81,17 +77,10 @@ class ClientProxy : public Client {
     return _connection.connected(_target);
   }
 
-#if STREAMUTILS_CLIENT_STOP_TAKES_TIMEOUT
-  bool stop(unsigned timeout = 0) override {
-    _writer.implicitFlush(_target);
-    return _connection.stop(_target, timeout);
-  }
-#else
   void stop() override {
     _writer.implicitFlush(_target);
     _connection.stop(_target);
   }
-#endif
 
   operator bool() override {
     return _connection.operator_bool(_target);
@@ -101,15 +90,9 @@ class ClientProxy : public Client {
     return _reader.read(_target, buf, size);
   }
 
-#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
-  bool flush(unsigned timeout = 0) override {
-    return _writer.flush(_target, timeout);
-  }
-#else
   void flush() override {
     _writer.flush(_target);
   }
-#endif
 
  private:
   Client &_target;

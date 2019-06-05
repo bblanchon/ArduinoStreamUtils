@@ -23,15 +23,9 @@ struct ConnectForwardingPolicy {
     return target.connected();
   }
 
-#if STREAMUTILS_CLIENT_STOP_TAKES_TIMEOUT
-  bool stop(Client& target, unsigned timeout) {
-    return target.stop(timeout);
-  }
-#else
   void stop(Client& target) {
     target.stop();
   }
-#endif
 
   bool operator_bool(Client& target) {
     return target.operator bool();

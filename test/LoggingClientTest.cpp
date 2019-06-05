@@ -56,22 +56,12 @@ TEST_CASE("LoggingClient") {
     CHECK(log.readString() == "");
   }
 
-#if STREAMUTILS_CLIENT_STOP_TAKES_TIMEOUT
-  SUBCASE("stop(unsigned)") {
-    bool result = loggingClient.stop(10);
-
-    CHECK(result == true);
-    CHECK(actions.readString() == "stop(10) -> true");
-    CHECK(log.readString() == "");
-  }
-#else
   SUBCASE("stop()") {
     loggingClient.stop();
 
     CHECK(actions.readString() == "stop()");
     CHECK(log.readString() == "");
   }
-#endif
 
   SUBCASE("operator bool()") {
     bool n = loggingClient.operator bool();
@@ -145,10 +135,6 @@ TEST_CASE("LoggingClient") {
     loggingClient.flush();
 
     CHECK(log.readString() == "");
-#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
-    CHECK(actions.readString() == "flush(0) -> true");
-#else
     CHECK(actions.readString() == "flush()");
-#endif
   }
 }

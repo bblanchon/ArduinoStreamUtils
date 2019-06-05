@@ -67,13 +67,6 @@ struct WriteBufferingPolicy {
 #endif
   }
 
-#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
-  bool flush(Client &target, unsigned timeout) {
-    _buffer.flushInto(target);
-    return target.flush(timeout);
-  }
-#endif
-
   void implicitFlush(Print &target) {
     _buffer.flushInto(target);
   }

@@ -55,20 +55,9 @@ class BasicMemoryClient : public Client {
     _stream.flush();
   }
 
-#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
-  bool flush(unsigned) override {
-    _stream.flush();
-    return true;
-  }
-#endif
-
   // --- Client ---
 
-#if STREAMUTILS_CLIENT_CONNECT_TAKE_CONST_REF
-  int connect(const IPAddress &, uint16_t) override {
-#else
   int connect(IPAddress, uint16_t) override {
-#endif
     _connected = true;
     return 1;
   }
@@ -82,16 +71,9 @@ class BasicMemoryClient : public Client {
     return _connected;
   }
 
-#if STREAMUTILS_CLIENT_STOP_TAKES_TIMEOUT
-  bool stop(unsigned) override {
-    _connected = false;
-    return true;
-  }
-#else
   void stop() override {
     _connected = false;
   }
-#endif
 
   operator bool() override {
     return true;

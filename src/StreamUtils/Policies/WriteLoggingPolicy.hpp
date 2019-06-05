@@ -29,12 +29,6 @@ class WriteLoggingPolicy {
     target.flush();
   }
 
-#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
-  bool flush(Client &target, unsigned timeout) {
-    return target.flush(timeout);
-  }
-#endif
-
   void flush(Print &) {}
   void implicitFlush(Print &) {}
 

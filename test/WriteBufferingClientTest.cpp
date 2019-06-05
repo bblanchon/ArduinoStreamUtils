@@ -50,17 +50,6 @@ TEST_CASE("WriteBufferingClient") {
       CHECK(actions.readString() == "connected() -> 0");
     }
 
-#if STREAMUTILS_CLIENT_STOP_TAKES_TIMEOUT
-    SUBCASE("stop(unsigned)") {
-      bufferingClient.write("ABC", 3);
-      bool result = bufferingClient.stop(10);
-
-      CHECK(result == true);
-      CHECK(actions.readString() ==
-            "write('ABC', 3) -> 3"
-            "stop(10) -> true");
-    }
-#else
     SUBCASE("stop()") {
       bufferingClient.write("ABC", 3);
       bufferingClient.stop();
@@ -69,7 +58,6 @@ TEST_CASE("WriteBufferingClient") {
             "write('ABC', 3) -> 3"
             "stop()");
     }
-#endif
 
     SUBCASE("operator bool()") {
       bool n = bufferingClient.operator bool();
@@ -78,22 +66,10 @@ TEST_CASE("WriteBufferingClient") {
       CHECK(actions.readString() == "operator bool() -> true");
     }
 
-#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
-    SUBCASE("flush(unsigned) forwards to target)") {
-      bufferingClient.flush(123);
-
-      CHECK(actions.readString() == "flush(123) -> true");
-    }
-#endif
-
     SUBCASE("flush() forwards to target)") {
       bufferingClient.flush();
 
-#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
-      CHECK(actions.readString() == "flush(0) -> true");
-#else
       CHECK(actions.readString() == "flush()");
-#endif
     }
 
     SUBCASE("flush() calls write() and flush()") {
@@ -102,11 +78,7 @@ TEST_CASE("WriteBufferingClient") {
 
       CHECK(actions.readString() ==
             "write('ABC', 3) -> 3"
-#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
-            "flush(0) -> true");
-#else
             "flush()");
-#endif
     }
 
     SUBCASE("peek()") {
@@ -216,11 +188,7 @@ TEST_CASE("WriteBufferingClient") {
     SUBCASE("flush() forwards to target") {
       bufferingClient.flush();
 
-#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
-      CHECK(actions.readString() == "flush(0) -> true");
-#else
       CHECK(actions.readString() == "flush()");
-#endif
     }
   }
 

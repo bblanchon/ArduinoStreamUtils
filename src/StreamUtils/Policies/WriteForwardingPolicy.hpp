@@ -21,12 +21,6 @@ struct WriteForwardingPolicy {
     stream.flush();
   }
 
-#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
-  bool flush(Client &client, unsigned timeout) {
-    return client.flush(timeout);
-  }
-#endif
-
   void implicitFlush(Stream &) {}
 };
 

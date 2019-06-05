@@ -45,19 +45,6 @@ class WriteSpyingPolicy {
     stream.flush();
   }
 
-#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
-  bool flush(Client &client, unsigned timeout) {
-    _log.print("flush(");
-    _log.print(timeout);
-    _log.print(") -> ");
-
-    bool result = client.flush(timeout);
-    _log.println(result ? "true" : "false");
-
-    return result;
-  }
-#endif
-
   void implicitFlush(Print &) {}
 
  private:

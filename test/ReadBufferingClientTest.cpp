@@ -188,17 +188,10 @@ TEST_CASE("ReadBufferingClient") {
       }
     }
 
-#if STREAMUTILS_CLIENT_FLUSH_TAKES_TIMEOUT
-    SUBCASE("flush(unsigned)") {
-      client.flush(123);
-      CHECK(actions.readString() == "flush(123) -> true");
-    }
-#else
     SUBCASE("flush()") {
       client.flush();
       CHECK(actions.readString() == "flush()");
     }
-#endif
 
     SUBCASE("copy constructor") {
       target.print("ABCDEFGH");
