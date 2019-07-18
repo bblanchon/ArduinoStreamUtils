@@ -23,7 +23,7 @@ class BasicMemoryClient : public Client {
 
   // --- Print ---
 
-  size_t write(uint8_t data) {
+  size_t write(uint8_t data) override {
     return _stream.write(data);
   }
 
@@ -46,7 +46,7 @@ class BasicMemoryClient : public Client {
   }
 
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-  virtual size_t readBytes(char *data, size_t size) {
+  size_t readBytes(char *data, size_t size) override {
     return _stream.readBytes(data, size);
   }
 #endif

@@ -38,7 +38,7 @@ class BasicMemoryStream : public Stream {
   }
 #endif
 
-  size_t write(uint8_t data) {
+  size_t write(uint8_t data) override {
     return _buffer.isFull() ? 0 : _buffer.write(data);
   }
 

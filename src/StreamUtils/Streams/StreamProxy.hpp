@@ -50,7 +50,7 @@ class StreamProxy : public Stream {
   }
 
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-  virtual size_t readBytes(char *buffer, size_t size) {
+  size_t readBytes(char *buffer, size_t size) override {
     return _reader.readBytes(_upstream, buffer, size);
   }
 #endif
