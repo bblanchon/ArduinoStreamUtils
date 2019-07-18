@@ -31,4 +31,13 @@ TEST_CASE("LoggingPrint") {
     CHECK(primary.readString() == "ABCD");
     CHECK(secondary.readString() == "ABCD");
   }
+
+#if STREAMUTILS_PRINT_FLUSH_EXISTS
+  SUBCASE("flush()") {
+    loggingPrint.write("AB", 2);
+    REQUIRE(primary.available() == 2);
+    loggingPrint.flush();
+    REQUIRE(primary.available() == 0);
+  }
+#endif
 }

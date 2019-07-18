@@ -25,11 +25,11 @@ class WriteLoggingPolicy {
     return result;
   }
 
-  void flush(Stream &target) {
+  template <typename TTarget>
+  void flush(TTarget &target) {
     target.flush();
   }
 
-  void flush(Print &) {}
   void implicitFlush(Print &) {}
 
  private:

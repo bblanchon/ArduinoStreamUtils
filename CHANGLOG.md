@@ -5,6 +5,7 @@ HEAD
 ----
 
 * Fix BufferingPrint taking Stream instead of Print (issue #3)
+* Fix LoggingPrint not forwarding call to Print::flush()
 
 1.2.1 (2019/06/05)
 -----
