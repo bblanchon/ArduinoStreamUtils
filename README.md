@@ -1,7 +1,7 @@
 StreamUtils: Power-ups for Arduino Streams
 ==========================================
 
-[![arduino-library-badge](https://www.ardu-badge.com/badge/StreamUtils.svg?version=1.2.1)](https://www.ardu-badge.com/StreamUtils/1.2.1)
+[![arduino-library-badge](https://www.ardu-badge.com/badge/StreamUtils.svg?version=1.2.2)](https://www.ardu-badge.com/StreamUtils/1.2.2)
 [![Build Status](https://travis-ci.org/bblanchon/ArduinoStreamUtils.svg?branch=master)](https://travis-ci.org/bblanchon/ArduinoStreamUtils)
 
 The *stream* is an essential abstraction of Arduino, we find it in many places:
