@@ -12,7 +12,7 @@ namespace StreamUtils {
 
 template <typename TAllocator>
 struct BasicBufferingPrint : PrintProxy<WriteBufferingPolicy<TAllocator>> {
-  explicit BasicBufferingPrint(Stream &upstream, size_t capacity,
+  explicit BasicBufferingPrint(Print &upstream, size_t capacity,
                                TAllocator allocator = TAllocator())
       : PrintProxy<WriteBufferingPolicy<TAllocator>>(upstream,
                                                      {capacity, allocator}) {}

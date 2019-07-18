@@ -5,8 +5,8 @@
 #include "FailingAllocator.hpp"
 
 #include "StreamUtils/Prints/BufferingPrint.hpp"
+#include "StreamUtils/Prints/SpyingPrint.hpp"
 #include "StreamUtils/Streams/MemoryStream.hpp"
-#include "StreamUtils/Streams/SpyingStream.hpp"
 
 #include "doctest.h"
 
@@ -16,7 +16,7 @@ TEST_CASE("BufferingPrint") {
   MemoryStream target(64);
 
   MemoryStream actions(64);
-  SpyingStream spy{target, actions};
+  SpyingPrint spy{target, actions};
 
   GIVEN("capacity is 4") {
     BufferingPrint bufferingPrint{spy, 4};

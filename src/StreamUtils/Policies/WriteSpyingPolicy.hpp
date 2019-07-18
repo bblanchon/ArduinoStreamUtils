@@ -14,7 +14,7 @@ class WriteSpyingPolicy {
  public:
   WriteSpyingPolicy(Print &log) : _log(log) {}
 
-  size_t write(Stream &stream, const uint8_t *buffer, size_t size) {
+  size_t write(Print &stream, const uint8_t *buffer, size_t size) {
     _log.print("write('");
     for (size_t i = 0; i < size; i++) {
       _log.write(buffer[i]);
@@ -29,7 +29,7 @@ class WriteSpyingPolicy {
     return result;
   }
 
-  size_t write(Stream &stream, uint8_t data) {
+  size_t write(Print &stream, uint8_t data) {
     _log.print("write('");
     _log.write(data);
     _log.print("') -> ");
@@ -40,9 +40,10 @@ class WriteSpyingPolicy {
     return result;
   }
 
-  void flush(Stream &stream) {
+  template <typename TTarget>
+  void flush(TTarget &target) {
     _log.println("flush()");
-    stream.flush();
+    target.flush();
   }
 
   void implicitFlush(Print &) {}
