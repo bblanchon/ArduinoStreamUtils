@@ -145,7 +145,7 @@ client.readBytes(response, 256);
 Then decorate `client` and replace the calls:
 
 ```c++
-LoggingStream loggingClient(client);
+LoggingStream loggingClient(client, Serial);
 
 loggingClient.println("GET / HTTP/1.1");
 loggingClient.println("User-Agent: Arduino");
