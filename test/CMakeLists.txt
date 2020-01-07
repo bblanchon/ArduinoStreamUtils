@@ -1,5 +1,5 @@
-# ArduinoJson - arduinojson.org
-# Copyright Benoit Blanchon 2014-2019
+# StreamUtils - github.com/bblanchon/ArduinoStreamUtils
+# Copyright Benoit Blanchon 2019-2020
 # MIT License
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")

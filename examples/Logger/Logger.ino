@@ -1,5 +1,5 @@
 // StreamUtils - github.com/bblanchon/ArduinoStreamUtils
-// Copyright Benoit Blanchon 2019
+// Copyright Benoit Blanchon 2019-2020
 // MIT License
 //
 // This example shows how to log what goes through a Stream, both reads and
