@@ -4,6 +4,7 @@
 
 #include "FailingAllocator.hpp"
 
+#include "StreamUtils/Prints/StringPrint.hpp"
 #include "StreamUtils/Streams/LoggingStream.hpp"
 #include "StreamUtils/Streams/MemoryStream.hpp"
 #include "StreamUtils/Streams/SpyingStream.hpp"
@@ -14,17 +15,17 @@ using namespace StreamUtils;
 
 TEST_CASE("LoggingStream") {
   MemoryStream upstream{4};
-  MemoryStream log(64);
+  StringPrint output;
 
-  MemoryStream upstreamHistory{64};
-  SpyingStream upstreamSpy{upstream, upstreamHistory};
+  StringPrint log;
+  SpyingStream upstreamSpy{upstream, log};
 
-  LoggingStream loggingStream{upstreamSpy, log};
+  LoggingStream loggingStream{upstreamSpy, output};
 
-  // upstream -> upstreamSpy -> loggingStream -> log
+  // upstream -> upstreamSpy -> loggingStream -> output
   //                 |
   //                 v
-  //            upsteamHistory
+  //                log
 
   SUBCASE("available()") {
     upstream.print("ABC");
@@ -32,8 +33,8 @@ TEST_CASE("LoggingStream") {
     size_t n = loggingStream.available();
 
     CHECK(n == 3);
-    CHECK(upstreamHistory.readString() == "available() -> 3");
-    CHECK(log.readString() == "");
+    CHECK(log.str() == "available() -> 3");
+    CHECK(output.str() == "");
   }
 
   SUBCASE("peek()") {
@@ -42,8 +43,8 @@ TEST_CASE("LoggingStream") {
     int n = loggingStream.peek();
 
     CHECK(n == 'A');
-    CHECK(upstreamHistory.readString() == "peek() -> 65");
-    CHECK(log.readString() == "");
+    CHECK(log.str() == "peek() -> 65");
+    CHECK(output.str() == "");
   }
 
   SUBCASE("read()") {
@@ -52,8 +53,8 @@ TEST_CASE("LoggingStream") {
     int n = loggingStream.read();
 
     CHECK(n == 'A');
-    CHECK(upstreamHistory.readString() == "read() -> 65");
-    CHECK(log.readString() == "A");
+    CHECK(log.str() == "read() -> 65");
+    CHECK(output.str() == "A");
   }
 
   SUBCASE("readBytes()") {
@@ -64,31 +65,31 @@ TEST_CASE("LoggingStream") {
 
     CHECK(n == 3);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-    CHECK(upstreamHistory.readString() == "readBytes(4) -> 3");
+    CHECK(log.str() == "readBytes(4) -> 3");
 #endif
-    CHECK(log.readString() == "ABC");
+    CHECK(output.str() == "ABC");
   }
 
   SUBCASE("write(char)") {
     int n = loggingStream.write('A');
 
     CHECK(n == 1);
-    CHECK(upstreamHistory.readString() == "write('A') -> 1");
-    CHECK(log.readString() == "A");
+    CHECK(log.str() == "write('A') -> 1");
+    CHECK(output.str() == "A");
   }
 
   SUBCASE("write(char*,size_t)") {
     int n = loggingStream.write("ABCDEF", 6);
 
     CHECK(n == 4);
-    CHECK(upstreamHistory.readString() == "write('ABCDEF', 6) -> 4");
-    CHECK(log.readString() == "ABCD");
+    CHECK(log.str() == "write('ABCDEF', 6) -> 4");
+    CHECK(output.str() == "ABCD");
   }
 
   SUBCASE("flush()") {
     loggingStream.flush();
 
-    CHECK(upstreamHistory.readString() == "flush()");
-    CHECK(log.readString() == "");
+    CHECK(log.str() == "flush()");
+    CHECK(output.str() == "");
   }
 }

@@ -5,13 +5,13 @@ HEAD
 ----
 
 * Move auxiliary content to `extras/` to comply with new library layout
-
+* Add `StringPrint`
 
 1.2.2 (2019/07/18)
 -----
 
-* Fix BufferingPrint taking Stream instead of Print (issue #3)
-* Fix LoggingPrint not forwarding call to Print::flush()
+* Fix `BufferingPrint` taking `Stream` instead of `Print` (issue #3)
+* Fix `LoggingPrint` not forwarding call to `Print::flush()`
 * Fix missing `override` specifiers
 
 1.2.1 (2019/06/05)

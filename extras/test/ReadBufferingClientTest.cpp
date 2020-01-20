@@ -7,7 +7,7 @@
 #include "StreamUtils/Clients/MemoryClient.hpp"
 #include "StreamUtils/Clients/ReadBufferingClient.hpp"
 #include "StreamUtils/Clients/SpyingClient.hpp"
-#include "StreamUtils/Streams/MemoryStream.hpp"
+#include "StreamUtils/Prints/StringPrint.hpp"
 
 #include "doctest.h"
 
@@ -15,8 +15,8 @@ using namespace StreamUtils;
 
 TEST_CASE("ReadBufferingClient") {
   MemoryClient target(64);
-  MemoryStream actions(64);
-  SpyingClient spy{target, actions};
+  StringPrint log;
+  SpyingClient spy{target, log};
 
   SUBCASE("capacity = 4") {
     ReadBufferingClient bufferedClient{spy, 4};
@@ -28,7 +28,7 @@ TEST_CASE("ReadBufferingClient") {
       SUBCASE("empty input") {
         target.flush();
         CHECK(client.available() == 0);
-        CHECK(actions.readString() == "available() -> 0");
+        CHECK(log.str() == "available() -> 0");
       }
 
       SUBCASE("read empty input") {
@@ -37,21 +37,21 @@ TEST_CASE("ReadBufferingClient") {
         client.read();
 
         CHECK(client.available() == 0);
-        CHECK(actions.readString() ==
+        CHECK(log.str() ==
               "read(4) -> 0"
               "available() -> 0");
       }
 
       SUBCASE("same a target") {
         CHECK(client.available() == 8);
-        CHECK(actions.readString() == "available() -> 8");
+        CHECK(log.str() == "available() -> 8");
       }
 
       SUBCASE("target + in buffer") {
         client.read();
 
         CHECK(client.available() == 7);
-        CHECK(actions.readString() ==
+        CHECK(log.str() ==
               "read(4) -> 4"
               "available() -> 4");
       }
@@ -64,7 +64,7 @@ TEST_CASE("ReadBufferingClient") {
         int result = client.peek();
 
         CHECK(result == -1);
-        CHECK(actions.readString() == "peek() -> -1");
+        CHECK(log.str() == "peek() -> -1");
       }
 
       SUBCASE("doesn't call readBytes() when buffer is empty") {
@@ -73,7 +73,7 @@ TEST_CASE("ReadBufferingClient") {
         int result = client.peek();
 
         CHECK(result == 'A');
-        CHECK(actions.readString() == "peek() -> 65");
+        CHECK(log.str() == "peek() -> 65");
       }
 
       SUBCASE("doesn't call peek() when buffer is full") {
@@ -83,7 +83,7 @@ TEST_CASE("ReadBufferingClient") {
         int result = client.peek();
 
         CHECK(result == 'B');
-        CHECK(actions.readString() == "read(4) -> 2");
+        CHECK(log.str() == "read(4) -> 2");
       }
     }
 
@@ -97,7 +97,7 @@ TEST_CASE("ReadBufferingClient") {
         }
 
         CHECK(result == "ABCDEFG");
-        CHECK(actions.readString() ==
+        CHECK(log.str() ==
               "read(4) -> 4"
               "read(4) -> 3");
       }
@@ -108,7 +108,7 @@ TEST_CASE("ReadBufferingClient") {
         int result = client.read();
 
         CHECK(result == -1);
-        CHECK(actions.readString() == "read(4) -> 0");
+        CHECK(log.str() == "read(4) -> 0");
       }
     }
 
@@ -120,7 +120,7 @@ TEST_CASE("ReadBufferingClient") {
         size_t result = client.readBytes(&c, 1);
 
         CHECK(result == 0);
-        CHECK(actions.readString() == "read(4) -> 0");
+        CHECK(log.str() == "read(4) -> 0");
       }
 
       SUBCASE("reads 4 bytes when requested one") {
@@ -131,7 +131,7 @@ TEST_CASE("ReadBufferingClient") {
 
         CHECK(c == 'A');
         CHECK(result == 1);
-        CHECK(actions.readString() == "read(4) -> 4");
+        CHECK(log.str() == "read(4) -> 4");
       }
 
       SUBCASE("copy one byte from buffer") {
@@ -143,7 +143,7 @@ TEST_CASE("ReadBufferingClient") {
 
         CHECK(c == 'B');
         CHECK(result == 1);
-        CHECK(actions.readString() == "read(4) -> 4");
+        CHECK(log.str() == "read(4) -> 4");
       }
 
       SUBCASE("copy content from buffer then bypass buffer") {
@@ -155,7 +155,7 @@ TEST_CASE("ReadBufferingClient") {
 
         CHECK(c == std::string("BCDEFGH"));
         CHECK(result == 7);
-        CHECK(actions.readString() ==
+        CHECK(log.str() ==
               "read(4) -> 4"
               "read(4) -> 4");
       }
@@ -169,7 +169,7 @@ TEST_CASE("ReadBufferingClient") {
 
         CHECK(c == std::string("BCDE"));
         CHECK(result == 4);
-        CHECK(actions.readString() ==
+        CHECK(log.str() ==
               "read(4) -> 4"
               "read(4) -> 4");
       }
@@ -182,7 +182,7 @@ TEST_CASE("ReadBufferingClient") {
         size_t result = client.readBytes(&c, 1);
 
         CHECK(result == 0);
-        CHECK(actions.readString() ==
+        CHECK(log.str() ==
               "read(4) -> 1"
               "read(4) -> 0");
       }
@@ -190,7 +190,7 @@ TEST_CASE("ReadBufferingClient") {
 
     SUBCASE("flush()") {
       client.flush();
-      CHECK(actions.readString() == "flush()");
+      CHECK(log.str() == "flush()");
     }
 
     SUBCASE("copy constructor") {
@@ -202,7 +202,7 @@ TEST_CASE("ReadBufferingClient") {
       int result = dup.read();
 
       CHECK(result == 'B');
-      CHECK(actions.readString() == "read(4) -> 4");
+      CHECK(log.str() == "read(4) -> 4");
     }
   }
 
@@ -225,7 +225,7 @@ TEST_CASE("ReadBufferingClient") {
       int c = client.peek();
 
       CHECK(c == 'A');
-      CHECK(actions.readString() == "peek() -> 65");
+      CHECK(log.str() == "peek() -> 65");
     }
 
     SUBCASE("read()") {
@@ -234,7 +234,7 @@ TEST_CASE("ReadBufferingClient") {
       int c = client.read();
 
       CHECK(c == 'A');
-      CHECK(actions.readString() == "read() -> 65");
+      CHECK(log.str() == "read() -> 65");
     }
 
     SUBCASE("readBytes()") {
@@ -246,7 +246,7 @@ TEST_CASE("ReadBufferingClient") {
       CHECK(n == 3);
       CHECK(s == std::string("ABC"));
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-      CHECK(actions.readString() == "read(3) -> 3");
+      CHECK(log.str() == "read(3) -> 3");
 #endif
     }
   }
@@ -264,6 +264,6 @@ TEST_CASE("ReadBufferingClient") {
     CHECK(client.readBytes(&c[3], 1) == 1);
 
     CHECK(c == std::string("{\"heEFGH"));
-    CHECK(actions.readString() == "read(64) -> 28");
+    CHECK(log.str() == "read(64) -> 28");
   }
 }

@@ -13,10 +13,11 @@ set(SOURCES
 	LoggingPrintTest.cpp
 	LoggingStreamTest.cpp
 	MemoryStreamTest.cpp
-	ReadBufferingStreamTest.cpp
 	ReadBufferingClientTest.cpp
+	ReadBufferingStreamTest.cpp
 	ReadLoggingClientTest.cpp
 	ReadLoggingStreamTest.cpp
+	StringPrintTest.cpp
 	WriteBufferingClientTest.cpp
 	WriteBufferingStreamTest.cpp
 	WriteLoggingClientTest.cpp

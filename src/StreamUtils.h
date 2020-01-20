@@ -9,6 +9,7 @@
 #include "StreamUtils/Clients/WriteLoggingClient.hpp"
 #include "StreamUtils/Prints/BufferingPrint.hpp"
 #include "StreamUtils/Prints/LoggingPrint.hpp"
+#include "StreamUtils/Prints/StringPrint.hpp"
 #include "StreamUtils/Streams/LoggingStream.hpp"
 #include "StreamUtils/Streams/ReadBufferingStream.hpp"
 #include "StreamUtils/Streams/ReadLoggingStream.hpp"

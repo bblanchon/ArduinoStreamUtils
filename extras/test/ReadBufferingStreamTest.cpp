@@ -4,6 +4,7 @@
 
 #include "FailingAllocator.hpp"
 
+#include "StreamUtils/Prints/StringPrint.hpp"
 #include "StreamUtils/Streams/MemoryStream.hpp"
 #include "StreamUtils/Streams/ReadBufferingStream.hpp"
 #include "StreamUtils/Streams/SpyingStream.hpp"
@@ -14,8 +15,8 @@ using namespace StreamUtils;
 
 TEST_CASE("ReadBufferingStream") {
   MemoryStream upstream(64);
-  MemoryStream history(64);
-  SpyingStream spy{upstream, history};
+  StringPrint log;
+  SpyingStream spy{upstream, log};
 
   SUBCASE("capacity = 4") {
     ReadBufferingStream bufferedStream{spy, 4};
@@ -27,7 +28,7 @@ TEST_CASE("ReadBufferingStream") {
       SUBCASE("empty input") {
         upstream.flush();
         CHECK(stream.available() == 0);
-        CHECK(history.readString() == "available() -> 0");
+        CHECK(log.str() == "available() -> 0");
       }
 
       SUBCASE("read empty input") {
@@ -38,7 +39,7 @@ TEST_CASE("ReadBufferingStream") {
         CHECK(n == -1);
         CHECK(stream.available() == 0);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-        CHECK(history.readString() ==
+        CHECK(log.str() ==
               "readBytes(4) -> 0"
               "available() -> 0");
 #endif
@@ -46,7 +47,7 @@ TEST_CASE("ReadBufferingStream") {
 
       SUBCASE("same a upstream") {
         CHECK(stream.available() == 8);
-        CHECK(history.readString() == "available() -> 8");
+        CHECK(log.str() == "available() -> 8");
       }
 
       SUBCASE("upstream + in buffer") {
@@ -55,7 +56,7 @@ TEST_CASE("ReadBufferingStream") {
         CHECK(n == 'A');
         CHECK(stream.available() == 7);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-        CHECK(history.readString() ==
+        CHECK(log.str() ==
               "readBytes(4) -> 4"
               "available() -> 4");
 #endif
@@ -69,7 +70,7 @@ TEST_CASE("ReadBufferingStream") {
         int result = stream.peek();
 
         CHECK(result == -1);
-        CHECK(history.readString() == "peek() -> -1");
+        CHECK(log.str() == "peek() -> -1");
       }
 
       SUBCASE("doesn't call readBytes() when buffer is empty") {
@@ -78,7 +79,7 @@ TEST_CASE("ReadBufferingStream") {
         int result = stream.peek();
 
         CHECK(result == 'A');
-        CHECK(history.readString() == "peek() -> 65");
+        CHECK(log.str() == "peek() -> 65");
       }
 
       SUBCASE("doesn't call peek() when buffer is full") {
@@ -89,7 +90,7 @@ TEST_CASE("ReadBufferingStream") {
 
         CHECK(result == 'B');
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-        CHECK(history.readString() == "readBytes(4) -> 2");
+        CHECK(log.str() == "readBytes(4) -> 2");
 #endif
       }
     }
@@ -105,7 +106,7 @@ TEST_CASE("ReadBufferingStream") {
 
         CHECK(result == "ABCDEFG");
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-        CHECK(history.readString() ==
+        CHECK(log.str() ==
               "readBytes(4) -> 4"
               "readBytes(4) -> 3");
 #endif
@@ -118,7 +119,7 @@ TEST_CASE("ReadBufferingStream") {
 
         CHECK(result == -1);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-        CHECK(history.readString() == "readBytes(4) -> 0");
+        CHECK(log.str() == "readBytes(4) -> 0");
 #endif
       }
     }
@@ -132,7 +133,7 @@ TEST_CASE("ReadBufferingStream") {
 
         CHECK(result == 0);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-        CHECK(history.readString() == "readBytes(4) -> 0");
+        CHECK(log.str() == "readBytes(4) -> 0");
 #endif
       }
 
@@ -145,7 +146,7 @@ TEST_CASE("ReadBufferingStream") {
         CHECK(c == 'A');
         CHECK(result == 1);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-        CHECK(history.readString() == "readBytes(4) -> 4");
+        CHECK(log.str() == "readBytes(4) -> 4");
 #endif
       }
 
@@ -159,7 +160,7 @@ TEST_CASE("ReadBufferingStream") {
         CHECK(c == 'B');
         CHECK(result == 1);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-        CHECK(history.readString() == "readBytes(4) -> 4");
+        CHECK(log.str() == "readBytes(4) -> 4");
 #endif
       }
 
@@ -173,7 +174,7 @@ TEST_CASE("ReadBufferingStream") {
         CHECK(c == std::string("BCDEFGH"));
         CHECK(result == 7);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-        CHECK(history.readString() ==
+        CHECK(log.str() ==
               "readBytes(4) -> 4"
               "readBytes(4) -> 4");
 #endif
@@ -189,7 +190,7 @@ TEST_CASE("ReadBufferingStream") {
         CHECK(c == std::string("BCDE"));
         CHECK(result == 4);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-        CHECK(history.readString() ==
+        CHECK(log.str() ==
               "readBytes(4) -> 4"
               "readBytes(4) -> 4");
 #endif
@@ -204,7 +205,7 @@ TEST_CASE("ReadBufferingStream") {
 
         CHECK(result == 0);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-        CHECK(history.readString() ==
+        CHECK(log.str() ==
               "readBytes(4) -> 1"
               "readBytes(4) -> 0");
 #endif
@@ -213,7 +214,7 @@ TEST_CASE("ReadBufferingStream") {
 
     SUBCASE("flush()") {
       stream.flush();
-      CHECK(history.readString() == "flush()");
+      CHECK(log.str() == "flush()");
     }
 
     SUBCASE("copy constructor") {
@@ -226,7 +227,7 @@ TEST_CASE("ReadBufferingStream") {
 
       CHECK(result == 'B');
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-      CHECK(history.readString() == "readBytes(4) -> 4");
+      CHECK(log.str() == "readBytes(4) -> 4");
 #endif
     }
   }
@@ -250,7 +251,7 @@ TEST_CASE("ReadBufferingStream") {
       int c = stream.peek();
 
       CHECK(c == 'A');
-      CHECK(history.readString() == "peek() -> 65");
+      CHECK(log.str() == "peek() -> 65");
     }
 
     SUBCASE("read()") {
@@ -259,7 +260,7 @@ TEST_CASE("ReadBufferingStream") {
       int c = stream.read();
 
       CHECK(c == 'A');
-      CHECK(history.readString() == "read() -> 65");
+      CHECK(log.str() == "read() -> 65");
     }
 
     SUBCASE("readBytes()") {
@@ -271,7 +272,7 @@ TEST_CASE("ReadBufferingStream") {
       CHECK(n == 3);
       CHECK(s == std::string("ABC"));
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-      CHECK(history.readString() == "readBytes(3) -> 3");
+      CHECK(log.str() == "readBytes(3) -> 3");
 #endif
     }
   }
@@ -290,7 +291,7 @@ TEST_CASE("ReadBufferingStream") {
 
     CHECK(c == std::string("{\"heEFGH"));
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-    CHECK(history.readString() == "readBytes(64) -> 28");
+    CHECK(log.str() == "readBytes(64) -> 28");
 #endif
   }
 }

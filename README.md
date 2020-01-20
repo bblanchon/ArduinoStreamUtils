@@ -17,7 +17,7 @@ This library provides some helpers classes and functions for dealing with stream
 
 For example, with this library, you can improve the performance of your program by buffering the data it reads from a file. You could also debug your program more easily by logging what it sends to a Web service.
 
-Read on, to see how StreamUtils can help your program.
+Read on to see how StreamUtils can help your program!
 
 Buffering read operations
 -------------------------
@@ -47,12 +47,12 @@ Unfortunately, this optimization is only possible if:
 1. `Stream.readBytes()` is declared `virtual` in your Arduino Code (as it's the case for ESP8266), and
 2. the derived class has an optimized implementation of `readBytes()` (as it's the case for SPIFFS' `File`).
 
-When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client` defines a `read()` method similar to `readBytes`, excepts that this one is `virtual` on all platforms.
+When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client` defines a `read()` method similar to `readBytes()`, except that this one is `virtual` on all platforms.
 
 Buffering write operations
 --------------------------
 
-Similarly, you can greatly significantly performance by writing many bytes at once.
+Similarly, you can improve performance significantly by writing many bytes at once.
 For example, if you write to `WiFiClient` one bytes at a time, it will be very slow; it's much faster if you send large chunks.
 
 ![WriteBufferingStream](extras/images/WriteBuffer.svg)
@@ -130,7 +130,7 @@ Logging read and write operations
 
 Of course, you could log read and write operations by combining `ReadLoggingStream` and `WriteLoggingStream`, but there is a simpler solution: `LoggingStream`.
 
-![LogginStream](extras/images/Logger.svg)
+![LoggingStream](extras/images/Logger.svg)
 
 As usual, if your program is:
 
@@ -154,6 +154,34 @@ char response[256];
 loggingClient.readBytes(response, 256);
 ```
 
+
+Writing to a `String`
+---------------------
+
+Sometimes, you use a piece of code that expects a `Print` instance (like `ReadLoggingStream`), but you want the output in a `String` instead of a regular `Stream`.
+In that case, use the `StringPrint` class. It wraps a `String` within a `Print` implementation.
+
+![StringPrint](extras/images/StringPrint.svg)
+
+Here is how you can use it:
+
+```c++
+StringPrint stream;
+
+stream.print("Temperature = ");
+stream.print(22.3);
+stream.print(" °C");
+
+String result = stream.str();
+```
+
+At the end of this snippet, the string `result` contains:
+
+```
+Temperature = 22.30 °C
+```
+
+
 Other classes
 -------------
 
@@ -167,6 +195,7 @@ See the equivalence table below.
 | `LoggingClient`        | `LoggingStream`        |                  |
 | `WriteBufferingClient` | `WriteBufferingStream` | `BufferingPrint` |
 | `ReadBufferingClient`  | `ReadBufferingStream`  |                  |
+|                        |                        | `StringPrint`    |
 
 When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client::read()` often provides an optimized implementation.
 
