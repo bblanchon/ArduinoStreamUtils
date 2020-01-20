@@ -8,4 +8,4 @@ project(StreamUtils)
 enable_testing()
 
 include_directories(${CMAKE_CURRENT_LIST_DIR}/src)
-add_subdirectory(test)
+add_subdirectory(extras/test)

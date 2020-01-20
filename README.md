@@ -25,7 +25,7 @@ Buffering read operations
 Sometimes, you can significantly improve performance by reading many bytes at once. 
 For example, [according to SPIFFS's wiki](https://github.com/pellepl/spiffs/wiki/Performance-and-Optimizing#reading-files), it's much faster to read files in chunks of 64 bytes than reading them one byte at a time.
 
-![ReadBufferingStream](examples/ReadBuffer/ReadBuffer.svg)
+![ReadBufferingStream](extras/images/ReadBuffer.svg)
 
 To buffer the input, simply decorate the original `Stream` with `ReadBufferingStream`. For example, suppose your program reads a JSON document from SPIFFS, like that:
 
@@ -55,7 +55,7 @@ Buffering write operations
 Similarly, you can greatly significantly performance by writing many bytes at once.
 For example, if you write to `WiFiClient` one bytes at a time, it will be very slow; it's much faster if you send large chunks.
 
-![WriteBufferingStream](examples/WriteBuffer/WriteBuffer.svg)
+![WriteBufferingStream](extras/images/WriteBuffer.svg)
 
 To add a buffer, decorate the original `Stream` with  `WriteBufferingStream`. For example, if your program sends a JSON document via `WiFiClient`, like that:
 
@@ -79,7 +79,7 @@ Logging write operations
 
 When debugging a program that makes HTTP requests, the first thing you want to check is that the request is correct. With this library, you can decorate the `EthernetClient` or the `WiFiClient` to log everything to the serial.
 
-![WriteLoggingStream](examples/WriteLogger/WriteLogger.svg)
+![WriteLoggingStream](extras/images/WriteLogger.svg)
 
 For example, if you program is:
 
@@ -105,7 +105,7 @@ Logging read operations
 
 Similarly, you often want to see what the HTTP server sent back. With this library, you can decorate the `EthernetClient` or the `WiFiClient` to log everything to the serial.
 
-![ReadLoggingStream](examples/ReadLogger/ReadLogger.svg)
+![ReadLoggingStream](extras/images/ReadLogger.svg)
 
 For example, if you program is:
 
@@ -130,7 +130,7 @@ Logging read and write operations
 
 Of course, you could log read and write operations by combining `ReadLoggingStream` and `WriteLoggingStream`, but there is a simpler solution: `LoggingStream`.
 
-![LogginStream](examples/Logger/Logger.svg)
+![LogginStream](extras/images/Logger.svg)
 
 As usual, if your program is:
 
