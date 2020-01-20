@@ -1,8 +1,8 @@
 StreamUtils - Change log
 ========================
 
-HEAD
-----
+1.3.0 (2020/01/20)
+-----
 
 * Move auxiliary content to `extras/` to comply with new library layout
 * Add `StringPrint` and `StringStream`
