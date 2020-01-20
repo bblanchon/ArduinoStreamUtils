@@ -182,6 +182,14 @@ Temperature = 22.30 °C
 ```
 
 
+Reading from a `String`
+-----------------------
+
+Similarly, there are cases where you have a `String`, but you need to pass a `Stream` to some other piece of code. In that case, use `StringStream`; it's similar to `StrintPrint`, except you can read as well.
+
+![StringStream](extras/images/StringStream.svg)
+
+
 Other classes
 -------------
 
@@ -195,7 +203,7 @@ See the equivalence table below.
 | `LoggingClient`        | `LoggingStream`        |                  |
 | `WriteBufferingClient` | `WriteBufferingStream` | `BufferingPrint` |
 | `ReadBufferingClient`  | `ReadBufferingStream`  |                  |
-|                        |                        | `StringPrint`    |
+|                        | `StringStream`         | `StringPrint`    |
 
 When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client::read()` often provides an optimized implementation.
 

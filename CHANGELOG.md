@@ -5,7 +5,7 @@ HEAD
 ----
 
 * Move auxiliary content to `extras/` to comply with new library layout
-* Add `StringPrint`
+* Add `StringPrint` and `StringStream`
 
 1.2.2 (2019/07/18)
 -----

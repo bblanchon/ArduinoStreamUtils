@@ -18,6 +18,7 @@ set(SOURCES
 	ReadLoggingClientTest.cpp
 	ReadLoggingStreamTest.cpp
 	StringPrintTest.cpp
+	StringStreamTest.cpp
 	WriteBufferingClientTest.cpp
 	WriteBufferingStreamTest.cpp
 	WriteLoggingClientTest.cpp

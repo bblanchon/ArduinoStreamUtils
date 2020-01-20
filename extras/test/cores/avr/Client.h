@@ -5,10 +5,9 @@
 #pragma once
 
 #include "Stream.h"
+#include "WString.h"
 
-#include <string>
-
-using IPAddress = std::string;
+using IPAddress = String;
 
 struct Client : Stream {
   virtual int connect(IPAddress ip, uint16_t port) = 0;

@@ -18,7 +18,7 @@ struct Print {
   }
 
   size_t print(const String &s) {
-    return write(s.c_str(), s.size());
+    return write(s.c_str(), s.length());
   }
 
   size_t print(const char *s) {
@@ -27,7 +27,7 @@ struct Print {
 
   template <typename T>
   size_t print(const T &value) {
-    return print(std::to_string(value));
+    return print(String(value));
   }
 
   template <typename T>

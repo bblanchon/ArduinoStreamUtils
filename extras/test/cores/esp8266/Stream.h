@@ -27,11 +27,11 @@ struct Stream : Print {
   }
 
   virtual String readString() {
-    size_t n = available();
-    std::string result;
-    result.resize(n);
-    n = readBytes(&result[0], n);
-    result.resize(n);
+    String result;
+    int c;
+    while ((c = read()) >= 0) {
+      result += c;
+    }
     return result;
   }
 };

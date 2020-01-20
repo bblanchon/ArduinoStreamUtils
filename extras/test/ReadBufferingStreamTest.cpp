@@ -5,16 +5,16 @@
 #include "FailingAllocator.hpp"
 
 #include "StreamUtils/Prints/StringPrint.hpp"
-#include "StreamUtils/Streams/MemoryStream.hpp"
 #include "StreamUtils/Streams/ReadBufferingStream.hpp"
 #include "StreamUtils/Streams/SpyingStream.hpp"
+#include "StreamUtils/Streams/StringStream.hpp"
 
 #include "doctest.h"
 
 using namespace StreamUtils;
 
 TEST_CASE("ReadBufferingStream") {
-  MemoryStream upstream(64);
+  StringStream upstream;
   StringPrint log;
   SpyingStream spy{upstream, log};
 
@@ -23,17 +23,12 @@ TEST_CASE("ReadBufferingStream") {
     Stream& stream = bufferedStream;
 
     SUBCASE("available()") {
-      upstream.print("ABCDEFGH");
-
       SUBCASE("empty input") {
-        upstream.flush();
         CHECK(stream.available() == 0);
         CHECK(log.str() == "available() -> 0");
       }
 
       SUBCASE("read empty input") {
-        upstream.flush();
-
         int n = stream.read();
 
         CHECK(n == -1);
@@ -46,11 +41,15 @@ TEST_CASE("ReadBufferingStream") {
       }
 
       SUBCASE("same a upstream") {
+        upstream.print("ABCDEFGH");
+
         CHECK(stream.available() == 8);
         CHECK(log.str() == "available() -> 8");
       }
 
       SUBCASE("upstream + in buffer") {
+        upstream.print("ABCDEFGH");
+
         int n = stream.read();
 
         CHECK(n == 'A');

@@ -4,11 +4,10 @@
 
 #pragma once
 
+#include <WString.h>
+
 #include <stdint.h>
 #include <cstring>
-#include <string>
-
-using String = std::string;
 
 struct Print {
   virtual size_t write(const uint8_t *buffer, size_t size) = 0;
@@ -19,7 +18,7 @@ struct Print {
   }
 
   size_t print(const String &s) {
-    return write(s.c_str(), s.size());
+    return write(s.c_str(), s.length());
   }
 
   size_t print(const char *s) {
@@ -28,7 +27,7 @@ struct Print {
 
   template <typename T>
   size_t print(const T &value) {
-    return print(std::to_string(value));
+    return print(String(value));
   }
 
   template <typename T>
