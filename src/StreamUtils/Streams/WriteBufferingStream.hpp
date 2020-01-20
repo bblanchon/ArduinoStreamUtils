@@ -18,7 +18,7 @@ struct BasicWriteBufferingStream
                                      TAllocator allocator = TAllocator())
       : StreamProxy<ReadForwardingPolicy, WriteBufferingPolicy<TAllocator>>(
             upstream, {}, {capacity, allocator}) {}
-};  // namespace StreamUtils
+};
 
 using WriteBufferingStream = BasicWriteBufferingStream<DefaultAllocator>;
 }  // namespace StreamUtils

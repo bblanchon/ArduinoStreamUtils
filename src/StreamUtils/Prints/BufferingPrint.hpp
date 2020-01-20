@@ -16,7 +16,7 @@ struct BasicBufferingPrint : PrintProxy<WriteBufferingPolicy<TAllocator>> {
                                TAllocator allocator = TAllocator())
       : PrintProxy<WriteBufferingPolicy<TAllocator>>(upstream,
                                                      {capacity, allocator}) {}
-};  // namespace StreamUtils
+};
 
 using BufferingPrint = BasicBufferingPrint<DefaultAllocator>;
 }  // namespace StreamUtils

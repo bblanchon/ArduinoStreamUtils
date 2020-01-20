@@ -23,7 +23,7 @@ struct BasicWriteBufferingClient
             target, ReadForwardingPolicy{},
             WriteBufferingPolicy<TAllocator>{capacity, allocator},
             ConnectForwardingPolicy{}) {}
-};  // namespace StreamUtils
+};
 
 using WriteBufferingClient = BasicWriteBufferingClient<DefaultAllocator>;
 }  // namespace StreamUtils

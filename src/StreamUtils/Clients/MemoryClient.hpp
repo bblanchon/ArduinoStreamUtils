@@ -86,7 +86,7 @@ class BasicMemoryClient : public Client {
  private:
   BasicMemoryStream<TAllocator> _stream;
   bool _connected;
-};  // namespace StreamUtils
+};
 using MemoryClient = BasicMemoryClient<DefaultAllocator>;
 
 }  // namespace StreamUtils

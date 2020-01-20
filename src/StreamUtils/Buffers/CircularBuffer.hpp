@@ -96,6 +96,6 @@ class CircularBuffer {
   size_t _size;
   size_t _begin;
   size_t _end;
-};  // namespace StreamUtils
+};
 
 }  // namespace StreamUtils
