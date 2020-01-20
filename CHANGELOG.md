@@ -6,6 +6,7 @@ HEAD
 
 * Move auxiliary content to `extras/` to comply with new library layout
 * Add `StringPrint` and `StringStream`
+* Extract `StreamUtils.hpp`, same as `StreamUtils.h` except it keeps everything in the `StreamUtils` namespace.
 
 1.2.2 (2019/07/18)
 -----
