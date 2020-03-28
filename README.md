@@ -211,7 +211,7 @@ When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Cl
 Portability
 -----------
 
-This library relies on the definition on `Client`, `Print`, and `Stream`, which unfortunately differ from core to core.
+This library relies on the definitions of `Client`, `Print`, and `Stream`, which unfortunately differ from one core to another.
 
 It has been tested on the following cores:
 
