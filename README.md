@@ -4,7 +4,7 @@ StreamUtils: Power-ups for Arduino Streams
 [![arduino-library-badge](https://www.ardu-badge.com/badge/StreamUtils.svg?version=1.3.0)](https://www.ardu-badge.com/StreamUtils/1.3.0)
 [![Build Status](https://travis-ci.org/bblanchon/ArduinoStreamUtils.svg?branch=master)](https://travis-ci.org/bblanchon/ArduinoStreamUtils)
 
-The *stream* is an essential abstraction of Arduino, we find it in many places:
+The *stream* is an essential abstraction in Arduino, we find it in many places:
 
 * `HardwareSerial`
 * `SoftwareSerial`
@@ -190,20 +190,43 @@ Similarly, there are cases where you have a `String`, but you need to pass a `St
 ![StringStream](extras/images/StringStream.svg)
 
 
+EEPROM as a stream
+------------------
+
+SteamUtils also allows using EEPROM as a stream. Simply create an instance of `EepromStream` and specify the start address and the size of the region you want to expose.
+
+![EepromStream](extras/images/EepromStream.svg)
+
+For example, it allows you to save a JSON document in EEPROM:
+
+```c++
+EepromStream eepromStream(0, 128);
+serializeJson(doc, eepromStream);
+eepromStream.flush();  // <- calls EEPROM.commit() on ESP (optional)
+```
+
+In the same way, you can read a JSON document from EEPROM:
+
+```c++
+EepromStream eepromStream(0, 128);
+deserializeJson(doc, eepromStream);
+```
+
 Other classes
 -------------
 
 Some of the decorators are also available for the `Print` and `Client` classes.
 See the equivalence table below.
 
-| `Client`               | `Stream`               | `Print`          |
-|:-----------------------|:-----------------------|:-----------------|
-| `WriteLoggingClient`   | `WriteLoggingStream`   | `LoggingPrint`   |
-| `ReadLoggingClient`    | `ReadLoggingStream`    |                  |
-| `LoggingClient`        | `LoggingStream`        |                  |
-| `WriteBufferingClient` | `WriteBufferingStream` | `BufferingPrint` |
-| `ReadBufferingClient`  | `ReadBufferingStream`  |                  |
-|                        | `StringStream`         | `StringPrint`    |
+| Purpose                    | `Client`               | `Stream`               | `Print`          |
+|:---------------------------|:-----------------------|:-----------------------|:-----------------|
+| Log *write* operations     | `WriteLoggingClient`   | `WriteLoggingStream`   | `LoggingPrint`   |
+| Log *read* operations      | `ReadLoggingClient`    | `ReadLoggingStream`    |                  |
+| Log *read* and *write* op. | `LoggingClient`        | `LoggingStream`        |                  |
+| Buffer *write* operations  | `WriteBufferingClient` | `WriteBufferingStream` | `BufferingPrint` |
+| Buffer *read* operations   | `ReadBufferingClient`  | `ReadBufferingStream`  |                  |
+| Use `String` as a stream   |                        | `StringStream`         | `StringPrint`    |
+| Use EEPROM as a stream     |                        | `EepromStream`         |                  |
 
 When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client::read()` often provides an optimized implementation.
 
@@ -216,8 +239,9 @@ This library relies on the definitions of `Client`, `Print`, and `Stream`, which
 It has been tested on the following cores:
 
 * AVR
-* SAMD
+* ESP32
 * ESP8266
+* SAMD
 
 If your core is not supported, please [open an issue](https://github.com/bblanchon/ArduinoStreamUtils/issues/new).
 Thank you for your understanding.

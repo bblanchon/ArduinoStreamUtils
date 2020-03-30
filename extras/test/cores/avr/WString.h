@@ -33,7 +33,7 @@ class String : private std::string {
     copy(buf, bufsize, index);
   }
 
-  friend operator==(const String& lhs, const char* rhs) {
+  friend bool operator==(const String& lhs, const char* rhs) {
     return static_cast<const std::string&>(lhs) == rhs;
   }
 

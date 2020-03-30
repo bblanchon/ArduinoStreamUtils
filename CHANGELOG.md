@@ -1,6 +1,12 @@
 StreamUtils - Change log
 ========================
 
+HEAD
+----
+
+* Add `EepromStream`
+* Add support for ESP32
+
 1.3.0 (2020/01/20)
 -----
 

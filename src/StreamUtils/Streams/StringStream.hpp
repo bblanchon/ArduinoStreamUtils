@@ -7,6 +7,7 @@
 #include <Stream.h>
 #include <WString.h>
 
+#include "../Configuration.hpp"
 #include "../Polyfills.hpp"
 
 namespace StreamUtils {
@@ -54,13 +55,15 @@ class StringStream : public Stream {
     return c;
   }
 
-  size_t readBytes(char* buffer, size_t length) {
+#if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
+  size_t readBytes(char* buffer, size_t length) override {
     if (length > _str.length())
       length = _str.length();
     _str.toCharArray(buffer, length);
     _str.remove(0, length);
     return length;
   }
+#endif
 
   int peek() override {
     return _str.length() > 0 ? _str[0] : -1;

@@ -1,0 +1,15 @@
+# StreamUtils - github.com/bblanchon/ArduinoStreamUtils
+# Copyright Benoit Blanchon 2019-2020
+# MIT License
+
+add_library(SamdCore INTERFACE)
+
+target_include_directories(SamdCore
+	INTERFACE
+		${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_compile_definitions(SamdCore
+	INTERFACE
+		ARDUINO_ARCH_SAMD
+)

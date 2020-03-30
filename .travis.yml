@@ -1,9 +1,11 @@
-sudo: false
 language: cpp
-matrix:
+jobs:
   include:
+    - env: SCRIPT=cmake
     - env: SCRIPT=platformio BOARD=uno
     - env: SCRIPT=platformio BOARD=huzzah
+    - env: SCRIPT=platformio BOARD=esp32dev
+    - env: SCRIPT=platformio BOARD=mkr1000USB
 cache:
   directories:
     - "~/.platformio"
