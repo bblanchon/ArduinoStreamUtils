@@ -242,6 +242,7 @@ It has been tested on the following cores:
 * ESP32
 * ESP8266
 * SAMD
+* Teensy
 
 If your core is not supported, please [open an issue](https://github.com/bblanchon/ArduinoStreamUtils/issues/new).
 Thank you for your understanding.

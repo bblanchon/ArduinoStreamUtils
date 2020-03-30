@@ -6,6 +6,7 @@ jobs:
     - env: SCRIPT=platformio BOARD=huzzah
     - env: SCRIPT=platformio BOARD=esp32dev
     - env: SCRIPT=platformio BOARD=mkr1000USB
+    - env: SCRIPT=platformio BOARD=teensy31
 cache:
   directories:
     - "~/.platformio"

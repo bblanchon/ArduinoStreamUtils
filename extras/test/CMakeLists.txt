@@ -64,3 +64,12 @@ add_executable(StreamUtilsTestSamd ${SOURCES})
 target_link_libraries(StreamUtilsTestSamd SamdCore)
 
 add_test(Samd StreamUtilsTestSamd)
+
+########## Teensy ##########
+
+add_subdirectory(cores/teensy)
+
+add_executable(StreamUtilsTestTeensy ${SOURCES})
+target_link_libraries(StreamUtilsTestTeensy TeensyCore)
+
+add_test(Teensy StreamUtilsTestTeensy)
