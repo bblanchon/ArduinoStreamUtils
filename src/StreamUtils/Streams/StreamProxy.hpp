@@ -55,7 +55,7 @@ class StreamProxy : public Stream {
   }
 #endif
 
- private:
+ protected:
   Stream &_upstream;
   ReadPolicy _reader;
   WritePolicy _writer;

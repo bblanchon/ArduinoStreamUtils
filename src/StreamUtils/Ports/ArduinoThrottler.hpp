@@ -6,9 +6,9 @@
 
 namespace StreamUtils {
 
-class DefaultThrottler {
+class ArduinoThrottler {
  public:
-  DefaultThrottler(uint32_t rate) : _interval(1000000 / rate), _last(0) {}
+  ArduinoThrottler(uint32_t rate) : _interval(1000000 / rate), _last(0) {}
 
   void throttle() {
     auto now = micros();

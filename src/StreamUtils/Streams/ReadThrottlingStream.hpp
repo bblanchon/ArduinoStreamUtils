@@ -9,7 +9,7 @@
 #include "StreamProxy.hpp"
 
 #ifdef ARDUINO
-#include "../Ports/DefaultThrottler.hpp"
+#include "../Ports/ArduinoThrottler.hpp"
 #endif
 
 namespace StreamUtils {
@@ -19,13 +19,17 @@ class BasicReadThrottlingStream
     : public StreamProxy<ReadThrottlingPolicy<TThrottler>,
                          WriteForwardingPolicy> {
  public:
-  BasicReadThrottlingStream(Stream &upstream,
+  BasicReadThrottlingStream(Stream& upstream,
                             TThrottler throttler = TThrottler())
       : StreamProxy<ReadThrottlingPolicy<TThrottler>, WriteForwardingPolicy>(
-            upstream, {}, {throttler}) {}
+            upstream, ReadThrottlingPolicy<TThrottler>(throttler), {}) {}
+
+  const TThrottler& throttler() const {
+    return this->_reader.throttler();
+  }
 };
 
 #ifdef ARDUINO
-using ReadThrottlingStream = BasicReadThrottlingStream<DefaultThrottler>;
+using ReadThrottlingStream = BasicReadThrottlingStream<ArduinoThrottler>;
 #endif
 }  // namespace StreamUtils
