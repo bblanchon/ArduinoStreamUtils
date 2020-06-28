@@ -14,7 +14,7 @@ struct Stream : Print {
   virtual size_t readBytes(char *buffer, size_t length) {
     size_t count = 0;
     while (count < length) {
-      int c = read();
+      int c = timedRead();
       if (c < 0)
         break;
       *buffer++ = (char)c;
@@ -22,6 +22,7 @@ struct Stream : Print {
     }
     return count;
   }
+
   virtual size_t readBytes(uint8_t *buffer, size_t length) {
     return readBytes((char *)buffer, length);
   }
@@ -29,9 +30,14 @@ struct Stream : Print {
   virtual String readString() {
     String result;
     int c;
-    while ((c = read()) >= 0) {
+    while ((c = timedRead()) >= 0) {
       result += c;
     }
     return result;
+  }
+
+ protected:
+  int timedRead() {
+    return read();
   }
 };
