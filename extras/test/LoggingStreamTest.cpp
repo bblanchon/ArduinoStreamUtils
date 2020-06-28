@@ -65,7 +65,7 @@ TEST_CASE("LoggingStream") {
 
     CHECK(n == 3);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-    CHECK(log.str() == "readBytes(4) -> 3");
+    CHECK(log.str() == "readBytes(4) -> 3 [timeout]");
 #endif
     CHECK(output.str() == "ABC");
   }

@@ -35,7 +35,7 @@ TEST_CASE("ReadBufferingStream") {
         CHECK(stream.available() == 0);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
         CHECK(log.str() ==
-              "readBytes(4) -> 0"
+              "readBytes(4) -> 0 [timeout]"
               "available() -> 0");
 #endif
       }
@@ -89,7 +89,7 @@ TEST_CASE("ReadBufferingStream") {
 
         CHECK(result == 'B');
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-        CHECK(log.str() == "readBytes(4) -> 2");
+        CHECK(log.str() == "readBytes(4) -> 2 [timeout]");
 #endif
       }
     }
@@ -107,7 +107,7 @@ TEST_CASE("ReadBufferingStream") {
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
         CHECK(log.str() ==
               "readBytes(4) -> 4"
-              "readBytes(4) -> 3");
+              "readBytes(4) -> 3 [timeout]");
 #endif
       }
 
@@ -118,7 +118,7 @@ TEST_CASE("ReadBufferingStream") {
 
         CHECK(result == -1);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-        CHECK(log.str() == "readBytes(4) -> 0");
+        CHECK(log.str() == "readBytes(4) -> 0 [timeout]");
 #endif
       }
     }
@@ -132,7 +132,7 @@ TEST_CASE("ReadBufferingStream") {
 
         CHECK(result == 0);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-        CHECK(log.str() == "readBytes(4) -> 0");
+        CHECK(log.str() == "readBytes(4) -> 0 [timeout]");
 #endif
       }
 
@@ -205,8 +205,8 @@ TEST_CASE("ReadBufferingStream") {
         CHECK(result == 0);
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
         CHECK(log.str() ==
-              "readBytes(4) -> 1"
-              "readBytes(4) -> 0");
+              "readBytes(4) -> 1 [timeout]"
+              "readBytes(4) -> 0 [timeout]");
 #endif
       }
     }
@@ -290,7 +290,7 @@ TEST_CASE("ReadBufferingStream") {
 
     CHECK(c == std::string("{\"heEFGH"));
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-    CHECK(log.str() == "readBytes(64) -> 28");
+    CHECK(log.str() == "readBytes(64) -> 28 [timeout]");
 #endif
   }
 }

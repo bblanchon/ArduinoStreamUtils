@@ -98,7 +98,7 @@ TEST_CASE("WriteLoggingClient") {
     size_t n = loggingClient.read(s, 4);
 
     CHECK(n == 3);
-    CHECK(log.str() == "read(4) -> 3");
+    CHECK(log.str() == "read(4) -> 3 [timeout]");
     CHECK(output.str() == "");
   }
 
@@ -111,7 +111,7 @@ TEST_CASE("WriteLoggingClient") {
     CHECK(n == 3);
     CHECK(output.str() == "");
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-    CHECK(log.str() == "readBytes(4) -> 3");
+    CHECK(log.str() == "readBytes(4) -> 3 [timeout]");
 #endif
   }
 

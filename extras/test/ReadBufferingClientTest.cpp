@@ -38,7 +38,7 @@ TEST_CASE("ReadBufferingClient") {
 
         CHECK(client.available() == 0);
         CHECK(log.str() ==
-              "read(4) -> 0"
+              "read(4) -> 0 [timeout]"
               "available() -> 0");
       }
 
@@ -83,7 +83,7 @@ TEST_CASE("ReadBufferingClient") {
         int result = client.peek();
 
         CHECK(result == 'B');
-        CHECK(log.str() == "read(4) -> 2");
+        CHECK(log.str() == "read(4) -> 2 [timeout]");
       }
     }
 
@@ -99,7 +99,7 @@ TEST_CASE("ReadBufferingClient") {
         CHECK(result == "ABCDEFG");
         CHECK(log.str() ==
               "read(4) -> 4"
-              "read(4) -> 3");
+              "read(4) -> 3 [timeout]");
       }
 
       SUBCASE("returns -1 when empty") {
@@ -108,7 +108,7 @@ TEST_CASE("ReadBufferingClient") {
         int result = client.read();
 
         CHECK(result == -1);
-        CHECK(log.str() == "read(4) -> 0");
+        CHECK(log.str() == "read(4) -> 0 [timeout]");
       }
     }
 
@@ -120,7 +120,7 @@ TEST_CASE("ReadBufferingClient") {
         size_t result = client.readBytes(&c, 1);
 
         CHECK(result == 0);
-        CHECK(log.str() == "read(4) -> 0");
+        CHECK(log.str() == "read(4) -> 0 [timeout]");
       }
 
       SUBCASE("reads 4 bytes when requested one") {
@@ -183,8 +183,8 @@ TEST_CASE("ReadBufferingClient") {
 
         CHECK(result == 0);
         CHECK(log.str() ==
-              "read(4) -> 1"
-              "read(4) -> 0");
+              "read(4) -> 1 [timeout]"
+              "read(4) -> 0 [timeout]");
       }
     }
 
@@ -264,6 +264,6 @@ TEST_CASE("ReadBufferingClient") {
     CHECK(client.readBytes(&c[3], 1) == 1);
 
     CHECK(c == std::string("{\"heEFGH"));
-    CHECK(log.str() == "read(64) -> 28");
+    CHECK(log.str() == "read(64) -> 28 [timeout]");
   }
 }

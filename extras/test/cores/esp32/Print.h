@@ -26,6 +26,10 @@ struct Print {
     return write(s, std::strlen(s));
   }
 
+  size_t println() {
+    return 0;
+  }
+
   template <typename T>
   size_t print(const T &value) {
     return print(String(value));

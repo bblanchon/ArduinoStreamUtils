@@ -38,7 +38,10 @@ class ReadSpyingPolicy {
     _log.print("readBytes(");
     _log.print(size);
     _log.print(") -> ");
-    _log.println(result);
+    _log.print(result);
+    if (size > result)
+      _log.print(" [timeout]");
+    _log.println();
     return result;
   }
 
@@ -47,7 +50,10 @@ class ReadSpyingPolicy {
     _log.print("read(");
     _log.print(size);
     _log.print(") -> ");
-    _log.println(result);
+    _log.print(result);
+    if (size > result)
+      _log.print(" [timeout]");
+    _log.println();
     return result;
   }
 
