@@ -88,8 +88,10 @@ class LinearBuffer {
   }
 
   template <typename TTarget>  // Stream or Client
-  void reloadFrom(TTarget &source) {
-    size_t n = optimizedRead(source, &_data, _data.size());
+  void reloadFrom(TTarget &source, size_t size) {
+    if (size > _data.size())
+      size = _data.size();
+    size_t n = optimizedRead(source, &_data, size);
     _begin = &_data;
     _end = &_data + n;
   }

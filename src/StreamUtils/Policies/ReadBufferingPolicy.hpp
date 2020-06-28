@@ -27,8 +27,16 @@ struct ReadBufferingPolicy {
   int read(TTarget &target) {
     if (!_buffer)
       return target.read();
-    reloadIfEmpty(target);
-    return isEmpty() ? -1 : _buffer.read();
+
+    if (_buffer.available() > 0)
+      return _buffer.read();
+
+    size_t avail = static_cast<size_t>(target.available());
+    if (avail <= 1)
+      return target.read();
+
+    _buffer.reloadFrom(target, avail);
+    return _buffer.read();
   }
 
   int peek(Stream &stream) {
@@ -54,9 +62,11 @@ struct ReadBufferingPolicy {
     if (size > 0) {
       // (at this point, the buffer is empty)
 
+      size_t avail = static_cast<size_t>(target.available());
+
       // should we use the buffer?
-      if (size < _buffer.capacity()) {
-        reload(target);
+      if (avail > size && size < _buffer.capacity()) {
+        _buffer.reloadFrom(target, avail);
         size_t bytesRead = _buffer.readBytes(buffer, size);
         result += bytesRead;
       } else {
@@ -77,19 +87,7 @@ struct ReadBufferingPolicy {
     return _buffer.available() == 0;
   }
 
-  template <typename TTarget>  // Stream or Client
-  void reloadIfEmpty(TTarget &target) {
-    if (!isEmpty())
-      return;
-    reload(target);
-  }
-
-  template <typename TTarget>  // Stream or Client
-  void reload(TTarget &target) {
-    _buffer.reloadFrom(target);
-  }
-
   LinearBuffer<TAllocator> _buffer;
-};
+};  // namespace StreamUtils
 
 }  // namespace StreamUtils
