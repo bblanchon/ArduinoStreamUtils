@@ -7,6 +7,7 @@
 #include <Stream.h>
 
 #include "../Buffers/LinearBuffer.hpp"
+#include "../Helpers.hpp"
 
 namespace StreamUtils {
 
@@ -37,7 +38,7 @@ struct ReadBufferingPolicy {
   template <typename TTarget>  // Stream or Client
   size_t readBytes(TTarget &target, char *buffer, size_t size) {
     if (!_buffer)
-      return readDirectly(target, buffer, size);
+      return optimizedRead(target, buffer, size);
 
     size_t result = 0;
 
@@ -60,7 +61,7 @@ struct ReadBufferingPolicy {
         result += bytesRead;
       } else {
         // we can bypass the buffer
-        result += readDirectly(target, buffer, size);
+        result += optimizedRead(target, buffer, size);
       }
     }
 
@@ -72,14 +73,6 @@ struct ReadBufferingPolicy {
   }
 
  private:
-  size_t readDirectly(Client &client, char *buffer, size_t size) {
-    return client.read(reinterpret_cast<uint8_t *>(buffer), size);
-  }
-
-  size_t readDirectly(Stream &stream, char *buffer, size_t size) {
-    return stream.readBytes(buffer, size);
-  }
-
   bool isEmpty() const {
     return _buffer.available() == 0;
   }

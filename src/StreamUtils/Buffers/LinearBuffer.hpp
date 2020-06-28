@@ -7,6 +7,7 @@
 #include <Client.h>
 #include <Stream.h>
 
+#include "../Helpers.hpp"
 #include "CharArray.hpp"
 
 namespace StreamUtils {
@@ -86,14 +87,9 @@ class LinearBuffer {
     return size;
   }
 
-  void reloadFrom(Stream &source) {
-    size_t n = source.readBytes(&_data, _data.size());
-    _begin = &_data;
-    _end = &_data + n;
-  }
-
-  void reloadFrom(Client &source) {
-    size_t n = source.read(reinterpret_cast<uint8_t *>(&_data), _data.size());
+  template <typename TTarget>  // Stream or Client
+  void reloadFrom(TTarget &source) {
+    size_t n = optimizedRead(source, &_data, _data.size());
     _begin = &_data;
     _end = &_data + n;
   }
