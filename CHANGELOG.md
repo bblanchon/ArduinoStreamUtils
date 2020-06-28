@@ -4,7 +4,9 @@ StreamUtils - Change log
 HEAD
 ----
 
-* Fixed unwanted waits in `ReadBufferingClient` and `ReadBufferingStream`.
+* Fix unwanted waits in `ReadBufferingClient` and `ReadBufferingStream`.
+* Stop calling `Client::read()` in place of `Stream::readBytes()`,
+  because it doesn't honor the timeout.
 
 1.4.0 (2020/03/30)
 -----

@@ -132,7 +132,7 @@ TEST_CASE("ReadBufferingClient") {
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
         CHECK(log.str() ==
               "available() -> 0"
-              "read(1) -> 0 [timeout]");
+              "readBytes(1) -> 0 [timeout]");
 #else
         CHECK(log.str() ==
               "available() -> 0"
@@ -148,9 +148,15 @@ TEST_CASE("ReadBufferingClient") {
 
         CHECK(c == 'A');
         CHECK(result == 1);
+#if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
+        CHECK(log.str() ==
+              "available() -> 7"
+              "readBytes(4) -> 4");
+#else
         CHECK(log.str() ==
               "available() -> 7"
               "read(4) -> 4");
+#endif
       }
 
       SUBCASE("copy one byte from buffer") {
@@ -176,11 +182,19 @@ TEST_CASE("ReadBufferingClient") {
 
         CHECK(c == std::string("BCDEFGH"));
         CHECK(result == 7);
+#if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
+        CHECK(log.str() ==
+              "available() -> 8"
+              "read(4) -> 4"
+              "available() -> 4"
+              "readBytes(4) -> 4");
+#else
         CHECK(log.str() ==
               "available() -> 8"
               "read(4) -> 4"
               "available() -> 4"
               "read(4) -> 4");
+#endif
       }
 
       SUBCASE("copy content from buffer twice") {
@@ -192,11 +206,19 @@ TEST_CASE("ReadBufferingClient") {
 
         CHECK(c == std::string("BCDE"));
         CHECK(result == 4);
+#if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
+        CHECK(log.str() ==
+              "available() -> 8"
+              "read(4) -> 4"
+              "available() -> 4"
+              "readBytes(4) -> 4");
+#else
         CHECK(log.str() ==
               "available() -> 8"
               "read(4) -> 4"
               "available() -> 4"
               "read(4) -> 4");
+#endif
       }
 
       SUBCASE("read past the end") {
@@ -211,9 +233,9 @@ TEST_CASE("ReadBufferingClient") {
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
         CHECK(log.str() ==
               "available() -> 1"
-              "read(1) -> 1"
+              "readBytes(1) -> 1"
               "available() -> 0"
-              "read(1) -> 0 [timeout]");
+              "readBytes(1) -> 0 [timeout]");
 #else
         CHECK(log.str() ==
               "available() -> 1"
@@ -284,7 +306,7 @@ TEST_CASE("ReadBufferingClient") {
       CHECK(n == 3);
       CHECK(s == std::string("ABC"));
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-      CHECK(log.str() == "read(3) -> 3");
+      CHECK(log.str() == "readBytes(3) -> 3");
 #endif
     }
   }
@@ -302,8 +324,14 @@ TEST_CASE("ReadBufferingClient") {
     CHECK(client.readBytes(&c[3], 1) == 1);
 
     CHECK(c == std::string("{\"heEFGH"));
+#if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
+    CHECK(log.str() ==
+          "available() -> 28"
+          "readBytes(28) -> 28");
+#else
     CHECK(log.str() ==
           "available() -> 28"
           "read(28) -> 28");
+#endif
   }
 }

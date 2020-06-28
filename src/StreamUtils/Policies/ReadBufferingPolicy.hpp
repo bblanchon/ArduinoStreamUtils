@@ -43,10 +43,25 @@ struct ReadBufferingPolicy {
     return isEmpty() ? stream.peek() : _buffer.peek();
   }
 
+  size_t readBytes(Stream &stream, char *buffer, size_t size) {
+    return doReadBytes(stream, buffer, size);
+  }
+
+  int read(Client &client, uint8_t *buffer, size_t size) {
+    return doReadBytes(client, reinterpret_cast<char *>(buffer), size);
+  }
+
+ private:
+  bool isEmpty() const {
+    return _buffer.available() == 0;
+  }
+
+  LinearBuffer<TAllocator> _buffer;
+
   template <typename TTarget>  // Stream or Client
-  size_t readBytes(TTarget &target, char *buffer, size_t size) {
+  size_t doReadBytes(TTarget &target, char *buffer, size_t size) {
     if (!_buffer)
-      return optimizedRead(target, buffer, size);
+      return readOrReadBytes(target, buffer, size);
 
     size_t result = 0;
 
@@ -71,23 +86,12 @@ struct ReadBufferingPolicy {
         result += bytesRead;
       } else {
         // we can bypass the buffer
-        result += optimizedRead(target, buffer, size);
+        result += readOrReadBytes(target, buffer, size);
       }
     }
 
     return result;
   }
-
-  int read(Client &client, uint8_t *buffer, size_t size) {
-    return readBytes(client, reinterpret_cast<char *>(buffer), size);
-  }
-
- private:
-  bool isEmpty() const {
-    return _buffer.available() == 0;
-  }
-
-  LinearBuffer<TAllocator> _buffer;
 };  // namespace StreamUtils
 
 }  // namespace StreamUtils

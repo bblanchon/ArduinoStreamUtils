@@ -91,7 +91,7 @@ class LinearBuffer {
   void reloadFrom(TTarget &source, size_t size) {
     if (size > _data.size())
       size = _data.size();
-    size_t n = optimizedRead(source, &_data, size);
+    size_t n = readOrReadBytes(source, &_data, size);
     _begin = &_data;
     _end = &_data + n;
   }

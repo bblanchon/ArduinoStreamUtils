@@ -6,14 +6,11 @@
 
 namespace StreamUtils {
 
-inline size_t optimizedRead(Stream &stream, char *buffer, size_t size) {
-  // For Stream, use the regular readBytes()
+inline size_t readOrReadBytes(Stream &stream, char *buffer, size_t size) {
   return stream.readBytes(buffer, size);
 }
 
-inline size_t optimizedRead(Client &client, char *buffer, size_t size) {
-  // For Client, prefer read() because it's virtual, so it can be optimized by
-  // the derived class
+inline size_t readOrReadBytes(Client &client, char *buffer, size_t size) {
   return client.read(reinterpret_cast<uint8_t *>(buffer), size);
 }
 
