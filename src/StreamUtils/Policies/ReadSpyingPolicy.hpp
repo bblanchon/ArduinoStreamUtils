@@ -45,13 +45,13 @@ class ReadSpyingPolicy {
     return result;
   }
 
-  size_t read(Client &target, uint8_t *buffer, size_t size) {
-    size_t result = target.read(buffer, size);
+  int read(Client &target, uint8_t *buffer, size_t size) {
+    int result = target.read(buffer, size);
     _log.print("read(");
     _log.print(size);
     _log.print(") -> ");
     _log.print(result);
-    if (size > result)
+    if (static_cast<int>(size) > result)
       _log.print(" [timeout]");
     _log.println();
     return result;

@@ -25,7 +25,7 @@ struct ReadForwardingPolicy {
     return target.readBytes(buffer, size);
   }
 
-  size_t read(Client &target, uint8_t *buffer, size_t size) {
+  int read(Client &target, uint8_t *buffer, size_t size) {
     return target.read(buffer, size);
   }
 };

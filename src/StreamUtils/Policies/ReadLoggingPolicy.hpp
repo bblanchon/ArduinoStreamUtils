@@ -33,8 +33,8 @@ class ReadLoggingPolicy {
     return result;
   }
 
-  size_t read(Client &client, uint8_t *buffer, size_t size) {
-    size_t result = client.read(buffer, size);
+  int read(Client &client, uint8_t *buffer, size_t size) {
+    int result = client.read(buffer, size);
     _log.write(buffer, result);
     return result;
   }

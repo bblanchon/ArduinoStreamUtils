@@ -78,7 +78,7 @@ struct ReadBufferingPolicy {
     return result;
   }
 
-  size_t read(Client &client, uint8_t *buffer, size_t size) {
+  int read(Client &client, uint8_t *buffer, size_t size) {
     return readBytes(client, reinterpret_cast<char *>(buffer), size);
   }
 
