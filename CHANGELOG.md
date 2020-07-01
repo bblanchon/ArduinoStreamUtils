@@ -1,8 +1,8 @@
 StreamUtils - Change log
 ========================
 
-HEAD
-----
+1.4.1 (2020/07/01)
+-----
 
 * Fix unwanted waits in `ReadBufferingClient` and `ReadBufferingStream`.
 * Stop calling `Client::read()` in place of `Stream::readBytes()`,
