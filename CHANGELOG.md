@@ -1,8 +1,8 @@
 StreamUtils - Change log
 ========================
 
-HEAD
-----
+1.5.0 (2020/08/04)
+-----
 
 * Add `WaitingPrint`, `WriteWaitingClient`, and `WriteWaitingStream`.
 
