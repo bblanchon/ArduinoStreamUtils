@@ -18,3 +18,4 @@
 #include "StreamUtils/Streams/StringStream.hpp"
 #include "StreamUtils/Streams/WriteBufferingStream.hpp"
 #include "StreamUtils/Streams/WriteLoggingStream.hpp"
+#include "StreamUtils/Streams/WriteWaitingStream.hpp"

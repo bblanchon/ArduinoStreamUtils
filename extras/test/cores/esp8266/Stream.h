@@ -36,6 +36,8 @@ struct Stream : Print {
     return result;
   }
 
+  void setTimeout(unsigned long) {}
+
  protected:
   int timedRead() {
     return read();

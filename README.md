@@ -11,6 +11,7 @@ The *stream* is an essential abstraction in Arduino, we find it in many places:
 * `File`
 * `EthernetClient`
 * `WiFiClient`
+* `Wire`
 * and many others...
 
 This library provides some helpers classes and functions for dealing with streams. 
@@ -18,6 +19,7 @@ This library provides some helpers classes and functions for dealing with stream
 For example, with this library, you can improve the performance of your program by buffering the data it reads from a file. You could also debug your program more easily by logging what it sends to a Web service.
 
 Read on to see how StreamUtils can help your program!
+
 
 Buffering read operations
 -------------------------
@@ -48,6 +50,7 @@ Unfortunately, this optimization is only possible if:
 2. the derived class has an optimized implementation of `readBytes()` (as it's the case for SPIFFS' `File`).
 
 When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client` defines a `read()` method similar to `readBytes()`, except that this one is `virtual` on all platforms.
+
 
 Buffering write operations
 --------------------------
@@ -100,6 +103,7 @@ loggingClient.println("User-Agent: Arduino");
 
 Everything you write to `loggingClient` is written to `client` and logged to `Serial`.
 
+
 Logging read operations
 -----------------------
 
@@ -124,6 +128,7 @@ loggingClient.readBytes(response, 256);
 ```
 
 `loggingClient` forwards all operations to `client` and logs read operation to `Serial`.
+
 
 Logging read and write operations
 ---------------------------------
@@ -153,6 +158,33 @@ loggingClient.println("User-Agent: Arduino");
 char response[256];
 loggingClient.readBytes(response, 256);
 ```
+
+
+Wait and repeat write operations
+--------------------------------
+
+Sometimes, a stream is limited to the capacity of its internal buffer. In that case, you must wait before sending more data.
+To solve this problem, StreamUtils provides the `WriteWaitingStream` decorator:
+
+![WriteWaitingStream](extras/images/WriteWaitingStream.svg)
+
+This function repeatedly waits and retries until it times out.
+You can customize the `wait()` function; by default, it's [`yield()`](https://www.arduino.cc/en/Reference/SchedulerYield).
+
+For example, if you want to send more than 32 bytes with the [Wire library](https://www.arduino.cc/en/reference/wire), you can do:
+
+```c++
+WriteWaitingStream wireStream(Wire, [](){
+  Wire.endTransmission(false); // <- don't forget this argument
+  Wire.beginTransmission(address);
+});
+
+Wire.beginTransmission(address); 
+wireStream.print("This is a very very long message that I'm sending!");
+Wire.endTransmission();
+```
+
+As you can see, we use the `wait()` function as a hook to flush the Wire transmission buffer. Notice that we pass `false` to [`endTransmission()`](https://www.arduino.cc/en/Reference/WireEndTransmission) so that it sends the data but doesn't actually stop the transmission.
 
 
 Writing to a `String`
@@ -212,6 +244,7 @@ EepromStream eepromStream(0, 128);
 deserializeJson(doc, eepromStream);
 ```
 
+
 Other classes
 -------------
 
@@ -225,6 +258,7 @@ See the equivalence table below.
 | Log *read* and *write* op. | `LoggingClient`        | `LoggingStream`        |                  |
 | Buffer *write* operations  | `WriteBufferingClient` | `WriteBufferingStream` | `BufferingPrint` |
 | Buffer *read* operations   | `ReadBufferingClient`  | `ReadBufferingStream`  |                  |
+| Repeat *write* operations  | `WriteWaitingClient`   | `WriteWaitingStream`   | `WaitingPrint`   |
 | Use `String` as a stream   |                        | `StringStream`         | `StringPrint`    |
 | Use EEPROM as a stream     |                        | `EepromStream`         |                  |
 

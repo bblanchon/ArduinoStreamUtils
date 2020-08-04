@@ -21,10 +21,13 @@ set(SOURCES
 	ReadThrottlingStreamTest.cpp
 	StringPrintTest.cpp
 	StringStreamTest.cpp
+	WaitingPrintTest.cpp
 	WriteBufferingClientTest.cpp
 	WriteBufferingStreamTest.cpp
 	WriteLoggingClientTest.cpp
 	WriteLoggingStreamTest.cpp
+	WriteWaitingClientTest.cpp
+	WriteWaitingStreamTest.cpp
 
 	doctest.h
 	main.cpp

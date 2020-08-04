@@ -5,6 +5,7 @@
 #pragma once
 
 #include <Stream.h>
+#include "../Polyfills.hpp"
 
 namespace StreamUtils {
 
@@ -12,7 +13,9 @@ template <typename ReadPolicy, typename WritePolicy>
 class StreamProxy : public Stream {
  public:
   explicit StreamProxy(Stream &upstream, ReadPolicy reader, WritePolicy writer)
-      : _upstream(upstream), _reader(reader), _writer(writer) {}
+      : _upstream(upstream),
+        _reader(reader),
+        _writer(Polyfills::move(writer)) {}
 
   StreamProxy(const StreamProxy &other)
       : _upstream(other._upstream),

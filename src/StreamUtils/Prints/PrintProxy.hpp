@@ -6,13 +6,15 @@
 
 #include <Print.h>
 
+#include "../Polyfills.hpp"
+
 namespace StreamUtils {
 
 template <typename WritePolicy>
 class PrintProxy : public Print {
  public:
   explicit PrintProxy(Print &upstream, WritePolicy writer)
-      : _target(upstream), _writer(writer) {}
+      : _target(upstream), _writer(Polyfills::move(writer)) {}
 
   PrintProxy(const PrintProxy &other)
       : _target(other._target), _writer(other._writer) {}
@@ -39,7 +41,7 @@ class PrintProxy : public Print {
 
   using Print::write;
 
- private:
+ protected:
   Print &_target;
   WritePolicy _writer;
 };
