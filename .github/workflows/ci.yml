@@ -1,0 +1,75 @@
+name: Continuous Integration
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Unit Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+      - name: Build
+        run: cmake --build .
+        working-directory: ./build
+      - name: Run tests
+        run: ctest --output-on-failure .
+        working-directory: ./build
+
+  platformio:
+    name: PlatformIO
+    needs: test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - board: uno
+          - board: huzzah
+          - board: esp32dev
+          - board: mkr1000USB
+          - board: teensy31
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.platformio
+            ~/.cache/pip
+          key: ${{ runner.os }}-platformio
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x' 
+      - name: Install PlatformIO
+        run: pip install platformio
+      - name: Build EepromRead
+        if: ${{ matrix.board != 'mkr1000USB' }}
+        run: platformio ci "examples/EepromRead/EepromRead.ino" -l '.' -b ${{ matrix.board }}
+      - name: Build EepromWrite
+        if: ${{ matrix.board != 'mkr1000USB' }}
+        run: platformio ci "examples/EepromWrite/EepromWrite.ino" -l '.' -b ${{ matrix.board }}
+      - name: Build Hamming
+        if: ${{ !contains('mkr1000USB esp32dev', matrix.board) }}
+        run: platformio ci "examples/Hamming/Hamming.ino" -l '.' -b ${{ matrix.board }}
+      - name: Build Logger
+        run: platformio ci "examples/Logger/Logger.ino" -l '.' -b ${{ matrix.board }}
+      - name: Build ReadBuffer
+        run: platformio ci "examples/ReadBuffer/ReadBuffer.ino" -l '.' -b ${{ matrix.board }}
+      - name: Build ReadLogger
+        run: platformio ci "examples/ReadLogger/ReadLogger.ino" -l '.' -b ${{ matrix.board }}
+      - name: Build StringPrint
+        run: platformio ci "examples/StringPrint/StringPrint.ino" -l '.' -b ${{ matrix.board }}
+      - name: Build StringStream
+        run: platformio ci "examples/StringStream/StringStream.ino" -l '.' -b ${{ matrix.board }}
+      - name: Build WriteBuffer
+        run: platformio ci "examples/WriteBuffer/WriteBuffer.ino" -l '.' -b ${{ matrix.board }}
+      - name: Build WriteLogger
+        run: platformio ci "examples/WriteLogger/WriteLogger.ino" -l '.' -b ${{ matrix.board }}
