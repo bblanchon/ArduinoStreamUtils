@@ -2,8 +2,6 @@
 // Copyright Benoit Blanchon 2019-2020
 // MIT License
 
-#include "FailingAllocator.hpp"
-
 #include "StreamUtils/Streams/MemoryStream.hpp"
 #include "StreamUtils/Streams/SpyingStream.hpp"
 

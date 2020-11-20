@@ -1,8 +1,10 @@
-#!/bin/sh -eux
+#!/bin/bash -eux
 
 pip install --user platformio
 
-for EXAMPLE in $PWD/examples/*/*.ino; 
+read -ra EXAMPLES_ARRAY <<< "$EXAMPLES"
+
+for EXAMPLE in "${EXAMPLES_ARRAY[@]}"; 
 do
-	platformio ci "$EXAMPLE" -l '.' -b "$BOARD"
+	platformio ci "$PWD/examples/$EXAMPLE/$EXAMPLE.ino" -l '.' -b "$BOARD"
 done

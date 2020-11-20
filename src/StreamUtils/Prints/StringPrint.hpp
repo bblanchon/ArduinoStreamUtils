@@ -42,6 +42,10 @@ class StringPrint : public Print {
     _str = Polyfills::move(str);
   }
 
+  void clear() {
+    _str = "";
+  }
+
  private:
   String _str;
 };

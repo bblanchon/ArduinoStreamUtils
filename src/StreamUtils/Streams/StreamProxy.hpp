@@ -12,7 +12,8 @@ namespace StreamUtils {
 template <typename ReadPolicy, typename WritePolicy>
 class StreamProxy : public Stream {
  public:
-  explicit StreamProxy(Stream &upstream, ReadPolicy reader, WritePolicy writer)
+  explicit StreamProxy(Stream &upstream, ReadPolicy reader = ReadPolicy{},
+                       WritePolicy writer = WritePolicy{})
       : _upstream(upstream),
         _reader(reader),
         _writer(Polyfills::move(writer)) {}

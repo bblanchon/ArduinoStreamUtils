@@ -2,8 +2,6 @@
 // Copyright Benoit Blanchon 2019-2020
 // MIT License
 
-#include "FailingAllocator.hpp"
-
 #include "StreamUtils/Prints/StringPrint.hpp"
 #include "StreamUtils/Streams/LoggingStream.hpp"
 #include "StreamUtils/Streams/MemoryStream.hpp"

@@ -2,11 +2,11 @@ language: cpp
 jobs:
   include:
     - env: SCRIPT=cmake
-    - env: SCRIPT=platformio BOARD=uno
-    - env: SCRIPT=platformio BOARD=huzzah
-    - env: SCRIPT=platformio BOARD=esp32dev
-    - env: SCRIPT=platformio BOARD=mkr1000USB
-    - env: SCRIPT=platformio BOARD=teensy31
+    - env: SCRIPT=platformio BOARD=uno        EXAMPLES="EepromRead EepromWrite Hamming Logger ReadBuffer ReadLogger StringPrint StringStream WriteBuffer WriteLogger"
+    - env: SCRIPT=platformio BOARD=huzzah     EXAMPLES="EepromRead EepromWrite Hamming Logger ReadBuffer ReadLogger StringPrint StringStream WriteBuffer WriteLogger"
+    - env: SCRIPT=platformio BOARD=esp32dev   EXAMPLES="EepromRead EepromWrite Logger ReadBuffer ReadLogger StringPrint StringStream WriteBuffer WriteLogger"
+    - env: SCRIPT=platformio BOARD=mkr1000USB EXAMPLES="Logger ReadBuffer ReadLogger StringPrint StringStream WriteBuffer WriteLogger"
+    - env: SCRIPT=platformio BOARD=teensy31   EXAMPLES="EepromRead EepromWrite Hamming Logger ReadBuffer ReadLogger StringPrint StringStream WriteBuffer WriteLogger"
 cache:
   directories:
     - "~/.platformio"

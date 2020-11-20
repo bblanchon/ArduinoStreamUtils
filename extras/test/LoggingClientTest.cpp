@@ -2,8 +2,6 @@
 // Copyright Benoit Blanchon 2019-2020
 // MIT License
 
-#include "FailingAllocator.hpp"
-
 #include "StreamUtils/Clients/LoggingClient.hpp"
 #include "StreamUtils/Clients/MemoryClient.hpp"
 #include "StreamUtils/Clients/SpyingClient.hpp"

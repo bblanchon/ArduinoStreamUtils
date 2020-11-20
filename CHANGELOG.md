@@ -1,6 +1,13 @@
 StreamUtils - Change log
 ========================
 
+HEAD
+----
+
+* Add `HammingPrint<7, 4>`
+* Add `HammingStream<7, 4>`, `HammingEncodingStream<7, 4>`, and `HammingDecodingStream<7, 4>`
+* Add `HammingClient<7, 4>`, `HammingEncodingClient<7, 4>`, and `HammingDecodingClient<7, 4>`
+
 1.5.0 (2020/08/04)
 -----
 

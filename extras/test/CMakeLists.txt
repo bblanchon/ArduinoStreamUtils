@@ -10,6 +10,13 @@ set(SOURCES
 	BufferingPrintTest.cpp
 	EepromStreamTest.cpp
 	FailingAllocator.hpp
+	HammingClientTest.cpp
+	HammingDecodingClientTest.cpp
+	HammingDecodingStreamTest.cpp
+	HammingEncodingClientTest.cpp
+	HammingEncodingStreamTest.cpp
+	HammingPrintTest.cpp
+	HammingStreamTest.cpp
 	LoggingClientTest.cpp
 	LoggingPrintTest.cpp
 	LoggingStreamTest.cpp

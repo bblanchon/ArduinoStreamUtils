@@ -6,6 +6,7 @@
 
 #include <Print.h>
 
+#include "../Configuration.hpp"
 #include "../Polyfills.hpp"
 
 namespace StreamUtils {
@@ -13,7 +14,7 @@ namespace StreamUtils {
 template <typename WritePolicy>
 class PrintProxy : public Print {
  public:
-  explicit PrintProxy(Print &upstream, WritePolicy writer)
+  explicit PrintProxy(Print &upstream, WritePolicy writer = WritePolicy{})
       : _target(upstream), _writer(Polyfills::move(writer)) {}
 
   PrintProxy(const PrintProxy &other)
