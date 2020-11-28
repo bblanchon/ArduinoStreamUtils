@@ -1,6 +1,12 @@
 StreamUtils - Change log
 ========================
 
+HEAD
+----
+
+* Add example `HammingSerial1.ino`
+
+
 1.6.0 (2020/11/20)
 -----
 
