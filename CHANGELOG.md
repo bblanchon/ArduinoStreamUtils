@@ -1,8 +1,8 @@
 StreamUtils - Change log
 ========================
 
-HEAD
-----
+1.6.1 (2021/94/05)
+-----
 
 * Add example `HammingSerial1.ino`
 * Add support for STM32 (issue #11)
