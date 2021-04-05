@@ -29,12 +29,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - board: uno
-          - board: huzzah
-          - board: esp32dev
-          - board: mkr1000USB
-          - board: teensy31
-          - board: nucleo_f031k6
+          - platform: atmelavr
+            board: uno
+          - platform: espressif8266
+            board: huzzah
+          - platform: espressif32
+            board: esp32dev
+          - platform: atmelsam
+            board: mkr1000USB
+          - platform: teensy
+            board: teensy31
+          - platform: ststm32
+            board: nucleo_f031k6
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -48,9 +54,11 @@ jobs:
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x' 
+          python-version: '3.x'
       - name: Install PlatformIO
         run: pip install platformio
+      - name: Install platform "${{ matrix.platform }}"
+        run: platformio platform install ${{ matrix.platform }}
       - name: Build EepromRead
         if: ${{ matrix.board != 'mkr1000USB' }}
         run: platformio ci "examples/EepromRead/EepromRead.ino" -l '.' -b ${{ matrix.board }}
