@@ -76,6 +76,15 @@ target_link_libraries(StreamUtilsTestSamd SamdCore)
 
 add_test(Samd StreamUtilsTestSamd)
 
+########## STM32 ##########
+
+add_subdirectory(cores/stm32)
+
+add_executable(StreamUtilsTestStm32 ${SOURCES})
+target_link_libraries(StreamUtilsTestStm32 Stm32Core)
+
+add_test(Stm32 StreamUtilsTestStm32)
+
 ########## Teensy ##########
 
 add_subdirectory(cores/teensy)

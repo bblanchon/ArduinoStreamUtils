@@ -5,6 +5,7 @@ HEAD
 ----
 
 * Add example `HammingSerial1.ino`
+* Add support for STM32 (issue #11)
 
 
 1.6.0 (2020/11/20)

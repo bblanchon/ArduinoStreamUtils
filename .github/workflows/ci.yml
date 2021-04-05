@@ -34,6 +34,7 @@ jobs:
           - board: esp32dev
           - board: mkr1000USB
           - board: teensy31
+          - board: nucleo_f031k6
     steps:
       - name: Checkout
         uses: actions/checkout@v2
