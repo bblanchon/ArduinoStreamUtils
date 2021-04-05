@@ -4,7 +4,11 @@
 
 #pragma once
 
+#if defined(WIN32) || defined(__WIN32) || defined(__WIN32__)
+#include <malloc.h>
+#else
 #include <alloca.h>
+#endif
 
 #include "../Configuration.hpp"
 
