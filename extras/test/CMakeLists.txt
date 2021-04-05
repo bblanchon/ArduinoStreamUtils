@@ -1,5 +1,5 @@
 # StreamUtils - github.com/bblanchon/ArduinoStreamUtils
-# Copyright Benoit Blanchon 2019-2020
+# Copyright Benoit Blanchon 2019-2021
 # MIT License
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")

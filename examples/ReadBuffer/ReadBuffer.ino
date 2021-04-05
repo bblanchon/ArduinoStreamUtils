@@ -1,5 +1,5 @@
 // StreamUtils - github.com/bblanchon/ArduinoStreamUtils
-// Copyright Benoit Blanchon 2019-2020
+// Copyright Benoit Blanchon 2019-2021
 // MIT License
 //
 // This example shows how to buffer the read operations of a stream.
