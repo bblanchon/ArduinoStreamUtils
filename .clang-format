@@ -2,3 +2,4 @@ BasedOnStyle: Google
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
+IncludeBlocks: Preserve
