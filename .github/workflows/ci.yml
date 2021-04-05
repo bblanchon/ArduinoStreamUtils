@@ -7,19 +7,32 @@ jobs:
     name: Unit Test
     runs-on: ubuntu-latest
     steps:
+      - name: Install
+        run: sudo apt-get install -y lcov
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure
-        run: |
-          mkdir build
-          cd build
-          cmake ..
+        run: cmake -DCOVERAGE=true .
       - name: Build
         run: cmake --build .
-        working-directory: ./build
       - name: Run tests
         run: ctest --output-on-failure .
-        working-directory: ./build
+      - name: Capture coverage data
+        run: lcov --capture --no-external --directory . --output-file coverage.info
+      - name: Filter coverage data
+        run: lcov --remove coverage.info "$(pwd)/extras/*" --output-file coverage_filtered.info
+      - name: Generate coverage report
+        run: mkdir coverage && genhtml coverage_filtered.info -o coverage -t ArduinoJson
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: coverage
+      - name: Upload to Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: coverage_filtered.info
 
   platformio:
     name: PlatformIO
