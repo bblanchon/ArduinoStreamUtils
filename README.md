@@ -61,6 +61,7 @@ Unfortunately, this optimization is only possible if:
 
 When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client` defines a `read()` method similar to `readBytes()`, except that this one is `virtual` on all platforms.
 
+If memory allocation fails, `ReadBufferingStream` behaves as if no buffer was used: it forwards all calls to the upstream `Stream`.
 
 ### Buffering write operations
 
@@ -84,6 +85,8 @@ bufferedWifiClient.flush();  // <- OPTIONAL
 ```
 
 Calling `flush()` is recommended but not mandatory. If you don't call it, the destructor of `WriteBufferingStream` will do it for you.
+
+If memory allocation fails, `WriteBufferingStream` behaves as if no buffer was used: it forwards all calls to the upstream `Stream`.
 
 How to add logging to a stream?
 -------------------------------
