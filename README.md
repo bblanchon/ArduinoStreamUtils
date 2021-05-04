@@ -351,13 +351,13 @@ This library relies on the definitions of `Client`, `Print`, and `Stream`, which
 
 It has been tested on the following cores:
 
-* AVR
-* ESP32
-* ESP8266
-* nRF52
-* SAMD
-* STM32
-* Teensy
+* [AVR](https://github.com/arduino/ArduinoCore-avr)
+* [ESP32](https://github.com/espressif/arduino-esp32)
+* [ESP8266](https://github.com/esp8266/Arduino)
+* [nRF52](https://github.com/adafruit/Adafruit_nRF52_Arduino)
+* [SAMD](https://github.com/arduino/ArduinoCore-samd)
+* [STM32](https://github.com/stm32duino/Arduino_Core_STM32)
+* [Teensy](https://github.com/PaulStoffregen/cores)
 
 If your core is not supported, please [open an issue](https://github.com/bblanchon/ArduinoStreamUtils/issues/new).
 Thank you for your understanding.
