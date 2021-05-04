@@ -67,6 +67,15 @@ target_link_libraries(StreamUtilsTestEsp8266 Esp8266Core)
 
 add_test(Esp8266 StreamUtilsTestEsp8266)
 
+########## NRF52 ##########
+
+add_subdirectory(cores/nrf52)
+
+add_executable(StreamUtilsTestNrf52 ${SOURCES})
+target_link_libraries(StreamUtilsTestNrf52 Nrf52Core)
+
+add_test(Nrf52 StreamUtilsTestNrf52)
+
 ########## SAMD ##########
 
 add_subdirectory(cores/samd)

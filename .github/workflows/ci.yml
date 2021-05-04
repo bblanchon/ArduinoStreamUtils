@@ -66,6 +66,10 @@ jobs:
             board: nucleo_f031k6
             eeprom: true
             softwareserial: true
+          - platform: nordicnrf52
+            board: adafruit_feather_nrf52840
+            eeprom: false
+            softwareserial: true
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -84,6 +88,9 @@ jobs:
         run: pip install platformio
       - name: Install platform "${{ matrix.platform }}"
         run: platformio platform install ${{ matrix.platform }}
+      - name: Install adafruit-nrfutil
+        if: ${{ matrix.platform == 'nordicnrf52' }}
+        run:  pip3 install adafruit-nrfutil
       - name: Build EepromRead
         if: ${{ matrix.eeprom }}
         run: platformio ci "examples/EepromRead/EepromRead.ino" -l '.' -b ${{ matrix.board }}

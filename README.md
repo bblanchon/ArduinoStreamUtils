@@ -354,6 +354,7 @@ It has been tested on the following cores:
 * AVR
 * ESP32
 * ESP8266
+* nRF52
 * SAMD
 * STM32
 * Teensy
