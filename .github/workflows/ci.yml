@@ -43,17 +43,29 @@ jobs:
       matrix:
         include:
           - platform: atmelavr
-            board: uno
+            board: leonardo
+            eeprom: true
+            softwareserial: true
           - platform: espressif8266
             board: huzzah
+            eeprom: true
+            softwareserial: true
           - platform: espressif32
             board: esp32dev
+            eeprom: true
+            softwareserial: false
           - platform: atmelsam
             board: mkr1000USB
+            eeprom: false
+            softwareserial: false
           - platform: teensy
             board: teensy31
+            eeprom: true
+            softwareserial: true
           - platform: ststm32
             board: nucleo_f031k6
+            eeprom: true
+            softwareserial: true
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -73,16 +85,15 @@ jobs:
       - name: Install platform "${{ matrix.platform }}"
         run: platformio platform install ${{ matrix.platform }}
       - name: Build EepromRead
-        if: ${{ matrix.board != 'mkr1000USB' }}
+        if: ${{ matrix.eeprom }}
         run: platformio ci "examples/EepromRead/EepromRead.ino" -l '.' -b ${{ matrix.board }}
       - name: Build EepromWrite
-        if: ${{ matrix.board != 'mkr1000USB' }}
+        if: ${{ matrix.eeprom }}
         run: platformio ci "examples/EepromWrite/EepromWrite.ino" -l '.' -b ${{ matrix.board }}
       - name: Build HammingSerial1
-        if: ${{ matrix.board != 'uno' }}
         run: platformio ci "examples/HammingSerial1/HammingSerial1.ino" -l '.' -b ${{ matrix.board }}
       - name: Build HammingSoftwareSerial
-        if: ${{ !contains('mkr1000USB esp32dev', matrix.board) }}
+        if: ${{ matrix.softwareserial }}
         run: platformio ci "examples/HammingSoftwareSerial/HammingSoftwareSerial.ino" -l '.' -b ${{ matrix.board }}
       - name: Build Logger
         run: platformio ci "examples/Logger/Logger.ino" -l '.' -b ${{ matrix.board }}
