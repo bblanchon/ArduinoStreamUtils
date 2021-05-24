@@ -1,6 +1,11 @@
 StreamUtils - Change log
 ========================
 
+HEAD
+----
+
+* Support `Print::flush()` on AVR
+
 1.6.1 (2021/94/05)
 -----
 
