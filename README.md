@@ -141,6 +141,8 @@ loggingClient.readBytes(response, 256);
 
 `loggingClient` forwards all operations to `client` and logs read operation to `Serial`.
 
+⚠ **WARNING** ⚠   
+If your program receives data from one serial port and logs to another one, **make sure the latter runs at a much higher speed**. Logging must be at least ten times faster, or it will slow down the receiving port, which may drop incoming bytes.
 
 ### Logging read and write operations
 
