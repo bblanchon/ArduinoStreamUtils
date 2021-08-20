@@ -63,6 +63,8 @@ When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Cl
 
 If memory allocation fails, `ReadBufferingStream` behaves as if no buffer was used: it forwards all calls to the upstream `Stream`.
 
+Adding a buffer only makes sense for **unbuffered** streams. For example, there is **no benefit to adding a buffer to serial ports** because they already include an internal buffer.
+
 ### Buffering write operations
 
 Similarly, you can improve performance significantly by writing many bytes at once.
@@ -87,6 +89,8 @@ bufferedWifiClient.flush();
 `flush()` sends the remaining data; if you forget to call it, the end of the message will be missing. The destructor of `WriteBufferingStream` calls `flush()`, so you can remove this line if you destroy the decorator immediately.
 
 If memory allocation fails, `WriteBufferingStream` behaves as if no buffer was used: it forwards all calls to the upstream `Stream`.
+
+Adding a buffer only makes sense for **unbuffered** streams. For example, there is **no benefit to adding a buffer to serial ports** because they already include an internal buffer.
 
 How to add logging to a stream?
 -------------------------------
