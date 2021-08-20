@@ -81,10 +81,10 @@ Then, you just need to add two lines:
 ```c++
 WriteBufferingStream bufferedWifiClient{wifiClient, 64};
 serializeJson(doc, bufferedWifiClient);
-bufferedWifiClient.flush();  // <- OPTIONAL
+bufferedWifiClient.flush();
 ```
 
-Calling `flush()` is recommended but not mandatory. If you don't call it, the destructor of `WriteBufferingStream` will do it for you.
+`flush()` sends the remaining data; if you forget to call it, the end of the message will be missing. The destructor of `WriteBufferingStream` calls `flush()`, so you can remove this line if you destroy the decorator immediately.
 
 If memory allocation fails, `WriteBufferingStream` behaves as if no buffer was used: it forwards all calls to the upstream `Stream`.
 
