@@ -90,7 +90,10 @@ jobs:
         run: platformio platform install ${{ matrix.platform }}
       - name: Install adafruit-nrfutil
         if: ${{ matrix.platform == 'nordicnrf52' }}
-        run:  pip3 install adafruit-nrfutil
+        run: pip3 install adafruit-nrfutil
+      - name: Include Adafruit_TinyUSB.h # https://github.com/adafruit/Adafruit_nRF52_Arduino/issues/653
+        if: ${{ matrix.platform == 'nordicnrf52' }}
+        run: find examples/ -name '*.ino' -exec sed -i 's/\(#include <StreamUtils.h>\)/\1\n#include <Adafruit_TinyUSB.h>/' {} +
       - name: Build EepromRead
         if: ${{ matrix.eeprom }}
         run: platformio ci "examples/EepromRead/EepromRead.ino" -l '.' -b ${{ matrix.board }}
