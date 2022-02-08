@@ -59,7 +59,10 @@ class StringStream : public Stream {
   size_t readBytes(char* buffer, size_t length) override {
     if (length > _str.length())
       length = _str.length();
-    _str.toCharArray(buffer, length);
+    if (length == 1)
+      *buffer = _str.charAt(0);
+    else
+      _str.toCharArray(buffer, length);
     _str.remove(0, length);
     return length;
   }
