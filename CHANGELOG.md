@@ -1,13 +1,13 @@
 StreamUtils - Change log
 ========================
 
-HEAD
-----
+1.6.2 (2022/02/09)
+-----
 
 * Support `Print::flush()` on AVR
 * Fix `StringStream.readBytes()` on ESP8266, ESP32, and STM32 (issue #16)
 
-1.6.1 (2021/94/05)
+1.6.1 (2021/04/05)
 -----
 
 * Add example `HammingSerial1.ino`
