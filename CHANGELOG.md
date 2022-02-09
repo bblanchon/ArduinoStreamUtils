@@ -5,13 +5,13 @@ HEAD
 ----
 
 * Support `Print::flush()` on AVR
+* Fix `StringStream.readBytes()` on ESP8266, ESP32, and STM32 (issue #16)
 
 1.6.1 (2021/94/05)
 -----
 
 * Add example `HammingSerial1.ino`
 * Add support for STM32 (issue #11)
-
 
 1.6.0 (2020/11/20)
 -----

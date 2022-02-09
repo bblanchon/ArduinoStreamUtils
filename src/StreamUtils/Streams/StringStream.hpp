@@ -59,7 +59,8 @@ class StringStream : public Stream {
   size_t readBytes(char* buffer, size_t length) override {
     if (length > _str.length())
       length = _str.length();
-    _str.toCharArray(buffer, static_cast<unsigned int>(length));
+    // Don't use _str.ToCharArray() because it inserts a terminator
+    memcpy(buffer, _str.c_str(), length);
     _str.remove(0, static_cast<unsigned int>(length));
     return length;
   }

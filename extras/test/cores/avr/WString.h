@@ -30,11 +30,6 @@ class String : private std::string {
     erase(begin() + index, begin() + index + count);
   }
 
-  void toCharArray(char* buf, unsigned int bufsize,
-                   unsigned int index = 0) const {
-    copy(buf, bufsize, index);
-  }
-
   friend bool operator==(const String& lhs, const char* rhs) {
     return static_cast<const std::string&>(lhs) == rhs;
   }
