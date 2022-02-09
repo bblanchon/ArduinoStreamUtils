@@ -110,7 +110,7 @@ class HammingEncodingPolicy<7, 4, TAllocator> {
   }
 
   TAllocator _allocator;
-  int16_t _remainder = -1;
+  int8_t _remainder = -1;
 };
 
 }  // namespace StreamUtils

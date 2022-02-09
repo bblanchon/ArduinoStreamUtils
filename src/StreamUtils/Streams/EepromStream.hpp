@@ -19,19 +19,19 @@ class EepromStream : public Stream {
       : _readAddress(address), _writeAddress(address), _end(address + size) {}
 
   int available() override {
-    return _end - _readAddress;
+    return static_cast<int>(_end - _readAddress);
   }
 
   int read() override {
     if (_readAddress >= _end)
       return -1;
-    return EEPROM.read(_readAddress++);
+    return EEPROM.read(static_cast<int>(_readAddress++));
   }
 
   int peek() override {
     if (_readAddress >= _end)
       return -1;
-    return EEPROM.read(_readAddress);
+    return EEPROM.read(static_cast<int>(_readAddress));
   }
 
   void flush() override {
@@ -47,10 +47,11 @@ class EepromStream : public Stream {
     if (size > remaining)
       size = remaining;
     for (size_t i = 0; i < size; i++) {
+      int address = static_cast<int>(_writeAddress++);
 #if STREAMUTILS_USE_EEPROM_UPDATE
-      EEPROM.update(_writeAddress++, buffer[i]);
+      EEPROM.update(address, buffer[i]);
 #else
-      EEPROM.write(_writeAddress++, buffer[i]);
+      EEPROM.write(address, buffer[i]);
 #endif
     }
     return size;
@@ -59,10 +60,11 @@ class EepromStream : public Stream {
   size_t write(uint8_t data) override {
     if (_writeAddress >= _end)
       return 0;
+    int address = static_cast<int>(_writeAddress++);
 #if STREAMUTILS_USE_EEPROM_UPDATE
-    EEPROM.update(_writeAddress++, data);
+    EEPROM.update(address, data);
 #else
-    EEPROM.write(_writeAddress++, data);
+    EEPROM.write(address, data);
 #endif
     return 1;
   }

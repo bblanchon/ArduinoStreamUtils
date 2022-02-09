@@ -36,7 +36,7 @@ TEST_CASE("BufferingPrint") {
 
     GIVEN("the buffer is empty") {
       SUBCASE("write(uint8_t)") {
-        int n = bufferingPrint.write('A');
+        size_t n = bufferingPrint.write('A');
 
         CHECK(n == 1);
         CHECK(log.str() == "");
@@ -102,14 +102,14 @@ TEST_CASE("BufferingPrint") {
     // }
 
     SUBCASE("write(uint8_t) forwards to target") {
-      int n = bufferingPrint.write('X');
+      size_t n = bufferingPrint.write('X');
 
       CHECK(n == 1);
       CHECK(log.str() == "write('X') -> 1");
     }
 
     SUBCASE("write(char*,1) forwards to target") {
-      int n = bufferingPrint.write("A", 1);
+      size_t n = bufferingPrint.write("A", 1);
 
       CHECK(n == 1);
       CHECK(log.str() == "write('A', 1) -> 1");

@@ -68,7 +68,8 @@ class HammingDecodingPolicy<7, 4, TAllocator> {
   }
 
   int read(Client &client, uint8_t *buffer, size_t size) {
-    return doReadBytes(client, reinterpret_cast<char *>(buffer), size);
+    return static_cast<int>(
+        doReadBytes(client, reinterpret_cast<char *>(buffer), size));
   }
 
  private:

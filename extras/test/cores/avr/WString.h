@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <ostream>
 #include <string>
 
 class String : private std::string {
@@ -13,6 +14,7 @@ class String : private std::string {
   String(String&& s) : std::string(std::move(s)) {}
   String(const char* s) : std::string(s) {}
   String(int n) : std::string(std::to_string(n)) {}
+  String(size_t n) : std::string(std::to_string(n)) {}
 
   String& operator=(const String& rhs) {
     std::string::operator=(rhs);

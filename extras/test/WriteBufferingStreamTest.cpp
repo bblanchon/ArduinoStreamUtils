@@ -62,7 +62,7 @@ TEST_CASE("WriteBufferingStream") {
       upstream.print("ABC");
 
       char s[4] = {0};
-      int n = stream.readBytes(s, 3);
+      size_t n = stream.readBytes(s, 3);
 
       CHECK(n == 3);
       CHECK(s == std::string("ABC"));
@@ -73,7 +73,7 @@ TEST_CASE("WriteBufferingStream") {
 
     GIVEN("the buffer is empty") {
       SUBCASE("write(uint8_t)") {
-        int n = stream.write('A');
+        size_t n = stream.write('A');
 
         CHECK(n == 1);
         CHECK(log.str() == "");
@@ -135,14 +135,14 @@ TEST_CASE("WriteBufferingStream") {
     WriteBufferingStream stream{spy, 0};
 
     SUBCASE("write(uint8_t) forwards to upstream") {
-      int n = stream.write('X');
+      size_t n = stream.write('X');
 
       CHECK(n == 1);
       CHECK(log.str() == "write('X') -> 1");
     }
 
     SUBCASE("write(char*,1) forwards to upstream") {
-      int n = stream.write("A", 1);
+      size_t n = stream.write("A", 1);
 
       CHECK(n == 1);
       CHECK(log.str() == "write('A', 1) -> 1");

@@ -301,7 +301,7 @@ TEST_CASE("ReadBufferingClient") {
       target.print("ABC");
 
       char s[4] = {0};
-      int n = client.readBytes(s, 3);
+      size_t n = client.readBytes(s, 3);
 
       CHECK(n == 3);
       CHECK(s == std::string("ABC"));

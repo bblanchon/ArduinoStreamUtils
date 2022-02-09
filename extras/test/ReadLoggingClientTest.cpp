@@ -51,7 +51,7 @@ TEST_CASE("ReadLoggingClient") {
   SUBCASE("connected()") {
     uint8_t n = loggingClient.connected();
 
-    CHECK(n == false);
+    CHECK(n == 0);
     CHECK(log.str() == "connected() -> 0");
     CHECK(output.str() == "");
   }
@@ -116,7 +116,7 @@ TEST_CASE("ReadLoggingClient") {
   }
 
   SUBCASE("write(char)") {
-    int n = loggingClient.write('A');
+    size_t n = loggingClient.write('A');
 
     CHECK(n == 1);
     CHECK(log.str() == "write('A') -> 1");
@@ -124,7 +124,7 @@ TEST_CASE("ReadLoggingClient") {
   }
 
   SUBCASE("write(char*,size_t)") {
-    int n = loggingClient.write("ABCDEF", 6);
+    size_t n = loggingClient.write("ABCDEF", 6);
 
     CHECK(n == 4);
     CHECK(log.str() == "write('ABCDEF', 6) -> 4");

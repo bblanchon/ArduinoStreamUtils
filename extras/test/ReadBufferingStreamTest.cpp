@@ -286,7 +286,7 @@ TEST_CASE("ReadBufferingStream") {
       upstream.print("ABC");
 
       char s[4] = {0};
-      int n = stream.readBytes(s, 3);
+      size_t n = stream.readBytes(s, 3);
 
       CHECK(n == 3);
       CHECK(s == std::string("ABC"));

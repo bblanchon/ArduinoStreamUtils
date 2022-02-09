@@ -15,7 +15,7 @@ TEST_CASE("LoggingPrint") {
   LoggingPrint loggingPrint{primary, secondary};
 
   SUBCASE("write(char)") {
-    int n = loggingPrint.write('A');
+    size_t n = loggingPrint.write('A');
 
     CHECK(n == 1);
     CHECK(primary.readString() == "A");
@@ -23,7 +23,7 @@ TEST_CASE("LoggingPrint") {
   }
 
   SUBCASE("write(char*,size_t)") {
-    int n = loggingPrint.write("ABCDEF", 6);
+    size_t n = loggingPrint.write("ABCDEF", 6);
 
     CHECK(n == 4);
     CHECK(primary.readString() == "ABCD");

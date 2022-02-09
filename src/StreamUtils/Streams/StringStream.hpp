@@ -44,7 +44,7 @@ class StringStream : public Stream {
   }
 
   int available() override {
-    return _str.length();
+    return static_cast<int>(_str.length());
   }
 
   int read() override {
@@ -59,8 +59,8 @@ class StringStream : public Stream {
   size_t readBytes(char* buffer, size_t length) override {
     if (length > _str.length())
       length = _str.length();
-    _str.toCharArray(buffer, length);
-    _str.remove(0, length);
+    _str.toCharArray(buffer, static_cast<unsigned int>(length));
+    _str.remove(0, static_cast<unsigned int>(length));
     return length;
   }
 #endif

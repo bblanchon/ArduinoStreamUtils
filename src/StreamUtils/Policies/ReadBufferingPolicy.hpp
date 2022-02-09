@@ -20,7 +20,7 @@ struct ReadBufferingPolicy {
       : _buffer(other._buffer) {}
 
   int available(Stream &stream) {
-    return stream.available() + _buffer.available();
+    return static_cast<int>(stream.available() + _buffer.available());
   }
 
   template <typename TTarget>  // Stream or Client
@@ -48,7 +48,8 @@ struct ReadBufferingPolicy {
   }
 
   int read(Client &client, uint8_t *buffer, size_t size) {
-    return doReadBytes(client, reinterpret_cast<char *>(buffer), size);
+    return static_cast<int>(
+        doReadBytes(client, reinterpret_cast<char *>(buffer), size));
   }
 
  private:

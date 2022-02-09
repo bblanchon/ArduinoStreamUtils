@@ -80,7 +80,8 @@ class BasicMemoryClient : public Client {
   }
 
   int read(uint8_t *buf, size_t size) override {
-    return _stream.readBytes(reinterpret_cast<char *>(buf), size);
+    return static_cast<int>(
+        _stream.readBytes(reinterpret_cast<char *>(buf), size));
   }
 
  private:

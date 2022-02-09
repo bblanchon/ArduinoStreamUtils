@@ -69,7 +69,7 @@ TEST_CASE("LoggingStream") {
   }
 
   SUBCASE("write(char)") {
-    int n = loggingStream.write('A');
+    size_t n = loggingStream.write('A');
 
     CHECK(n == 1);
     CHECK(log.str() == "write('A') -> 1");
@@ -77,7 +77,7 @@ TEST_CASE("LoggingStream") {
   }
 
   SUBCASE("write(char*,size_t)") {
-    int n = loggingStream.write("ABCDEF", 6);
+    size_t n = loggingStream.write("ABCDEF", 6);
 
     CHECK(n == 4);
     CHECK(log.str() == "write('ABCDEF', 6) -> 4");
