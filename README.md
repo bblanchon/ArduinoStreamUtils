@@ -364,7 +364,8 @@ It has been tested on the following cores:
 * [ESP8266](https://github.com/esp8266/Arduino)
 * [nRF52](https://github.com/adafruit/Adafruit_nRF52_Arduino)
 * [SAMD](https://github.com/arduino/ArduinoCore-samd)
-* [STM32](https://github.com/stm32duino/Arduino_Core_STM32)
+* [STM32 Official](https://github.com/stm32duino/Arduino_Core_STM32)
+* [STM32 Roger's Core](https://github.com/rogerclarkmelbourne/Arduino_STM32) (no EEPROM support)
 * [Teensy](https://github.com/PaulStoffregen/cores)
 
 If your core is not supported, please [open an issue](https://github.com/bblanchon/ArduinoStreamUtils/issues/new).

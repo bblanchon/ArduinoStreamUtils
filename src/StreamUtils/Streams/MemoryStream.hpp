@@ -42,7 +42,12 @@ class BasicMemoryStream : public Stream {
     return _buffer.isFull() ? 0 : _buffer.write(data);
   }
 
+#if STREAMUTILS_PRINT_WRITE_VOID_UINT32
+  size_t write(const void *p, uint32 size) override {
+    const uint8_t *data = reinterpret_cast<const uint8_t *>(p);
+#else
   size_t write(const uint8_t *data, size_t size) override {
+#endif
     return _buffer.write(data, size);
   }
 

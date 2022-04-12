@@ -31,6 +31,12 @@ class BasicMemoryClient : public Client {
     return _stream.write(data, size);
   }
 
+#if STREAMUTILS_PRINT_WRITE_VOID_UINT32
+  size_t write(const void *data, uint32 size) override {
+    return _stream.write(data, size);
+  }
+#endif
+
   // --- Stream ---
 
   int available() override {

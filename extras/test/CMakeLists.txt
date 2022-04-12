@@ -86,7 +86,7 @@ target_link_libraries(StreamUtilsTestSamd SamdCore)
 
 add_test(Samd StreamUtilsTestSamd)
 
-########## STM32 ##########
+########## STM32 (Official core) ##########
 
 add_subdirectory(cores/stm32)
 
@@ -94,6 +94,24 @@ add_executable(StreamUtilsTestStm32 ${SOURCES})
 target_link_libraries(StreamUtilsTestStm32 Stm32Core)
 
 add_test(Stm32 StreamUtilsTestStm32)
+
+########## STM32F1 (Roger's core) ##########
+
+add_subdirectory(cores/stm32f1)
+
+add_executable(StreamUtilsTestStm32F1 ${SOURCES})
+target_link_libraries(StreamUtilsTestStm32F1 Stm32F1Core)
+
+add_test(Stm32F1 StreamUtilsTestStm32F1)
+
+########## STM32F4 (Roger's core) ##########
+
+add_subdirectory(cores/stm32f4)
+
+add_executable(StreamUtilsTestStm32F4 ${SOURCES})
+target_link_libraries(StreamUtilsTestStm32F4 Stm32F4Core)
+
+add_test(Stm32F4 StreamUtilsTestStm32F4)
 
 ########## Teensy ##########
 

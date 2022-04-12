@@ -24,7 +24,12 @@ class PrintProxy : public Print {
     _writer.implicitFlush(_target);
   }
 
+#if STREAMUTILS_PRINT_WRITE_VOID_UINT32
+  size_t write(const void *data, uint32 size) override {
+    const uint8_t *buffer = reinterpret_cast<const uint8_t *>(data);
+#else
   size_t write(const uint8_t *buffer, size_t size) override {
+#endif
     return _writer.write(_target, buffer, size);
   }
 

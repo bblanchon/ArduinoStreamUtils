@@ -18,7 +18,12 @@ class StringStream : public Stream {
 
   explicit StringStream(String str) : _str(Polyfills::move(str)) {}
 
+#if STREAMUTILS_PRINT_WRITE_VOID_UINT32
+  size_t write(const void* data, uint32 n) override {
+    const uint8_t* p = reinterpret_cast<const uint8_t*>(data);
+#else
   size_t write(const uint8_t* p, size_t n) override {
+#endif
     for (size_t i = 0; i < n; i++) {
       uint8_t c = p[i];
       if (c == 0)

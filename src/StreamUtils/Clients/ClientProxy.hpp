@@ -42,6 +42,13 @@ class ClientProxy : public Client {
     return _writer.write(_target, data);
   }
 
+#if STREAMUTILS_PRINT_WRITE_VOID_UINT32
+  size_t write(const void *buffer, uint32 size) override {
+    return write(reinterpret_cast<const uint8_t *>(buffer),
+                 static_cast<size_t>(size));
+  }
+#endif
+
   using Print::write;
 
   // --- Stream ---
