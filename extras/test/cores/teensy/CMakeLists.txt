@@ -1,5 +1,5 @@
 # StreamUtils - github.com/bblanchon/ArduinoStreamUtils
-# Copyright Benoit Blanchon 2019-2021
+# Copyright Benoit Blanchon 2019-2022
 # MIT License
 
 add_library(TeensyCore
@@ -16,7 +16,7 @@ target_include_directories(TeensyCore
 		${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_compile_definitions(TeensyCore 
+target_compile_definitions(TeensyCore
 	PUBLIC
 		CORE_TEENSY
 )

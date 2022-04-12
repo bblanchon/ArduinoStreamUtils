@@ -1,5 +1,5 @@
 # StreamUtils - github.com/bblanchon/ArduinoStreamUtils
-# Copyright Benoit Blanchon 2019-2021
+# Copyright Benoit Blanchon 2019-2022
 # MIT License
 
 add_library(Esp32Core
@@ -16,7 +16,7 @@ target_include_directories(Esp32Core
 		${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_compile_definitions(Esp32Core 
+target_compile_definitions(Esp32Core
 	PUBLIC
 		ARDUINO_ARCH_ESP32
 )
