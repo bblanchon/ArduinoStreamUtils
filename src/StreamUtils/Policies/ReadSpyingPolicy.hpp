@@ -39,8 +39,9 @@ class ReadSpyingPolicy {
     _log.print(size);
     _log.print(") -> ");
     _log.print(result);
-    if (size > result)
+    if (size > result) {
       _log.print(" [timeout]");
+    }
     _log.println();
     return result;
   }
@@ -51,8 +52,9 @@ class ReadSpyingPolicy {
     _log.print(size);
     _log.print(") -> ");
     _log.print(result);
-    if (static_cast<int>(size) > result)
+    if (static_cast<int>(size) > result) {
       _log.print(" [timeout]");
+    }
     _log.println();
     return result;
   }

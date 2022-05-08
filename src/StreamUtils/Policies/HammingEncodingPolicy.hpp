@@ -99,11 +99,13 @@ class HammingEncodingPolicy<7, 4, TAllocator> {
 
   template <typename TTarget>
   bool flushRemainder(TTarget &target) {
-    if (_remainder < 0)
+    if (_remainder < 0) {
       return true;
+    }
 
-    if (!target.write(_remainder))
+    if (!target.write(_remainder)) {
       return false;
+    }
 
     _remainder = -1;
     return true;

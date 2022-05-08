@@ -25,15 +25,18 @@ struct ReadBufferingPolicy {
 
   template <typename TTarget>  // Stream or Client
   int read(TTarget &target) {
-    if (!_buffer)
+    if (!_buffer) {
       return target.read();
+    }
 
-    if (_buffer.available() > 0)
+    if (_buffer.available() > 0) {
       return _buffer.read();
+    }
 
     size_t avail = static_cast<size_t>(target.available());
-    if (avail <= 1)
+    if (avail <= 1) {
       return target.read();
+    }
 
     _buffer.reloadFrom(target, avail);
     return _buffer.read();
@@ -61,8 +64,9 @@ struct ReadBufferingPolicy {
 
   template <typename TTarget>  // Stream or Client
   size_t doReadBytes(TTarget &target, char *buffer, size_t size) {
-    if (!_buffer)
+    if (!_buffer) {
       return readOrReadBytes(target, buffer, size);
+    }
 
     size_t result = 0;
 

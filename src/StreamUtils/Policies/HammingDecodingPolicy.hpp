@@ -31,8 +31,9 @@ class HammingDecodingPolicy<7, 4, TAllocator> {
 
   int available(Stream &stream) {
     int n = stream.available();
-    if (_remainder >= 0)
+    if (_remainder >= 0) {
       n++;
+    }
     return n / 2;
   }
 
@@ -40,12 +41,14 @@ class HammingDecodingPolicy<7, 4, TAllocator> {
   int read(TTarget &target) {
     if (_remainder < 0) {
       _remainder = target.read();
-      if (_remainder < 0)
+      if (_remainder < 0) {
         return -1;
+      }
     }
     int c = target.read();
-    if (c < 0)
+    if (c < 0) {
       return -1;
+    }
     int result = decode(_remainder, c);
     _remainder = -1;
     return result;
@@ -54,12 +57,14 @@ class HammingDecodingPolicy<7, 4, TAllocator> {
   int peek(Stream &stream) {
     if (_remainder < 0) {
       _remainder = stream.read();
-      if (_remainder < 0)
+      if (_remainder < 0) {
         return -1;
+      }
     }
     int c = stream.peek();
-    if (c < 0)
+    if (c < 0) {
       return -1;
+    }
     return decode(_remainder, c);
   }
 
@@ -84,11 +89,12 @@ class HammingDecodingPolicy<7, 4, TAllocator> {
         0xA9, 0xAA, 0x4D, 0xAF, 0x21, 0x22, 0xC5, 0x27, 0xC9, 0x2B, 0xCC,
         0xCF, 0x11, 0x21, 0x41, 0x6F, 0x81, 0xAF, 0xCF, 0xFF};
     uint8_t elem = table[input / 2];
-    if (input % 2)
+    if (input % 2) {
       return elem & 0x0f;
 
-    else
+    } else {
       return elem >> 4;
+    }
   }
 
   uint8_t decode(uint8_t first, uint8_t second) {
@@ -112,21 +118,25 @@ class HammingDecodingPolicy<7, 4, TAllocator> {
     }
 
     size_t loadedSize = 0;
-    if (_remainder >= 0)
+    if (_remainder >= 0) {
       buffer[loadedSize++] = _remainder;
+    }
 
     loadedSize +=
         readOrReadBytes(target, buffer + loadedSize, bufferSize - loadedSize);
-    for (size_t i = 0; i < loadedSize / 2; i++)
+    for (size_t i = 0; i < loadedSize / 2; i++) {
       output[i] = decode(buffer[2 * i], buffer[2 * i + 1]);
+    }
 
-    if (loadedSize % 2)
+    if (loadedSize % 2) {
       _remainder = buffer[loadedSize - 1];
-    else
+    } else {
       _remainder = -1;
+    }
 
-    if (bufferSize > sizeAllowedOnStack)
+    if (bufferSize > sizeAllowedOnStack) {
       _allocator.deallocate(buffer);
+    }
 
     return loadedSize / 2;
   }

@@ -20,8 +20,9 @@ class CharArray {
   }
 
   CharArray(const CharArray &src) : CharArray(src._size, src._allocator) {
-    if (_data != nullptr)
+    if (_data != nullptr) {
       memcpy(_data, src._data, _size);
+    }
   }
 
   ~CharArray() {

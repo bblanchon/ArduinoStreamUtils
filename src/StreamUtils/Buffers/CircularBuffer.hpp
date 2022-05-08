@@ -62,11 +62,13 @@ class CircularBuffer {
 
   size_t readBytes(char *data, size_t size) {
     // don't read more that available
-    if (size > _size)
+    if (size > _size) {
       size = _size;
+    }
 
-    for (size_t i = 0; i < size; i++)
+    for (size_t i = 0; i < size; i++) {
       data[i] = read();
+    }
 
     return size;
   }
@@ -82,11 +84,13 @@ class CircularBuffer {
   size_t write(const uint8_t *data, size_t size) {
     // don't read more that available
     size_t roomLeft = _data.size() - _size;
-    if (size > roomLeft)
+    if (size > roomLeft) {
       size = roomLeft;
+    }
 
-    for (size_t i = 0; i < size; i++)
+    for (size_t i = 0; i < size; i++) {
       write(data[i]);
+    }
 
     return size;
   }

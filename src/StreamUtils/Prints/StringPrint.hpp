@@ -26,16 +26,18 @@ class StringPrint : public Print {
 #endif
     for (size_t i = 0; i < n; i++) {
       uint8_t c = p[i];
-      if (c == 0)
+      if (c == 0) {
         return i;
+      }
       write(c);
     }
     return n;
   }
 
   size_t write(uint8_t c) override {
-    if (c == 0)
+    if (c == 0) {
       return 0;
+    }
     _str += static_cast<char>(c);
     return 1;
   }

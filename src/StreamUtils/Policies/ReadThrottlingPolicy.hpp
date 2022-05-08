@@ -29,8 +29,9 @@ struct ReadThrottlingPolicy {
   size_t readBytes(Stream &stream, char *buffer, size_t size) {
     for (size_t i = 0; i < size; i++) {
       int c = read(stream);
-      if (c < 0)
+      if (c < 0) {
         return i;
+      }
       buffer[i] = c;
     }
     return size;

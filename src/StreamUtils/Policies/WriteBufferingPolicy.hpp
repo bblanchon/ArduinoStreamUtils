@@ -46,12 +46,14 @@ struct WriteBufferingPolicy {
   }
 
   size_t write(Print &target, uint8_t data) {
-    if (!_buffer)
+    if (!_buffer) {
       return target.write(data);
+    }
 
     _buffer.write(data);
-    if (_buffer.isFull())
+    if (_buffer.isFull()) {
       _buffer.flushInto(target);
+    }
     return 1;
   }
 

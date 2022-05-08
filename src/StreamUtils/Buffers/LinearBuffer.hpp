@@ -80,8 +80,9 @@ class LinearBuffer {
 
   size_t write(const uint8_t *data, size_t size) {
     size_t roomLeft = capacity() - available();
-    if (size > roomLeft)
+    if (size > roomLeft) {
       size = roomLeft;
+    }
     memcpy(_end, data, size);
     _end += size;
     return size;
@@ -89,16 +90,18 @@ class LinearBuffer {
 
   template <typename TTarget>  // Stream or Client
   void reloadFrom(TTarget &source, size_t size) {
-    if (size > _data.size())
+    if (size > _data.size()) {
       size = _data.size();
+    }
     size_t n = readOrReadBytes(source, &_data, size);
     _begin = &_data;
     _end = &_data + n;
   }
 
   void flushInto(Print &destination) {
-    if (_begin != _end)
+    if (_begin != _end) {
       destination.write(_begin, _end - _begin);
+    }
     _begin = _end = &_data;
   }
 

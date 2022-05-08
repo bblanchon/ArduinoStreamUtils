@@ -23,14 +23,16 @@ class EepromStream : public Stream {
   }
 
   int read() override {
-    if (_readAddress >= _end)
+    if (_readAddress >= _end) {
       return -1;
+    }
     return EEPROM.read(static_cast<int>(_readAddress++));
   }
 
   int peek() override {
-    if (_readAddress >= _end)
+    if (_readAddress >= _end) {
       return -1;
+    }
     return EEPROM.read(static_cast<int>(_readAddress));
   }
 
@@ -44,8 +46,9 @@ class EepromStream : public Stream {
 
   size_t write(const uint8_t *buffer, size_t size) override {
     size_t remaining = _end - _writeAddress;
-    if (size > remaining)
+    if (size > remaining) {
       size = remaining;
+    }
     for (size_t i = 0; i < size; i++) {
       int address = static_cast<int>(_writeAddress++);
 #if STREAMUTILS_USE_EEPROM_UPDATE
@@ -58,8 +61,9 @@ class EepromStream : public Stream {
   }
 
   size_t write(uint8_t data) override {
-    if (_writeAddress >= _end)
+    if (_writeAddress >= _end) {
       return 0;
+    }
     int address = static_cast<int>(_writeAddress++);
 #if STREAMUTILS_USE_EEPROM_UPDATE
     EEPROM.update(address, data);

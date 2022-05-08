@@ -26,8 +26,9 @@ struct WriteWaitingPolicy {
       size -= n;
       data += n;
       totalWritten += n;
-      if (size == 0 || millis() - startTime >= _timeout)
+      if (size == 0 || millis() - startTime >= _timeout) {
         return totalWritten;
+      }
       _wait();
     }
   }
@@ -36,10 +37,12 @@ struct WriteWaitingPolicy {
     unsigned long startTime = millis();
 
     for (;;) {
-      if (target.write(data))
+      if (target.write(data)) {
         return 1;
-      if (millis() - startTime >= _timeout)
+      }
+      if (millis() - startTime >= _timeout) {
         return 0;
+      }
       _wait();
     }
   }

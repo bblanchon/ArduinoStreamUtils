@@ -18,8 +18,9 @@ class ReadLoggingPolicy {
 
   int read(Stream &stream) {
     int result = stream.read();
-    if (result >= 0)
+    if (result >= 0) {
       _log.write(result);
+    }
     return result;
   }
 
