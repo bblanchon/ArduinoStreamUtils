@@ -1,8 +1,8 @@
 StreamUtils - Change log
 ========================
 
-HEAD
-----
+1.6.3 (2022/05/11)
+-----
 
 * Add support for Roger's core for STM32 (issue #20)
 
