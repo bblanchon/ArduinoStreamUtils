@@ -35,6 +35,9 @@ class EepromStream : public Stream {
   }
 
   void flush() override {
+#if ARDUINO_ARCH_STM32
+    eeprom_buffer_flush();
+#endif
 #if STREAMUTILS_USE_EEPROM_COMMIT
     EEPROM.commit();
 #endif
@@ -51,7 +54,11 @@ class EepromStream : public Stream {
 #if STREAMUTILS_USE_EEPROM_UPDATE
       EEPROM.update(address, buffer[i]);
 #else
+#if ARDUINO_ARCH_STM32
+      eeprom_buffered_write_byte(address, buffer[i]);
+#else
       EEPROM.write(address, buffer[i]);
+#endif
 #endif
     }
     return size;
@@ -64,7 +71,11 @@ class EepromStream : public Stream {
 #if STREAMUTILS_USE_EEPROM_UPDATE
     EEPROM.update(address, data);
 #else
-    EEPROM.write(address, data);
+#if ARDUINO_ARCH_STM32
+      eeprom_buffered_write_byte(address, data);
+#else
+      EEPROM.write(address, data);
+#endif
 #endif
     return 1;
   }
