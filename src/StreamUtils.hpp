@@ -19,6 +19,7 @@
 #include "StreamUtils/Streams/HammingEncodingStream.hpp"
 #include "StreamUtils/Streams/HammingStream.hpp"
 #include "StreamUtils/Streams/LoggingStream.hpp"
+#include "StreamUtils/Streams/ProgmemStream.hpp"
 #include "StreamUtils/Streams/ReadBufferingStream.hpp"
 #include "StreamUtils/Streams/ReadLoggingStream.hpp"
 #include "StreamUtils/Streams/ReadThrottlingStream.hpp"

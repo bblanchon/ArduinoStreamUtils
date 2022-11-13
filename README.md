@@ -26,7 +26,7 @@ For example, with this library, you can:
 * improve the reliability of a serial connection by adding error correction codes
 * debug your program more easily by logging what it sends to a Web service
 * send large data with the [Wire library](https://www.arduino.cc/en/reference/wire)
-* use a `String` or EEPROM with a stream interface
+* use a `String`, EEPROM, or `PROGMEM` with a stream interface
 
 Read on to see how StreamUtils can help you!
 
@@ -327,6 +327,24 @@ In the same way, you can read a JSON document from EEPROM:
 EepromStream eepromStream(0, 128);
 deserializeJson(doc, eepromStream);
 ```
+
+
+How to use `PROGMEM` as a stream?
+------------------------------
+
+SteamUtils also allows reading `PROGMEM` buffers with a `Stream` interface.
+
+![ProgmemStream](extras/images/ProgmemStream.svg)
+
+Create an instance of `ProgmemStream` and pass the pointer to the `PROGMEM` buffer.
+
+```c++
+const char buffer[] PROGMEM = "This string is in program memory"
+ProgmemStream stream{buffer};
+Serial.println(stream.readString());
+```
+
+`ProgmemStream`'s constructor also supports `const __FlashStringHelper*` (the type returned by the `F()` macro) and an optional second argument to specify the size of the buffer.
 
 
 Summary

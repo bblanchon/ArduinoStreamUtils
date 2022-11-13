@@ -122,6 +122,9 @@ jobs:
       - name: Build Logger
         run: arduino-cli compile --library . --warnings all -b ${{ matrix.board }} "examples/Logger/Logger.ino"
 
+      - name: Build ProgmemStream
+        run: arduino-cli compile --library . --warnings all -b ${{ matrix.board }} "examples/ProgmemStream/ProgmemStream.ino"
+
       - name: Build ReadBuffer
         run: arduino-cli compile --library . --warnings all -b ${{ matrix.board }} "examples/ReadBuffer/ReadBuffer.ino"
 
@@ -232,6 +235,9 @@ jobs:
 
       - name: Build Logger
         run: platformio ci "examples/Logger/Logger.ino" -l '.' -b ${{ matrix.board }}
+
+      - name: Build ProgmemStream
+        run: platformio ci "examples/ProgmemStream/ProgmemStream.ino" -l '.' -b ${{ matrix.board }}
 
       - name: Build ReadBuffer
         run: platformio ci "examples/ReadBuffer/ReadBuffer.ino" -l '.' -b ${{ matrix.board }}

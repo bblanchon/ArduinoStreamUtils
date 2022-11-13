@@ -8,6 +8,7 @@
 #include <Print.h>
 #include <Stream.h>
 #include <WString.h>
+#include <avr/pgmspace.h>
 
 #include <time.h>
 
