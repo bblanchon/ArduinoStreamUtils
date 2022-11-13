@@ -2,7 +2,7 @@
 # Copyright Benoit Blanchon 2019-2022
 # MIT License
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.12)
 project(StreamUtils)
 
 enable_testing()
