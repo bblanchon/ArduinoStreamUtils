@@ -7,6 +7,7 @@ add_library(Stm32F4Core INTERFACE)
 target_include_directories(Stm32F4Core
 	INTERFACE
 		${CMAKE_CURRENT_SOURCE_DIR}
+		${CMAKE_CURRENT_SOURCE_DIR}/../stm32f1
 		${CMAKE_CURRENT_SOURCE_DIR}/../avr
 )
 
