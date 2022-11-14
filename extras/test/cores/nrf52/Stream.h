@@ -31,8 +31,9 @@ struct Stream : Print {
   String readString() {
     String result;
     int c;
-    while ((c = timedRead()) >= 0)
-      result += c;
+    while ((c = timedRead()) >= 0) {
+      result += static_cast<char>(c);
+    }
     return result;
   }
 

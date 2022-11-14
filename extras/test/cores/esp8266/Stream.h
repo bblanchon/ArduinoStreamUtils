@@ -31,7 +31,7 @@ struct Stream : Print {
     String result;
     int c;
     while ((c = timedRead()) >= 0) {
-      result += c;
+      result += static_cast<char>(c);
     }
     return result;
   }
