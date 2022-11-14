@@ -8,12 +8,12 @@ add_library(Stm32Core
 	EEPROM.h
 	Print.h
 	Stream.h
-	WString.h
 )
 
 target_include_directories(Stm32Core
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}
+		${CMAKE_CURRENT_SOURCE_DIR}/../avr
 )
 
 target_compile_definitions(Stm32Core

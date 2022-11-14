@@ -8,7 +8,6 @@ add_library(AvrCore
 	EEPROM.h
 	Print.h
 	Stream.h
-	WString.h
 )
 
 target_include_directories(AvrCore
