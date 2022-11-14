@@ -12,6 +12,11 @@
 struct Print {
   virtual size_t write(const uint8_t *buffer, size_t size) = 0;
   virtual size_t write(uint8_t data) = 0;
+  virtual void flush() {}
+
+  virtual int availableForWrite() {
+    return 0;
+  }
 
   size_t write(const char *buffer, size_t size) {
     return write((const uint8_t *)buffer, size);
@@ -38,6 +43,4 @@ struct Print {
   size_t println(const T &value) {
     return print(value);
   }
-
-  virtual void flush() {}
 };

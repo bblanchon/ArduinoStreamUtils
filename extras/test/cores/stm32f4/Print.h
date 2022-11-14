@@ -4,10 +4,10 @@
 
 #pragma once
 
+#include <WString.h>
+
 #include <stdint.h>
 #include <cstring>
-
-#include <WString.h>
 
 typedef unsigned int uint32;
 
