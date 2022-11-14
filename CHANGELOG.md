@@ -1,8 +1,8 @@
 StreamUtils - Change log
 ========================
 
-HEAD
-----
+1.7.0 (2022/11/14)
+-----
 
 * Add support for `Print::flush()` on ESP32 and STM32
 * Add `ProgmemStream`
