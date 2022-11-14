@@ -21,7 +21,7 @@ This library provides some helper classes and functions for dealing with streams
 
 For example, with this library, you can:
 
-* speed of your program by buffering the data it reads from a file
+* speed up your program by buffering the data it reads from a file
 * reduce the number of packets sent over WiFi by buffering the data you send
 * improve the reliability of a serial connection by adding error correction codes
 * debug your program more easily by logging what it sends to a Web service
@@ -37,18 +37,18 @@ How to add buffering to a Stream?
 ### Buffering read operations
 
 Sometimes, you can significantly improve performance by reading many bytes at once. 
-For example, [according to SPIFFS's wiki](https://github.com/pellepl/spiffs/wiki/Performance-and-Optimizing#reading-files), it's much faster to read files in chunks of 64 bytes than reading them one byte at a time.
+For example, [according to SPIFFS's wiki](https://github.com/pellepl/spiffs/wiki/Performance-and-Optimizing#reading-files), reading read files in chunks of 64 bytes is much faster than reading them one byte at a time.
 
 ![ReadBufferingStream](extras/images/ReadBuffer.svg)
 
-To buffer the input, simply decorate the original `Stream` with `ReadBufferingStream`. For example, suppose your program reads a JSON document from SPIFFS, like that:
+To buffer the input, decorate the original `Stream` with `ReadBufferingStream`. For example, suppose your program reads a JSON document from SPIFFS like that:
 
 ```c++
 File file = SPIFFS.open("example.json", "r");
 deserializeJson(doc, file);
 ```
 
-Then you simply need to insert one line to greatly improve the reading speed:
+Then you only need to insert one line to greatly improve the reading speed:
 
 ```c++
 File file = SPIFFS.open("example.json", "r");
@@ -70,7 +70,7 @@ Adding a buffer only makes sense for **unbuffered** streams. For example, there 
 ### Buffering write operations
 
 Similarly, you can improve performance significantly by writing many bytes at once.
-For example, if you write to `WiFiClient` one bytes at a time, it will be very slow; it's much faster if you send large chunks.
+For example, writing to `WiFiClient` one byte at a time is very slow; it's much faster if you send large chunks.
 
 ![WriteBufferingStream](extras/images/WriteBuffer.svg)
 
@@ -80,7 +80,7 @@ To add a buffer, decorate the original `Stream` with  `WriteBufferingStream`. Fo
 serializeJson(doc, wifiClient);
 ```
 
-Then, you just need to add two lines:
+Rewrite it like this:
 
 ```c++
 WriteBufferingStream bufferedWifiClient{wifiClient, 64};
@@ -99,11 +99,11 @@ How to add logging to a stream?
 
 ### Logging write operations
 
-When debugging a program that makes HTTP requests, the first thing you want to check is that the request is correct. With this library, you can decorate the `EthernetClient` or the `WiFiClient` to log everything to the serial.
+When debugging a program that makes HTTP requests, you first want to check whether the request is correct. With this library, you can decorate the `EthernetClient` or the `WiFiClient` to log everything to the serial.
 
 ![WriteLoggingStream](extras/images/WriteLogger.svg)
 
-For example, if you program is:
+For example, if your program is:
 
 ```c++
 client.println("GET / HTTP/1.1");
@@ -111,7 +111,7 @@ client.println("User-Agent: Arduino");
 // ...
 ```
 
-Then, you just need to create the decorator, and update the calls to `println()`:
+Then, create the decorator and update the calls to `println()`:
 
 ```c++
 WriteLoggingStream loggingClient(client, Serial);
@@ -129,14 +129,14 @@ Similarly, you often want to see what the HTTP server sent back. With this libra
 
 ![ReadLoggingStream](extras/images/ReadLogger.svg)
 
-For example, if you program is:
+For example, if your program is:
 
 ```c++
 char response[256];
 client.readBytes(response, 256);
 ```
 
-Then, you just need to create the decorator, and update the calls to `readBytes()`:
+Then, create the decorator and update the calls to `readBytes()`:
 
 ```c++
 ReadLoggingStream loggingClient(client, Serial);
@@ -145,10 +145,10 @@ loggingClient.readBytes(response, 256);
 // ...
 ```
 
-`loggingClient` forwards all operations to `client` and logs read operation to `Serial`.
+`loggingClient` forwards all operations to `client` and logs read operations to `Serial`.
 
 ⚠ **WARNING** ⚠   
-If your program receives data from one serial port and logs to another one, **make sure the latter runs at a much higher speed**. Logging must be at least ten times faster, or it will slow down the receiving port, which may drop incoming bytes.
+If your program receives data from one serial port and logs to another, **ensure the latter runs at a much higher baud rate**. Logging must be at least ten times faster, or it will slow down the receiving port, which may drop incoming bytes.
 
 ### Logging read and write operations
 
@@ -226,7 +226,7 @@ Like every `Stream` decorator in this library, `HammingDecodingStream<7, 4>` sup
 
 ### Encoding and decoding in both directions
 
-The class `HammingStream<7, 4>` combines the features of `HammingEncodingStream<7, 4>` and `HammingDecodingStream<7, 4>`, which is very useful when you do a two-way communication.
+The class `HammingStream<7, 4>` combines the features of `HammingEncodingStream<7, 4>` and `HammingDecodingStream<7, 4>`, which is very useful when you do two-way communication.
 
 ![HammingStream](extras/images/HammingStream.svg)
 
@@ -255,7 +255,7 @@ To solve this problem, StreamUtils provides the `WriteWaitingStream` decorator:
 This function repeatedly waits and retries until it times out.
 You can customize the `wait()` function; by default, it's [`yield()`](https://www.arduino.cc/en/Reference/SchedulerYield).
 
-For example, if you want to send more than 32 bytes with the [Wire library](https://www.arduino.cc/en/reference/wire), you can do:
+For example, if you want to send more than 32 bytes with the [Wire library](https://www.arduino.cc/en/reference/wire), you can do the following:
 
 ```c++
 WriteWaitingStream wireStream(Wire, [](){
@@ -301,7 +301,7 @@ Temperature = 22.30 °C
 
 ### Reading from a `String`
 
-Similarly, there are cases where you have a `String`, but you need to pass a `Stream` to some other piece of code. In that case, use `StringStream`; it's similar to `StrintPrint`, except you can read as well.
+Similarly, there are cases where you have a `String`, but you need to pass a `Stream` to some other piece of code. In that case, use `StringStream`; it's similar to `StrintPrint`, except you can also read from it.
 
 ![StringStream](extras/images/StringStream.svg)
 
@@ -309,7 +309,7 @@ Similarly, there are cases where you have a `String`, but you need to pass a `St
 How to use EEPROM as a stream?
 ------------------------------
 
-SteamUtils also allows using EEPROM as a stream. Simply create an instance of `EepromStream` and specify the start address and the size of the region you want to expose.
+SteamUtils also allows using EEPROM as a stream. Create an instance of `EepromStream` and specify the start address and the size of the region you want to expose.
 
 ![EepromStream](extras/images/EepromStream.svg)
 
@@ -367,13 +367,13 @@ See the equivalence table below.
 | Error correction (encode only)     | `HammingEncodingClient` | `HammingEncodingStream` | `HammingPrint`   |
 | Error correction (encode & decode) | `HammingClient`         | `HammingStream`         |                  |
 
-When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client::read()` often provides an optimized implementation.
+Prefer `XxxClient` to `XxxStream` because, unlike `Stream::readBytes()`, `Client::read()` is virtual on all cores and therefore allows optimized implementations.
 
 
 Portability
 -----------
 
-This library relies on the definitions of `Client`, `Print`, and `Stream`, which unfortunately differ from one core to another.
+This library relies on `Client`, `Print`, and `Stream` definitions, which unfortunately differ from one core to another.
 
 It has been tested on the following cores:
 
