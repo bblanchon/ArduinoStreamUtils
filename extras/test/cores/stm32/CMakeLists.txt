@@ -19,4 +19,7 @@ target_include_directories(Stm32Core
 target_compile_definitions(Stm32Core
 	PUBLIC
 		ARDUINO_ARCH_STM32
+		STM32_CORE_VERSION_MAJOR=2
+		STM32_CORE_VERSION_MINOR=4
+		STM32_CORE_VERSION_PATCH=0
 )
