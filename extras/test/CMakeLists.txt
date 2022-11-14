@@ -7,14 +7,16 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
 	add_link_options(-static)
 endif()
 
-file(GLOB SOURCES CONFIGURE_DEPENDS *.[ch]pp *.[hc])
+file(GLOB SOURCES CONFIGURE_DEPENDS *.cpp)
+
+add_subdirectory(doctest)
 
 ########## AVR ##########
 
 add_subdirectory(cores/avr)
 
 add_executable(StreamUtilsTestAvr ${SOURCES})
-target_link_libraries(StreamUtilsTestAvr AvrCore)
+target_link_libraries(StreamUtilsTestAvr AvrCore doctest)
 
 add_test(Avr StreamUtilsTestAvr)
 
@@ -23,7 +25,7 @@ add_test(Avr StreamUtilsTestAvr)
 add_subdirectory(cores/esp32)
 
 add_executable(StreamUtilsTestEsp32 ${SOURCES})
-target_link_libraries(StreamUtilsTestEsp32 Esp32Core)
+target_link_libraries(StreamUtilsTestEsp32 Esp32Core doctest)
 
 add_test(Esp32 StreamUtilsTestEsp32)
 
@@ -32,7 +34,7 @@ add_test(Esp32 StreamUtilsTestEsp32)
 add_subdirectory(cores/esp8266)
 
 add_executable(StreamUtilsTestEsp8266 ${SOURCES})
-target_link_libraries(StreamUtilsTestEsp8266 Esp8266Core)
+target_link_libraries(StreamUtilsTestEsp8266 Esp8266Core doctest)
 
 add_test(Esp8266 StreamUtilsTestEsp8266)
 
@@ -41,7 +43,7 @@ add_test(Esp8266 StreamUtilsTestEsp8266)
 add_subdirectory(cores/nrf52)
 
 add_executable(StreamUtilsTestNrf52 ${SOURCES})
-target_link_libraries(StreamUtilsTestNrf52 Nrf52Core)
+target_link_libraries(StreamUtilsTestNrf52 Nrf52Core doctest)
 
 add_test(Nrf52 StreamUtilsTestNrf52)
 
@@ -50,7 +52,7 @@ add_test(Nrf52 StreamUtilsTestNrf52)
 add_subdirectory(cores/samd)
 
 add_executable(StreamUtilsTestSamd ${SOURCES})
-target_link_libraries(StreamUtilsTestSamd SamdCore)
+target_link_libraries(StreamUtilsTestSamd SamdCore doctest)
 
 add_test(Samd StreamUtilsTestSamd)
 
@@ -59,7 +61,7 @@ add_test(Samd StreamUtilsTestSamd)
 add_subdirectory(cores/stm32)
 
 add_executable(StreamUtilsTestStm32 ${SOURCES})
-target_link_libraries(StreamUtilsTestStm32 Stm32Core)
+target_link_libraries(StreamUtilsTestStm32 Stm32Core doctest)
 
 add_test(Stm32 StreamUtilsTestStm32)
 
@@ -68,7 +70,7 @@ add_test(Stm32 StreamUtilsTestStm32)
 add_subdirectory(cores/stm32f1)
 
 add_executable(StreamUtilsTestStm32F1 ${SOURCES})
-target_link_libraries(StreamUtilsTestStm32F1 Stm32F1Core)
+target_link_libraries(StreamUtilsTestStm32F1 Stm32F1Core doctest)
 
 add_test(Stm32F1 StreamUtilsTestStm32F1)
 
@@ -77,7 +79,7 @@ add_test(Stm32F1 StreamUtilsTestStm32F1)
 add_subdirectory(cores/stm32f4)
 
 add_executable(StreamUtilsTestStm32F4 ${SOURCES})
-target_link_libraries(StreamUtilsTestStm32F4 Stm32F4Core)
+target_link_libraries(StreamUtilsTestStm32F4 Stm32F4Core doctest)
 
 add_test(Stm32F4 StreamUtilsTestStm32F4)
 
@@ -86,6 +88,6 @@ add_test(Stm32F4 StreamUtilsTestStm32F4)
 add_subdirectory(cores/teensy)
 
 add_executable(StreamUtilsTestTeensy ${SOURCES})
-target_link_libraries(StreamUtilsTestTeensy TeensyCore)
+target_link_libraries(StreamUtilsTestTeensy TeensyCore doctest)
 
 add_test(Teensy StreamUtilsTestTeensy)
