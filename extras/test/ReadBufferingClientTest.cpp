@@ -136,7 +136,7 @@ TEST_CASE("ReadBufferingClient") {
 #else
         CHECK(log.str() ==
               "available() -> 0"
-              "read() -> -1");  // [timeout] from timedRead()
+              "read() -> -1");  // [timeout] from read()
 #endif
       }
 
@@ -241,7 +241,7 @@ TEST_CASE("ReadBufferingClient") {
               "available() -> 1"
               "read() -> 65"
               "available() -> 0"
-              "read() -> -1");  // [timeout] from timedRead()
+              "read() -> -1");  // [timeout] from read()
 #endif
       }
     }

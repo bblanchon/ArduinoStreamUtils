@@ -14,7 +14,7 @@ struct Stream : Print {
   size_t readBytes(char *buffer, size_t length) {
     size_t count = 0;
     while (count < length) {
-      int c = timedRead();
+      int c = read();
       if (c < 0)
         break;
       *buffer++ = (char)c;
@@ -26,16 +26,11 @@ struct Stream : Print {
   String readString() {
     String result;
     int c;
-    while ((c = timedRead()) >= 0) {
+    while ((c = read()) >= 0) {
       result += static_cast<char>(c);
     }
     return result;
   }
 
   void setTimeout(unsigned long) {}
-
- private:
-  int timedRead() {
-    return read();
-  }
 };
