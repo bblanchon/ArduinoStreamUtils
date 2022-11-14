@@ -1,6 +1,11 @@
 StreamUtils - Change log
 ========================
 
+HEAD
+----
+
+* Add support for `Print::flush()` on ESP32
+
 1.6.3 (2022/05/11)
 -----
 

@@ -5,8 +5,10 @@
 #pragma once
 
 #ifndef STREAMUTILS_PRINT_FLUSH_EXISTS
-#if defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_SAMD) || \
-    defined(ARDUINO_ARCH_AVR)
+#if defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_SAMD) ||    \
+    defined(ARDUINO_ARCH_AVR) ||                                      \
+    (defined(ARDUINO_ARCH_ESP32) && ESP_ARDUINO_VERSION_MAJOR >= 2 && \
+     ESP_ARDUINO_VERSION_PATCH >= 3)
 #define STREAMUTILS_PRINT_FLUSH_EXISTS 1
 #else
 #define STREAMUTILS_PRINT_FLUSH_EXISTS 0

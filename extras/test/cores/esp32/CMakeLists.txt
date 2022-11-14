@@ -19,4 +19,7 @@ target_include_directories(Esp32Core
 target_compile_definitions(Esp32Core
 	PUBLIC
 		ARDUINO_ARCH_ESP32
+		ESP_ARDUINO_VERSION_MAJOR=2
+		ESP_ARDUINO_VERSION_MINOR=0
+		ESP_ARDUINO_VERSION_PATCH=5
 )

@@ -13,6 +13,7 @@ struct Print {
   virtual ~Print() {}
   virtual size_t write(const uint8_t *buffer, size_t size) = 0;
   virtual size_t write(uint8_t data) = 0;
+  virtual void flush() {}
 
   virtual int availableForWrite() {
     return 0;
