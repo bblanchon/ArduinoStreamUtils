@@ -3,10 +3,8 @@
 # MIT License
 
 add_library(Esp32Core
-	Client.h
 	EEPROM.cpp
 	EEPROM.h
-	Print.h
 	Stream.h
 )
 

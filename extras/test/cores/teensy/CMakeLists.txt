@@ -3,11 +3,8 @@
 # MIT License
 
 add_library(TeensyCore
-	Client.h
 	EEPROM.cpp
 	EEPROM.h
-	Print.h
-	Stream.h
 )
 
 target_include_directories(TeensyCore

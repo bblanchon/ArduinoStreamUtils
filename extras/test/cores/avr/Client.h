@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "Stream.h"
-#include "WString.h"
+#include <Stream.h>
+#include <WString.h>
 
 using IPAddress = String;
 
