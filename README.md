@@ -363,6 +363,7 @@ See the equivalence table below.
 | Repeat *write* operations          | `WriteWaitingClient`    | `WriteWaitingStream`    | `WaitingPrint`   |
 | Use `String` as a stream           |                         | `StringStream`          | `StringPrint`    |
 | Use EEPROM as a stream             |                         | `EepromStream`          |                  |
+| Use `PROGMEM` as a stream          |                         | `ProgmemStream`         |                  |
 | Error correction (decode only)     | `HammingDecodingClient` | `HammingDecodingStream` |                  |
 | Error correction (encode only)     | `HammingEncodingClient` | `HammingEncodingStream` | `HammingPrint`   |
 | Error correction (encode & decode) | `HammingClient`         | `HammingStream`         |                  |
