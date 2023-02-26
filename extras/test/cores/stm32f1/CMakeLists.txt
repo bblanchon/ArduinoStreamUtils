@@ -1,5 +1,5 @@
 # StreamUtils - github.com/bblanchon/ArduinoStreamUtils
-# Copyright Benoit Blanchon 2019-2022
+# Copyright Benoit Blanchon 2019-2023
 # MIT License
 
 add_library(Stm32F1Core INTERFACE)
