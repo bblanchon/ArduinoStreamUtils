@@ -21,3 +21,8 @@ target_compile_definitions(Esp32Core
 		ESP_ARDUINO_VERSION_MINOR=0
 		ESP_ARDUINO_VERSION_PATCH=5
 )
+
+target_compile_options(Esp32Core
+	PUBLIC
+		-funsigned-char
+)

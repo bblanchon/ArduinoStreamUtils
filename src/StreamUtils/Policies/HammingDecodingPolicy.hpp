@@ -132,7 +132,7 @@ class HammingDecodingPolicy<7, 4, TAllocator> {
   }
 
   TAllocator _allocator;
-  char _remainder = -1;
+  int _remainder = -1;
 };
 
 }  // namespace StreamUtils

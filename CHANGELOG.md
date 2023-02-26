@@ -1,6 +1,11 @@
 StreamUtils - Change log
 ========================
 
+HEAD
+----
+
+* Fix `HammingStream` and `HammingDecodingStream` on ESP32 (issue #29)
+
 1.7.0 (2022/11/14)
 -----
 
