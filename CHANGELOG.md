@@ -1,8 +1,8 @@
 StreamUtils - Change log
 ========================
 
-HEAD
-----
+1.7.2 (2023/03/04)
+-----
 
 * Fix "__FlashStringHelper is ambiguous" with arduino-pico (issue #30)
 
