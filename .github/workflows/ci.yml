@@ -91,6 +91,12 @@ jobs:
             softwareserial: false
             index_url: http://dan.drown.org/stm32duino/package_STM32duino_index.json
 
+          - core: rp2040:rp2040
+            board: rp2040:rp2040:rpipico
+            eeprom: true
+            softwareserial: true
+            index_url: https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3

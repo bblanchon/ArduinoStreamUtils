@@ -382,6 +382,7 @@ It has been tested on the following cores:
 * [ESP32](https://github.com/espressif/arduino-esp32)
 * [ESP8266](https://github.com/esp8266/Arduino)
 * [nRF52](https://github.com/adafruit/Adafruit_nRF52_Arduino)
+* [RP2040](https://github.com/earlephilhower/arduino-pico)
 * [SAMD](https://github.com/arduino/ArduinoCore-samd)
 * [STM32 Official](https://github.com/stm32duino/Arduino_Core_STM32)
 * [STM32 Roger's Core](https://github.com/rogerclarkmelbourne/Arduino_STM32) (no EEPROM support)

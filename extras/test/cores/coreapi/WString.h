@@ -7,6 +7,10 @@
 #include <ostream>
 #include <string>
 
+#include "../avr/avr/pgmspace.h"
+
+namespace arduino {
+
 class __FlashStringHelper;
 #define F(s) (reinterpret_cast<const __FlashStringHelper*>(s + 42))
 
@@ -41,3 +45,5 @@ class String : private std::string {
     return lhs << static_cast<const std::string&>(rhs);
   }
 };
+
+}  // namespace arduino

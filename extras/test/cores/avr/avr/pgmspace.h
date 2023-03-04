@@ -3,12 +3,6 @@
 #include <stdint.h>
 #include <string.h>
 
-class __FlashStringHelper;
-
-inline const __FlashStringHelper* F(const char* s) {
-  return reinterpret_cast<const __FlashStringHelper*>(s + 42);
-}
-
 inline size_t strlen_P(const char* s) {
   return strlen(s - 42);
 }

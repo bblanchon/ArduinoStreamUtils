@@ -34,9 +34,9 @@
 #endif
 
 #ifndef STREAMUTILS_ENABLE_EEPROM
-#if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_ESP8266) || \
-    defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_STM32) || \
-    defined(CORE_TEENSY)
+#if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_ESP8266) ||  \
+    defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_RP2040) || \
+    defined(ARDUINO_ARCH_STM32) || defined(CORE_TEENSY)
 #define STREAMUTILS_ENABLE_EEPROM 1
 #else
 #define STREAMUTILS_ENABLE_EEPROM 0
@@ -44,7 +44,8 @@
 #endif
 
 #ifndef STREAMUTILS_USE_EEPROM_COMMIT
-#if defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
+#if defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32) || \
+    defined(ARDUINO_ARCH_RP2040)
 #define STREAMUTILS_USE_EEPROM_COMMIT 1
 #else
 #define STREAMUTILS_USE_EEPROM_COMMIT 0

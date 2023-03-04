@@ -52,6 +52,16 @@ target_link_libraries(StreamUtilsTestNrf52 Nrf52Core doctest)
 add_test(Nrf52 StreamUtilsTestNrf52)
 
 #
+# RP2040
+#
+add_subdirectory(cores/rp2040)
+
+add_executable(StreamUtilsTestRp2040 ${SOURCES})
+target_link_libraries(StreamUtilsTestRp2040 Rp2040Core doctest)
+
+add_test(Rp2040 StreamUtilsTestRp2040)
+
+#
 # SAMD
 #
 add_subdirectory(cores/samd)

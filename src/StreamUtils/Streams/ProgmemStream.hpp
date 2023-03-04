@@ -8,8 +8,6 @@
 
 #include "../Configuration.hpp"
 
-class __FlashStringHelper;
-
 namespace StreamUtils {
 
 class ProgmemStream : public Stream {
