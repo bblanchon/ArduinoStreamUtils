@@ -14,3 +14,5 @@ target_compile_definitions(SamdCore
 	INTERFACE
 		ARDUINO_ARCH_SAMD
 )
+
+add_streamutils_test(StreamUtilsTestSamd SamdCore)

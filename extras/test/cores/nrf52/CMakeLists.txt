@@ -14,3 +14,5 @@ target_compile_definitions(Nrf52Core
 	INTERFACE
 		ARDUINO_ARCH_NRF52
 )
+
+add_streamutils_test(StreamUtilsTestNrf52 Nrf52Core)

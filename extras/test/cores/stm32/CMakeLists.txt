@@ -21,3 +21,5 @@ target_compile_definitions(Stm32Core
 		STM32_CORE_VERSION_MINOR=4
 		STM32_CORE_VERSION_PATCH=0
 )
+
+add_streamutils_test(StreamUtilsTestStm32 Stm32Core)

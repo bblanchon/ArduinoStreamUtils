@@ -17,3 +17,5 @@ target_compile_definitions(TeensyCore
 	PUBLIC
 		CORE_TEENSY
 )
+
+add_streamutils_test(StreamUtilsTestTeensy TeensyCore)

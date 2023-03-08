@@ -19,3 +19,5 @@ target_compile_definitions(AvrCore
 	PUBLIC
 		ARDUINO_ARCH_AVR
 )
+
+add_streamutils_test(StreamUtilsTestAvr AvrCore)

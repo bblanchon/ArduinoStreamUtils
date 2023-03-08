@@ -18,3 +18,5 @@ target_compile_definitions(Esp8266Core
 	PUBLIC
 		ARDUINO_ARCH_ESP8266
 )
+
+add_streamutils_test(StreamUtilsTestEsp8266 Esp8266Core)

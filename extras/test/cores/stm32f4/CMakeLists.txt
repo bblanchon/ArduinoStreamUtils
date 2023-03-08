@@ -15,3 +15,5 @@ target_compile_definitions(Stm32F4Core
 	INTERFACE
 		ARDUINO_ARCH_STM32F4
 )
+
+add_streamutils_test(SteamUtilsTestStm32F4 Stm32F4Core)

@@ -14,3 +14,5 @@ target_compile_definitions(Stm32F1Core
 	INTERFACE
 		ARDUINO_ARCH_STM32F1
 )
+
+add_streamutils_test(StreamUtilsTestStm32F1 Stm32F1Core)

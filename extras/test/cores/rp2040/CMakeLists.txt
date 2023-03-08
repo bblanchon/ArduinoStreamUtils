@@ -17,3 +17,5 @@ target_compile_definitions(Rp2040Core
 	PUBLIC
 		ARDUINO_ARCH_RP2040
 )
+
+add_streamutils_test(StreamUtilsTestRp2040 Rp2040Core)

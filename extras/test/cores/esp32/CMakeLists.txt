@@ -26,3 +26,5 @@ target_compile_options(Esp32Core
 	PUBLIC
 		-funsigned-char
 )
+
+add_streamutils_test(StreamUtilsTestEsp32 Esp32Core)
