@@ -97,6 +97,11 @@ jobs:
             softwareserial: true
             index_url: https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
 
+          - core: arduino:mbed_rp2040
+            board: arduino:mbed_rp2040:pico
+            eeprom: false
+            softwareserial: false
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3

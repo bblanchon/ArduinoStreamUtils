@@ -34,8 +34,8 @@
 #endif
 
 #ifndef STREAMUTILS_ENABLE_EEPROM
-#if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_ESP8266) ||  \
-    defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_RP2040) || \
+#if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_ESP8266) || \
+    defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_PICO_MAJOR) || \
     defined(ARDUINO_ARCH_STM32) || defined(CORE_TEENSY)
 #define STREAMUTILS_ENABLE_EEPROM 1
 #else

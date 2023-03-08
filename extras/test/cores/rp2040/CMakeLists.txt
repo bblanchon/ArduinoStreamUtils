@@ -16,6 +16,7 @@ target_include_directories(Rp2040Core
 target_compile_definitions(Rp2040Core
 	PUBLIC
 		ARDUINO_ARCH_RP2040
+		ARDUINO_PICO_MAJOR=3
 )
 
 add_streamutils_test(StreamUtilsTestRp2040 Rp2040Core)
