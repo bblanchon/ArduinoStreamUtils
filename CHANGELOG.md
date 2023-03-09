@@ -1,8 +1,8 @@
 StreamUtils - Change log
 ========================
 
-HEAD
-----
+1.7.3 (2023/03/08)
+-----
 
 * Fix "EEPROM.h: No such file or directory" with ArduinoCore-mbed (issue #31)
 
