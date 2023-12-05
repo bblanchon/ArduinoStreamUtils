@@ -18,6 +18,7 @@ function(add_streamutils_test EXECUTABLE CORE)
 endfunction()
 
 add_subdirectory(cores/avr)
+add_subdirectory(cores/dxcore)
 add_subdirectory(cores/esp32)
 add_subdirectory(cores/esp8266)
 add_subdirectory(cores/mbed)

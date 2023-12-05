@@ -379,9 +379,11 @@ This library relies on `Client`, `Print`, and `Stream` definitions, which unfort
 It has been tested on the following cores:
 
 * [AVR](https://github.com/arduino/ArduinoCore-avr)
+* [DxCore](https://github.com/SpenceKonde/DxCore)
 * [ESP32](https://github.com/espressif/arduino-esp32)
 * [ESP8266](https://github.com/esp8266/Arduino)
 * [mbed](https://github.com/arduino/ArduinoCore-mbed)
+* [megaAVR](https://github.com/arduino/ArduinoCore-avr)
 * [nRF52](https://github.com/adafruit/Adafruit_nRF52_Arduino)
 * [RP2040](https://github.com/earlephilhower/arduino-pico)
 * [SAMD](https://github.com/arduino/ArduinoCore-samd)

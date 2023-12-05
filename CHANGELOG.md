@@ -1,6 +1,11 @@
 StreamUtils - Change log
 ========================
 
+HEAD
+----
+
+* Add support for DxCore (issue #34)
+
 1.7.3 (2023/03/08)
 -----
 
