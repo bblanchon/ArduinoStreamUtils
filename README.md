@@ -39,7 +39,7 @@ How to add buffering to a Stream?
 Sometimes, you can significantly improve performance by reading many bytes at once. 
 For example, [according to SPIFFS's wiki](https://github.com/pellepl/spiffs/wiki/Performance-and-Optimizing#reading-files), reading read files in chunks of 64 bytes is much faster than reading them one byte at a time.
 
-![ReadBufferingStream](extras/images/ReadBuffer.svg)
+![ReadBufferingStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/ReadBuffer.svg)
 
 To buffer the input, decorate the original `Stream` with `ReadBufferingStream`. For example, suppose your program reads a JSON document from SPIFFS like that:
 
@@ -72,7 +72,7 @@ Adding a buffer only makes sense for **unbuffered** streams. For example, there 
 Similarly, you can improve performance significantly by writing many bytes at once.
 For example, writing to `WiFiClient` one byte at a time is very slow; it's much faster if you send large chunks.
 
-![WriteBufferingStream](extras/images/WriteBuffer.svg)
+![WriteBufferingStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/WriteBuffer.svg)
 
 To add a buffer, decorate the original `Stream` with  `WriteBufferingStream`. For example, if your program sends a JSON document via `WiFiClient`, like that:
 
@@ -101,7 +101,7 @@ How to add logging to a stream?
 
 When debugging a program that makes HTTP requests, you first want to check whether the request is correct. With this library, you can decorate the `EthernetClient` or the `WiFiClient` to log everything to the serial.
 
-![WriteLoggingStream](extras/images/WriteLogger.svg)
+![WriteLoggingStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/WriteLogger.svg)
 
 For example, if your program is:
 
@@ -127,7 +127,7 @@ Everything you write to `loggingClient` is written to `client` and logged to `Se
 
 Similarly, you often want to see what the HTTP server sent back. With this library, you can decorate the `EthernetClient` or the `WiFiClient` to log everything to the serial.
 
-![ReadLoggingStream](extras/images/ReadLogger.svg)
+![ReadLoggingStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/ReadLogger.svg)
 
 For example, if your program is:
 
@@ -154,7 +154,7 @@ If your program receives data from one serial port and logs to another, **ensure
 
 Of course, you could log read and write operations by combining `ReadLoggingStream` and `WriteLoggingStream`, but there is a simpler solution: `LoggingStream`.
 
-![LoggingStream](extras/images/Logger.svg)
+![LoggingStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/Logger.svg)
 
 As usual, if your program is:
 
@@ -195,7 +195,7 @@ Serial1.begin(9600, SERIAL_7N1);
 
 The class `HammingEncodingStream<7, 4>` decorates an existing `Stream` to include parity bits in every write operation.
 
-![HammingEncodingStream](extras/images/HammingEncodingStream.svg)
+![HammingEncodingStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/HammingEncodingStream.svg)
 
 You can use this class like so:
 
@@ -211,7 +211,7 @@ Like every `Stream` decorator in this library, `HammingEncodingStream<7, 4>` sup
 
 The class `HammingDecodingStream<7, 4>` decorates an existing `Stream` to decode parity bits in every read operation.
 
-![HammingDecodingStream](extras/images/HammingDecodingStream.svg)
+![HammingDecodingStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/HammingDecodingStream.svg)
 
 You can use this class like so:
 
@@ -228,7 +228,7 @@ Like every `Stream` decorator in this library, `HammingDecodingStream<7, 4>` sup
 
 The class `HammingStream<7, 4>` combines the features of `HammingEncodingStream<7, 4>` and `HammingDecodingStream<7, 4>`, which is very useful when you do two-way communication.
 
-![HammingStream](extras/images/HammingStream.svg)
+![HammingStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/HammingStream.svg)
 
 You can use this class like so:
 
@@ -250,7 +250,7 @@ How to retry write operations?
 Sometimes, a stream is limited to the capacity of its internal buffer. In that case, you must wait before sending more data.
 To solve this problem, StreamUtils provides the `WriteWaitingStream` decorator:
 
-![WriteWaitingStream](extras/images/WriteWaitingStream.svg)
+![WriteWaitingStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/WriteWaitingStream.svg)
 
 This function repeatedly waits and retries until it times out.
 You can customize the `wait()` function; by default, it's [`yield()`](https://www.arduino.cc/en/Reference/SchedulerYield).
@@ -279,7 +279,7 @@ How to use a `String` as a stream?
 Sometimes, you use a piece of code that expects a `Print` instance (like `ReadLoggingStream`), but you want the output in a `String` instead of a regular `Stream`.
 In that case, use the `StringPrint` class. It wraps a `String` within a `Print` implementation.
 
-![StringPrint](extras/images/StringPrint.svg)
+![StringPrint](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/StringPrint.svg)
 
 Here is how you can use it:
 
@@ -303,7 +303,7 @@ Temperature = 22.30 °C
 
 Similarly, there are cases where you have a `String`, but you need to pass a `Stream` to some other piece of code. In that case, use `StringStream`; it's similar to `StrintPrint`, except you can also read from it.
 
-![StringStream](extras/images/StringStream.svg)
+![StringStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/StringStream.svg)
 
 
 How to use EEPROM as a stream?
@@ -311,7 +311,7 @@ How to use EEPROM as a stream?
 
 SteamUtils also allows using EEPROM as a stream. Create an instance of `EepromStream` and specify the start address and the size of the region you want to expose.
 
-![EepromStream](extras/images/EepromStream.svg)
+![EepromStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/EepromStream.svg)
 
 For example, it allows you to save a JSON document in EEPROM:
 
@@ -334,7 +334,7 @@ How to use `PROGMEM` as a stream?
 
 SteamUtils also allows reading `PROGMEM` buffers with a `Stream` interface.
 
-![ProgmemStream](extras/images/ProgmemStream.svg)
+![ProgmemStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/ProgmemStream.svg)
 
 Create an instance of `ProgmemStream` and pass the pointer to the `PROGMEM` buffer.
 
