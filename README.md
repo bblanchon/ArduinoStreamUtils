@@ -367,6 +367,7 @@ See the equivalence table below.
 | Error correction (decode only)     | `HammingDecodingClient` | `HammingDecodingStream` |                  |
 | Error correction (encode only)     | `HammingEncodingClient` | `HammingEncodingStream` | `HammingPrint`   |
 | Error correction (encode & decode) | `HammingClient`         | `HammingStream`         |                  |
+| Decode HTTP chunks                 | `ChunkDecodingClient`   | `ChunkDecodingStream`   |                  |
 
 Prefer `XxxClient` to `XxxStream` because, unlike `Stream::readBytes()`, `Client::read()` is virtual on all cores and therefore allows optimized implementations.
 
