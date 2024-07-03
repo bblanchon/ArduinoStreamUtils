@@ -1,5 +1,5 @@
 # StreamUtils - github.com/bblanchon/ArduinoStreamUtils
-# Copyright Benoit Blanchon 2019-2023
+# Copyright Benoit Blanchon 2019-2024
 # MIT License
 
 add_library(Nrf52Core INTERFACE)
