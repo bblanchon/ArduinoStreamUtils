@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "StreamUtils/Policies/ReadForwardingPolicy.hpp"
+#include "StreamUtils/Policies/ChunkDecodingPolicy.hpp"
 #include "StreamUtils/Policies/WriteForwardingPolicy.hpp"
 
 #include "StreamProxy.hpp"
@@ -12,9 +12,9 @@
 namespace StreamUtils {
 
 struct ChunkDecodingStream
-    : StreamProxy<ReadForwardingPolicy, WriteForwardingPolicy> {
+    : StreamProxy<ChunkDecodingPolicy, WriteForwardingPolicy> {
   ChunkDecodingStream(Stream &target)
-      : StreamProxy<ReadForwardingPolicy, WriteForwardingPolicy>(target) {}
+      : StreamProxy<ChunkDecodingPolicy, WriteForwardingPolicy>(target) {}
 };
 
 }  // namespace StreamUtils
