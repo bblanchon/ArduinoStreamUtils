@@ -20,15 +20,84 @@ TEST_CASE("ChunkDecodingStream") {
     CHECK(stream.readString() == "");
   }
 
-  SUBCASE("one chunk, no extension") {
-    upstream.print("3\r\nABC");
-    CHECK(stream.available() == 3);
-    CHECK(stream.peek() == 'A');
-    CHECK(stream.available() == 3);
-    CHECK(stream.read() == 'A');
-    CHECK(stream.available() == 2);
-    CHECK(stream.readString() == "BC");
-    CHECK(stream.available() == 0);
+  SUBCASE("sizes") {
+    char buffer[32];
+
+    upstream.print(
+        "1\r\n"
+        "a\r\n");
+    REQUIRE(stream.available() == 1);
+    REQUIRE(stream.peek() == 'a');
+    REQUIRE(stream.readBytes(buffer, sizeof(buffer)) == 1);
+    REQUIRE(buffer[0] == 'a');
+
+    upstream.print(
+        "2\r\n"
+        "ab\r\n");
+    REQUIRE(stream.available() == 2);
+    REQUIRE(stream.peek() == 'a');
+    REQUIRE(stream.readBytes(buffer, sizeof(buffer)) == 2);
+    REQUIRE(buffer[0] == 'a');
+    REQUIRE(buffer[1] == 'b');
+
+    upstream.print(
+        "3\r\n"
+        "abc\r\n");
+    REQUIRE(stream.available() == 3);
+    REQUIRE(stream.peek() == 'a');
+    REQUIRE(stream.readBytes(buffer, sizeof(buffer)) == 3);
+    REQUIRE(buffer[0] == 'a');
+    REQUIRE(buffer[2] == 'c');
+
+    upstream.print(
+        "9\r\n"
+        "abcdefghi\r\n");
+    REQUIRE(stream.readBytes(buffer, sizeof(buffer)) == 9);
+    REQUIRE(buffer[0] == 'a');
+    REQUIRE(buffer[8] == 'i');
+
+    upstream.print(
+        "a\r\n"
+        "abcdefghij\r\n");
+    REQUIRE(stream.readBytes(buffer, sizeof(buffer)) == 10);
+    REQUIRE(buffer[0] == 'a');
+    REQUIRE(buffer[9] == 'j');
+
+    upstream.print(
+        "A\r\n"
+        "abcdefghij\r\n");
+    REQUIRE(stream.readBytes(buffer, sizeof(buffer)) == 10);
+    REQUIRE(buffer[0] == 'a');
+    REQUIRE(buffer[9] == 'j');
+
+    upstream.print(
+        "f\r\n"
+        "abcdefghijklmno\r\n");
+    REQUIRE(stream.readBytes(buffer, sizeof(buffer)) == 15);
+    REQUIRE(buffer[0] == 'a');
+    REQUIRE(buffer[14] == 'o');
+
+    upstream.print(
+        "F\r\n"
+        "abcdefghijklmno\r\n");
+    REQUIRE(stream.readBytes(buffer, sizeof(buffer)) == 15);
+    REQUIRE(buffer[0] == 'a');
+    REQUIRE(buffer[14] == 'o');
+
+    upstream.print(
+        "10\r\n"
+        "abcdefghijklmnop\r\n");
+    REQUIRE(stream.readBytes(buffer, sizeof(buffer)) == 16);
+    REQUIRE(buffer[0] == 'a');
+    REQUIRE(buffer[15] == 'p');
+
+    // final chunk
+    upstream.print(
+        "0\r\n"
+        "\r\n");
+    REQUIRE(stream.available() == 0);
+    REQUIRE(stream.peek() == -1);
+    REQUIRE(stream.read() == -1);
   }
 
   SUBCASE("extensions") {
