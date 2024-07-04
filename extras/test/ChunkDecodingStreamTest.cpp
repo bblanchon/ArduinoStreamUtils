@@ -30,4 +30,34 @@ TEST_CASE("ChunkDecodingStream") {
     CHECK(stream.readString() == "BC");
     CHECK(stream.available() == 0);
   }
+
+  SUBCASE("extensions") {
+    // no space
+    upstream.print(
+        "1;foo=bar\r\n"
+        "X\r\n");
+    REQUIRE(stream.available() == 1);
+    REQUIRE(stream.read() == 'X');
+
+    // space before semicolon
+    upstream.print(
+        "1 ;foo=bar\r\n"
+        "X\r\n");
+    REQUIRE(stream.available() == 1);
+    REQUIRE(stream.read() == 'X');
+
+    // tab before semicolon
+    upstream.print(
+        "1\t;foo=bar\r\n"
+        "X\r\n");
+    REQUIRE(stream.available() == 1);
+    REQUIRE(stream.read() == 'X');
+
+    // final chunk
+    upstream.print(
+        "0;foo=bar\r\n"
+        "\r\n");
+    REQUIRE(stream.available() == 0);
+    REQUIRE(stream.read() == -1);
+  }
 }

@@ -14,6 +14,7 @@ class ChunkDecodingPolicy {
     Size,
     Extensions,
     StartCrLf,
+    EndCrLf,
     Body,
     Error,
   };
@@ -30,7 +31,7 @@ class ChunkDecodingPolicy {
       return -1;
     int c = target.read();
     if (c >= 0)
-      remaining_--;
+      decreaseRemaining(1);
     return c;
   }
 
@@ -44,7 +45,7 @@ class ChunkDecodingPolicy {
     if (!isInChunkBody(target))
       return 0;
     size_t n = target.readBytes(buffer, min(size, remaining_));
-    remaining_ -= n;
+    decreaseRemaining(n);
     return n;
   }
 
@@ -85,8 +86,19 @@ class ChunkDecodingPolicy {
           return State::Extensions;
 
       case State::StartCrLf:
-        if (c == '\n')
-          return State::Body;
+        if (c == '\n') {
+          if (remaining_ == 0)
+            return State::EndCrLf;
+          else
+            return State::Body;
+        } else
+          return State::Error;
+
+      case State::EndCrLf:
+        if (c == '\r')
+          return State::EndCrLf;
+        else if (c == '\n')
+          return State::Size;
         else
           return State::Error;
 
@@ -99,6 +111,13 @@ class ChunkDecodingPolicy {
   State appendSizeHexDigit(uint8_t digit) {
     remaining_ = remaining_ * 16 + digit;
     return State::Size;
+  }
+
+  void decreaseRemaining(size_t n) {
+    assert(remaining_ >= n);
+    remaining_ -= n;
+    if (remaining_ == 0)
+      state_ = State::EndCrLf;
   }
 
   size_t min(size_t a, size_t b) {
