@@ -129,4 +129,14 @@ TEST_CASE("ChunkDecodingStream") {
     REQUIRE(stream.available() == 0);
     REQUIRE(stream.read() == -1);
   }
+
+  SUBCASE("trailers") {
+    upstream.print(
+        "0\r\n"
+        "\r\n"
+        "foo: bar\r\n"
+        "baz: qux\r\n");
+    REQUIRE(stream.available() == 0);
+    REQUIRE(stream.read() == -1);
+  }
 }
