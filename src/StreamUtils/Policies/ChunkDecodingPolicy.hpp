@@ -11,11 +11,15 @@ namespace StreamUtils {
 
 class ChunkDecodingPolicy {
   enum class State {
-    Size,
-    Extensions,
-    StartCrLf,
-    EndCrLf,
-    Body,
+    ChunkSize,
+    ChunkExtensions,
+    ChunkStart,
+    ChunkBody,
+    ChunkEnd,
+    TrailerStart,
+    Trailer,
+    TrailerEnd,
+    FinalCrLf,
     Error,
   };
 
@@ -55,17 +59,17 @@ class ChunkDecodingPolicy {
 
  private:
   bool isInChunkBody(Stream &target) {
-    while (state_ != State::Error && state_ != State::Body &&
+    while (state_ != State::Error && state_ != State::ChunkBody &&
            target.available()) {
       state_ = injestNext(target);
     }
-    return state_ == State::Body;
+    return state_ == State::ChunkBody;
   }
 
   State injestNext(Stream &target) {
     int c = target.read();
     switch (state_) {
-      case State::Size:
+      case State::ChunkSize:
         if (c >= '0' && c <= '9')
           return appendSizeHexDigit(c - '0');
         else if (c >= 'A' && c <= 'F')
@@ -73,33 +77,58 @@ class ChunkDecodingPolicy {
         else if (c >= 'a' && c <= 'f')
           return appendSizeHexDigit(c - 'a' + 10);
         else if (c == '\r')
-          return State::StartCrLf;
+          return State::ChunkStart;
         else if (c == ' ' || c == '\t' || c == ';')
-          return State::Extensions;
+          return State::ChunkExtensions;
         else
           return State::Error;
 
-      case State::Extensions:
+      case State::ChunkExtensions:
         if (c == '\r')
-          return State::StartCrLf;
+          return State::ChunkStart;
         else
-          return State::Extensions;
+          return State::ChunkExtensions;
 
-      case State::StartCrLf:
+      case State::ChunkStart:
         if (c == '\n') {
           if (remaining_ == 0)
-            return State::EndCrLf;
+            return State::TrailerStart;
           else
-            return State::Body;
+            return State::ChunkBody;
         } else
           return State::Error;
 
-      case State::EndCrLf:
+      case State::ChunkEnd:
         if (c == '\r')
-          return State::EndCrLf;
+          return State::ChunkEnd;
         else if (c == '\n')
-          return State::Size;
+          return State::ChunkSize;
         else
+          return State::Error;
+
+      case State::TrailerStart:
+        if (c == '\r')
+          return State::FinalCrLf;
+        else
+          return State::Trailer;
+
+      case State::Trailer:
+        if (c == '\r')
+          return State::TrailerEnd;
+        else
+          return State::Trailer;
+
+      case State::TrailerEnd:
+        if (c == '\n')
+          return State::TrailerStart;
+        else
+          return State::Error;
+
+      case State::FinalCrLf:
+        if (c == '\n') {
+          assert(remaining_ == 0);
+          return State::ChunkSize;  // Read for a new response
+        } else
           return State::Error;
 
       default:
@@ -110,14 +139,14 @@ class ChunkDecodingPolicy {
 
   State appendSizeHexDigit(uint8_t digit) {
     remaining_ = remaining_ * 16 + digit;
-    return State::Size;
+    return State::ChunkSize;
   }
 
   void decreaseRemaining(size_t n) {
     assert(remaining_ >= n);
     remaining_ -= n;
     if (remaining_ == 0)
-      state_ = State::EndCrLf;
+      state_ = State::ChunkEnd;
   }
 
   size_t min(size_t a, size_t b) {
@@ -125,7 +154,7 @@ class ChunkDecodingPolicy {
   }
 
   size_t remaining_ = 0;
-  State state_ = State::Size;
+  State state_ = State::ChunkSize;
 };
 
 }  // namespace StreamUtils
