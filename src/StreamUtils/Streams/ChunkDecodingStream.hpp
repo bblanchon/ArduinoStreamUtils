@@ -15,6 +15,10 @@ struct ChunkDecodingStream
     : StreamProxy<ChunkDecodingPolicy, WriteForwardingPolicy> {
   ChunkDecodingStream(Stream &target)
       : StreamProxy<ChunkDecodingPolicy, WriteForwardingPolicy>(target) {}
+
+  bool error() const {
+    return _reader.error();
+  }
 };
 
 }  // namespace StreamUtils

@@ -15,7 +15,8 @@ class ChunkDecodingPolicy {
     ChunkExtensions,
     ChunkStart,
     ChunkBody,
-    ChunkEnd,
+    ChunkEndCr,
+    ChunkEndLf,
     TrailerStart,
     Trailer,
     TrailerEnd,
@@ -55,6 +56,10 @@ class ChunkDecodingPolicy {
 
   int read(Client &target, uint8_t *buffer, size_t size) {
     return readBytes(target, reinterpret_cast<char *>(buffer), size);
+  }
+
+  bool error() const {
+    return state_ == State::Error;
   }
 
  private:
@@ -98,10 +103,14 @@ class ChunkDecodingPolicy {
         } else
           return State::Error;
 
-      case State::ChunkEnd:
+      case State::ChunkEndCr:
         if (c == '\r')
-          return State::ChunkEnd;
-        else if (c == '\n')
+          return State::ChunkEndLf;
+        else
+          return State::Error;
+
+      case State::ChunkEndLf:
+        if (c == '\n')
           return State::ChunkSize;
         else
           return State::Error;
@@ -115,6 +124,8 @@ class ChunkDecodingPolicy {
       case State::Trailer:
         if (c == '\r')
           return State::TrailerEnd;
+        else if (c == '\n')
+          return State::Error;
         else
           return State::Trailer;
 
@@ -146,7 +157,7 @@ class ChunkDecodingPolicy {
     assert(remaining_ >= n);
     remaining_ -= n;
     if (remaining_ == 0)
-      state_ = State::ChunkEnd;
+      state_ = State::ChunkEndCr;
   }
 
   size_t min(size_t a, size_t b) {
