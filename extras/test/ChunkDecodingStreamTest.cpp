@@ -267,4 +267,13 @@ TEST_CASE("ChunkDecodingStream") {
     REQUIRE(stream.read() == -1);
     REQUIRE(stream.error() == true);
   }
+
+  SUBCASE("size overflow") {
+    upstream.print(
+        "10000000000000001\r\n"
+        "X\r\n");
+    CHECK(stream.available() == 0);
+    CHECK(stream.read() == -1);
+    CHECK(stream.error() == true);
+  }
 }

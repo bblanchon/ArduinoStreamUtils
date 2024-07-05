@@ -149,7 +149,12 @@ class ChunkDecodingPolicy {
   }
 
   State appendSizeHexDigit(uint8_t digit) {
-    remaining_ = remaining_ * 16 + digit;
+    auto oldRemaining = remaining_;
+    remaining_ = oldRemaining * 16 + digit;
+    if (remaining_ < oldRemaining) {  // overflow
+      remaining_ = 0;
+      return State::Error;
+    }
     return State::ChunkSize;
   }
 
