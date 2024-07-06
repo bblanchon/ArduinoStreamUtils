@@ -28,13 +28,13 @@ class ChunkDecodingPolicy {
 
  public:
   int available(Stream &target) {
-    if (!isInChunkBody(target))
+    if (!goToChunkBody(target))
       return 0;
     return min(target.available(), remaining_);
   }
 
   int read(Stream &target) {
-    if (!isInChunkBody(target))
+    if (!goToChunkBody(target))
       return -1;
     int c = target.read();
     if (c >= 0)
@@ -43,7 +43,7 @@ class ChunkDecodingPolicy {
   }
 
   int peek(Stream &target) {
-    if (!isInChunkBody(target))
+    if (!goToChunkBody(target))
       return -1;
     return target.peek();
   }
@@ -61,11 +61,15 @@ class ChunkDecodingPolicy {
     return state_ == State::Error;
   }
 
+  bool ended() const {
+    return state_ == State::Ended;
+  }
+
  private:
   template <typename TTarget>  // Stream or Client
   size_t doReadBytes(TTarget &target, char *buffer, size_t size) {
     size_t result = 0;
-    while (size > 0 && isInChunkBody(target, true)) {
+    while (size > 0 && !error() && !ended() && goToChunkBody(target, true)) {
       size_t n = readOrReadBytes(target, buffer, min(size, remaining_));
       decreaseRemaining(n);
       result += n;
@@ -75,8 +79,12 @@ class ChunkDecodingPolicy {
     return result;
   }
 
-  bool isInChunkBody(Stream &target, bool wait = false) {
-    while (state_ != State::Error && state_ != State::ChunkBody) {
+  bool inBody() const {
+    return state_ == State::ChunkBody;
+  }
+
+  bool goToChunkBody(Stream &target, bool wait = false) {
+    while (!error() && !ended() && !inBody()) {
       int c = readNextChar(target, wait);
       if (c < 0)
         return false;

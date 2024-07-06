@@ -148,7 +148,7 @@ TEST_CASE("ChunkDecodingStream") {
     REQUIRE(stream.error() == false);
   }
 
-  SUBCASE("restart after trailers") {
+  SUBCASE("ignore content after final chunk") {
     upstream.print(
         "0\r\n"
         "foo: bar\r\n"
@@ -158,7 +158,8 @@ TEST_CASE("ChunkDecodingStream") {
         "X\r\n");
     REQUIRE(stream.available() == 0);
     REQUIRE(stream.read() == -1);
-    REQUIRE(stream.error() == true);
+    REQUIRE(stream.error() == false);
+    REQUIRE(stream.ended() == true);
   }
 
   SUBCASE("size starts with non hexadecimal digit") {
@@ -314,6 +315,33 @@ TEST_CASE("ChunkDecodingStream") {
             "readBytes(1) -> 1"  // \r
             "readBytes(1) -> 1"  // \n
             "readBytes(1) -> 0 [timeout]");
+  }
+
+  SUBCASE("readBytes() doen't wait if final chunk received") {
+    char buffer[32];
+
+    upstream.print(
+        "4\r\n"
+        "XXXX\r\n"
+        "0\r\n"
+        "\r\n");
+    REQUIRE(stream.readBytes(buffer, 32) == 4);
+    REQUIRE(buffer[0] == 'X');
+    REQUIRE(stream.ended() == true);
+
+    REQUIRE(log.str() ==
+            "readBytes(1) -> 1"  // 1
+            "readBytes(1) -> 1"  // \r
+            "readBytes(1) -> 1"  // \n
+            "readBytes(4) -> 4"  // XXXX
+            "readBytes(1) -> 1"  // \r
+            "readBytes(1) -> 1"  // \n
+            "readBytes(1) -> 1"  // 0
+            "readBytes(1) -> 1"  // \r
+            "readBytes(1) -> 1"  // \n
+            "readBytes(1) -> 1"  // \r
+            "readBytes(1) -> 1"  // \n
+    );
   }
 #endif
 }

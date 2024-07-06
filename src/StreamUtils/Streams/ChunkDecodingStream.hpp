@@ -19,6 +19,10 @@ struct ChunkDecodingStream
   bool error() const {
     return _reader.error();
   }
+
+  bool ended() const {
+    return _reader.ended();
+  }
 };
 
 }  // namespace StreamUtils
