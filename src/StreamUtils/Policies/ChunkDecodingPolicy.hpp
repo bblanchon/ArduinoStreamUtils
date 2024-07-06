@@ -6,6 +6,7 @@
 
 #include <Client.h>
 #include <assert.h>
+#include "../Helpers.hpp"
 
 namespace StreamUtils {
 
@@ -48,15 +49,12 @@ class ChunkDecodingPolicy {
   }
 
   size_t readBytes(Stream &target, char *buffer, size_t size) {
-    if (!isInChunkBody(target, true))
-      return 0;
-    size_t n = target.readBytes(buffer, min(size, remaining_));
-    decreaseRemaining(n);
-    return n;
+    return doReadBytes(target, buffer, size);
   }
 
   int read(Client &target, uint8_t *buffer, size_t size) {
-    return readBytes(target, reinterpret_cast<char *>(buffer), size);
+    return static_cast<int>(
+        doReadBytes(target, reinterpret_cast<char *>(buffer), size));
   }
 
   bool error() const {
@@ -64,6 +62,19 @@ class ChunkDecodingPolicy {
   }
 
  private:
+  template <typename TTarget>  // Stream or Client
+  size_t doReadBytes(TTarget &target, char *buffer, size_t size) {
+    size_t result = 0;
+    while (size > 0 && isInChunkBody(target, true)) {
+      size_t n = readOrReadBytes(target, buffer, min(size, remaining_));
+      decreaseRemaining(n);
+      result += n;
+      size -= n;
+      buffer += n;
+    }
+    return result;
+  }
+
   bool isInChunkBody(Stream &target, bool wait = false) {
     while (state_ != State::Error && state_ != State::ChunkBody) {
       int c = readNextChar(target, wait);

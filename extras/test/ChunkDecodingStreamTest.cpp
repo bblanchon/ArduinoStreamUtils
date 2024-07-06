@@ -281,20 +281,39 @@ TEST_CASE("ChunkDecodingStream") {
     CHECK(stream.error() == true);
   }
 
+  SUBCASE("readBytes() merge chunks") {
+    char buffer[32];
+
+    upstream.print(
+        "4\r\n"
+        "XXXX\r\n"
+        "4\r\n"
+        "YYYY\r\n"
+        "0\r\n"
+        "\r\n");
+    REQUIRE(stream.readBytes(buffer, 32) == 8);
+    REQUIRE(buffer[0] == 'X');
+    REQUIRE(buffer[4] == 'Y');
+  }
+
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
   SUBCASE("readBytes() waits timeout") {
     char buffer[32];
+
     upstream.print(
-        "1\r\n"
-        "X\r\n");
-    REQUIRE(stream.readBytes(buffer, 2) == 1);
+        "4\r\n"
+        "XXXX\r\n");
+    REQUIRE(stream.readBytes(buffer, 32) == 4);
     REQUIRE(buffer[0] == 'X');
-    CHECK(log.str() ==
-          "readBytes(1) -> 1"  // 1
-          "readBytes(1) -> 1"  // CR
-          "readBytes(1) -> 1"  // LF
-          "readBytes(1) -> 1"  // X
-    );
+
+    REQUIRE(log.str() ==
+            "readBytes(1) -> 1"  // 1
+            "readBytes(1) -> 1"  // \r
+            "readBytes(1) -> 1"  // \n
+            "readBytes(4) -> 4"  // XXXX
+            "readBytes(1) -> 1"  // \r
+            "readBytes(1) -> 1"  // \n
+            "readBytes(1) -> 0 [timeout]");
   }
 #endif
 }
