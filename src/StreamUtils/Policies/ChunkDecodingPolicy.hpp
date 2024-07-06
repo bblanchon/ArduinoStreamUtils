@@ -65,15 +65,16 @@ class ChunkDecodingPolicy {
 
  private:
   bool isInChunkBody(Stream &target) {
-    while (state_ != State::Error && state_ != State::ChunkBody &&
-           target.available()) {
-      state_ = injestNext(target);
+    while (state_ != State::Error && state_ != State::ChunkBody) {
+      int c = target.read();
+      if (c < 0)
+        return false;
+      state_ = interpret(static_cast<char>(c));
     }
     return state_ == State::ChunkBody;
   }
 
-  State injestNext(Stream &target) {
-    int c = target.read();
+  State interpret(char c) {
     switch (state_) {
       case State::ChunkSize:
         if (c >= '0' && c <= '9')

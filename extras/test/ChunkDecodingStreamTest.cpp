@@ -2,7 +2,9 @@
 // Copyright Benoit Blanchon 2019-2024
 // MIT License
 
+#include "StreamUtils/Prints/StringPrint.hpp"
 #include "StreamUtils/Streams/ChunkDecodingStream.hpp"
+#include "StreamUtils/Streams/SpyingStream.hpp"
 #include "StreamUtils/Streams/StringStream.hpp"
 
 #include "doctest.h"
@@ -11,7 +13,9 @@ using namespace StreamUtils;
 
 TEST_CASE("ChunkDecodingStream") {
   StringStream upstream;
-  ChunkDecodingStream stream{upstream};
+  StringPrint log;
+  SpyingStream spy{upstream, log};
+  ChunkDecodingStream stream{spy};
 
   SUBCASE("empty stream") {
     CHECK(stream.available() == 0);
@@ -275,5 +279,22 @@ TEST_CASE("ChunkDecodingStream") {
     CHECK(stream.available() == 0);
     CHECK(stream.read() == -1);
     CHECK(stream.error() == true);
+  }
+
+  SUBCASE("readBytes() waits timeout") {
+    char buffer[32];
+    upstream.print(
+        "1\r\n"
+        "X\r\n");
+    REQUIRE(stream.readBytes(buffer, 2) == 1);
+    REQUIRE(buffer[0] == 'X');
+    CHECK(log.str() ==
+          "read() -> 49"
+          "read() -> 13"
+          "read() -> 10"
+          "read() -> 88"
+          "read() -> 13"
+          "read() -> 10"
+          "read() -> -1");
   }
 }
