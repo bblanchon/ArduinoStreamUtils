@@ -48,7 +48,7 @@ class ChunkDecodingPolicy {
   }
 
   size_t readBytes(Stream &target, char *buffer, size_t size) {
-    if (!isInChunkBody(target))
+    if (!isInChunkBody(target, true))
       return 0;
     size_t n = target.readBytes(buffer, min(size, remaining_));
     decreaseRemaining(n);
@@ -64,14 +64,26 @@ class ChunkDecodingPolicy {
   }
 
  private:
-  bool isInChunkBody(Stream &target) {
+  bool isInChunkBody(Stream &target, bool wait = false) {
     while (state_ != State::Error && state_ != State::ChunkBody) {
-      int c = target.read();
+      int c = readNextChar(target, wait);
       if (c < 0)
         return false;
       state_ = interpret(static_cast<char>(c));
     }
     return state_ == State::ChunkBody;
+  }
+
+  int readNextChar(Stream &target, bool wait = false) {
+    if (wait) {
+      char c;
+      if (target.readBytes(&c, 1) == 1)
+        return c;
+      else
+        return -1;
+    } else {
+      return target.read();
+    }
   }
 
   State interpret(char c) {

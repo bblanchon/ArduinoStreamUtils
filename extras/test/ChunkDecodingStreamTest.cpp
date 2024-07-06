@@ -281,6 +281,7 @@ TEST_CASE("ChunkDecodingStream") {
     CHECK(stream.error() == true);
   }
 
+#if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
   SUBCASE("readBytes() waits timeout") {
     char buffer[32];
     upstream.print(
@@ -289,12 +290,11 @@ TEST_CASE("ChunkDecodingStream") {
     REQUIRE(stream.readBytes(buffer, 2) == 1);
     REQUIRE(buffer[0] == 'X');
     CHECK(log.str() ==
-          "read() -> 49"
-          "read() -> 13"
-          "read() -> 10"
-          "read() -> 88"
-          "read() -> 13"
-          "read() -> 10"
-          "read() -> -1");
+          "readBytes(1) -> 1"  // 1
+          "readBytes(1) -> 1"  // CR
+          "readBytes(1) -> 1"  // LF
+          "readBytes(1) -> 1"  // X
+    );
   }
+#endif
 }
