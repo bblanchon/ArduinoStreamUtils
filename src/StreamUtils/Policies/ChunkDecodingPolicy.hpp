@@ -21,6 +21,7 @@ class ChunkDecodingPolicy {
     Trailer,
     TrailerEnd,
     FinalCrLf,
+    Ended,
     Error,
   };
 
@@ -138,12 +139,11 @@ class ChunkDecodingPolicy {
       case State::FinalCrLf:
         if (c == '\n') {
           assert(remaining_ == 0);
-          return State::ChunkSize;  // Read for a new response
+          return State::Ended;
         } else
           return State::Error;
 
       default:
-        assert(false);
         return State::Error;
     }
   }

@@ -152,9 +152,9 @@ TEST_CASE("ChunkDecodingStream") {
         "\r\n"
         "1\r\n"
         "X\r\n");
-    REQUIRE(stream.available() == 1);
-    REQUIRE(stream.read() == 'X');
-    REQUIRE(stream.error() == false);
+    REQUIRE(stream.available() == 0);
+    REQUIRE(stream.read() == -1);
+    REQUIRE(stream.error() == true);
   }
 
   SUBCASE("size starts with non hexadecimal digit") {
