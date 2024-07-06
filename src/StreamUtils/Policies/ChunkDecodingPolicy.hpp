@@ -30,7 +30,7 @@ class ChunkDecodingPolicy {
   int available(Stream &target) {
     if (!goToChunkBody(target))
       return 0;
-    return min(target.available(), remaining_);
+    return min_(target.available(), remaining_);
   }
 
   int read(Stream &target) {
@@ -70,7 +70,7 @@ class ChunkDecodingPolicy {
   size_t doReadBytes(TTarget &target, char *buffer, size_t size) {
     size_t result = 0;
     while (size > 0 && !error() && !ended() && goToChunkBody(target, true)) {
-      size_t n = readOrReadBytes(target, buffer, min(size, remaining_));
+      size_t n = readOrReadBytes(target, buffer, min_(size, remaining_));
       decreaseRemaining(n);
       result += n;
       size -= n;
@@ -197,7 +197,7 @@ class ChunkDecodingPolicy {
       state_ = State::ChunkEndCr;
   }
 
-  size_t min(size_t a, size_t b) {
+  size_t min_(size_t a, size_t b) {
     return a < b ? a : b;
   }
 
