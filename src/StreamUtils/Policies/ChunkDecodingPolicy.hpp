@@ -83,7 +83,8 @@ class ChunkDecodingPolicy {
     return state_ == State::ChunkBody;
   }
 
-  bool goToChunkBody(Stream &target, bool wait = false) {
+  template <typename TTarget>  // Stream or Client
+  bool goToChunkBody(TTarget &target, bool wait = false) {
     while (!error() && !ended() && !inBody()) {
       int c = readNextChar(target, wait);
       if (c < 0)
@@ -93,10 +94,11 @@ class ChunkDecodingPolicy {
     return state_ == State::ChunkBody;
   }
 
-  int readNextChar(Stream &target, bool wait = false) {
+  template <typename TTarget>  // Stream or Client
+  int readNextChar(TTarget &target, bool wait = false) {
     if (wait) {
       char c;
-      if (target.readBytes(&c, 1) == 1)
+      if (readOrReadBytes(target, &c, 1) == 1)
         return c;
       else
         return -1;
