@@ -27,6 +27,7 @@ For example, with this library, you can:
 * debug your program more easily by logging what it sends to a Web service
 * send large data with the [Wire library](https://www.arduino.cc/en/reference/wire)
 * use a `String`, EEPROM, or `PROGMEM` with a stream interface
+* decode HTTP chunks
 
 Read on to see how StreamUtils can help you!
 
@@ -37,11 +38,11 @@ How to add buffering to a Stream?
 ### Buffering read operations
 
 Sometimes, you can significantly improve performance by reading many bytes at once. 
-For example, [according to SPIFFS's wiki](https://github.com/pellepl/spiffs/wiki/Performance-and-Optimizing#reading-files), reading read files in chunks of 64 bytes is much faster than reading them one byte at a time.
+For example, [according to SPIFFS's wiki](https://github.com/pellepl/spiffs/wiki/Performance-and-Optimizing#reading-files), reading files in chunks of 64 bytes is much faster than reading them one byte at a time.
 
 ![ReadBufferingStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/ReadBuffer.svg)
 
-To buffer the input, decorate the original `Stream` with `ReadBufferingStream`. For example, suppose your program reads a JSON document from SPIFFS like that:
+To buffer the input, decorate the original `Stream` with `ReadBufferingStream`. For example, suppose your program reads a JSON document from SPIFFS like this:
 
 ```c++
 File file = SPIFFS.open("example.json", "r");
@@ -61,7 +62,7 @@ Unfortunately, this optimization is only possible if:
 1. `Stream.readBytes()` is declared `virtual` in your Arduino Code (as it's the case for ESP8266), and
 2. the derived class has an optimized implementation of `readBytes()` (as it's the case for SPIFFS' `File`).
 
-When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client` defines a `read()` method similar to `readBytes()`, except that this one is `virtual` on all platforms.
+When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client` defines a `read()` method similar to `readBytes()`, except this one is `virtual` on all platforms.
 
 If memory allocation fails, `ReadBufferingStream` behaves as if no buffer was used: it forwards all calls to the upstream `Stream`.
 
@@ -74,7 +75,7 @@ For example, writing to `WiFiClient` one byte at a time is very slow; it's much 
 
 ![WriteBufferingStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/WriteBuffer.svg)
 
-To add a buffer, decorate the original `Stream` with  `WriteBufferingStream`. For example, if your program sends a JSON document via `WiFiClient`, like that:
+To add a buffer, decorate the original `Stream` with  `WriteBufferingStream`. For example, if your program sends a JSON document via `WiFiClient` like this:
 
 ```c++
 serializeJson(doc, wifiClient);
@@ -166,7 +167,7 @@ char response[256];
 client.readBytes(response, 256);
 ```
 
-Then decorate `client` and replace the calls:
+Then, decorate `client` and replace the calls:
 
 ```c++
 LoggingStream loggingClient(client, Serial);
@@ -187,7 +188,7 @@ These extra bits increase the amount of traffic but allow correcting any one-bit
 If you use this encoding on an 8-bit channel, it effectively doubles the amount of traffic. However, if you use an [`HardwareSerial`](https://www.arduino.cc/reference/en/language/functions/communication/serial/) instance (like `Serial`, `Serial1`...), you can slightly reduce the overhead by configuring the ports as a 7-bit channel, like so:
 
 ```c++
-// Initialize serial port with 9600 bauds, 7-bits of data, no parity, and one stop bit
+// Initialize serial port with 9600 bauds, 7 bits of data, no parity, and one stop bit
 Serial1.begin(9600, SERIAL_7N1);
 ```
 
@@ -346,6 +347,47 @@ Serial.println(stream.readString());
 
 `ProgmemStream`'s constructor also supports `const __FlashStringHelper*` (the type returned by the `F()` macro) and an optional second argument to specify the size of the buffer.
 
+How to decode HTTP chunks?
+--------------------------
+
+HTTP servers can send their response in multiple parts using [Chunked Transfer Encoding](https://en.wikipedia.org/wiki/Chunked_transfer_encoding). Clients using HTTP 1.1 must support this encoding as it's not optional and is dictated by the server.
+
+`ChunkDecodingStream` and `ChunkDecodingClient` are decorators that decode the chunks and make the response available as a regular stream.
+
+Here is an example using `HTTPClient`:
+
+```c++
+// Initialize HTTPClient
+HTTPClient http;
+http.begin(client, url);
+
+// Tell HTTPClient to collect the Transfer-Encoding header
+// (by default HTTPClient discards the response headers)
+const char *keys[] = {"Transfer-Encoding"};
+http.collectHeaders(keys, 1);
+
+// Send the request
+int status = http.GET();
+if (status != 200) return;
+
+// Create the raw and decoded stream
+Stream& rawStream = http.getStream();
+ChunkDecodingStream decodedStream(http.getStream());
+
+// Choose the stream based on the Transfer-Encoding header
+Stream& response = http.header("Transfer-Encoding") == "chunked" ? decodedStream : rawStream;
+
+// Read the response
+JsonDocument doc;
+deserializeJson(doc, response);
+
+// Close the connection
+http.end();
+```
+
+Note that `HTTPClient` already performs chunk decoding **if** you use `getString()`, but you might want to use `getStream()` to avoid buffering the entire response in memory.
+
+Also, you can avoid chunked transfer encoding by downgrading the HTTP version to 1.0. `HTTPClient` allows you to do that by calling `useHTTP10(true)` before sending the request.
 
 Summary
 -------
