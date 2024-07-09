@@ -3,9 +3,10 @@
 #include <ESP8266WiFi.h>
 #elif defined(ARDUINO_ARCH_ESP32)
 #include <HTTPClient.h>
+#include <WiFi.h>
 #include <WiFiClientSecure.h>
 #else
-#error Unsupported platform
+#error Unsuported platform
 #endif
 
 #include <StreamUtils.h>
