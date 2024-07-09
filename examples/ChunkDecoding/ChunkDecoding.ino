@@ -1,5 +1,13 @@
+#if defined(ARDUINO_ARCH_ESP8266)
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
+#elif defined(ARDUINO_ARCH_ESP32)
+#include <HTTPClient.h>
+#include <WiFiClientSecure.h>
+#else
+#error Unsupported platform
+#endif
+
 #include <StreamUtils.h>
 
 // WiFi network configuration.
