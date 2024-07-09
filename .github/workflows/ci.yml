@@ -54,52 +54,61 @@ jobs:
           - core: arduino:avr
             board: arduino:avr:leonardo
             eeprom: true
+            httpclient: false
             softwareserial: true
 
           - core: esp8266:esp8266
             board: esp8266:esp8266:huzzah
             eeprom: true
+            httpclient: true
             softwareserial: true
             index_url: https://arduino.esp8266.com/stable/package_esp8266com_index.json
 
           - core: esp32:esp32
             board: esp32:esp32:esp32
             eeprom: true
+            httpclient: true
             softwareserial: false
             index_url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
 
           - core: arduino:samd
             board: arduino:samd:mkr1000
             eeprom: false
+            httpclient: false
             softwareserial: false
 
           - core: STMicroelectronics:stm32
             board: STMicroelectronics:stm32:Nucleo_32
             eeprom: true
+            httpclient: false
             softwareserial: true
             index_url: https://github.com/stm32duino/BoardManagerFiles/raw/main/package_stmicroelectronics_index.json
 
           - core: stm32duino:STM32F1
             board: stm32duino:STM32F1:mapleMini
             eeprom: false
+            httpclient: false
             softwareserial: false
             index_url: http://dan.drown.org/stm32duino/package_STM32duino_index.json
 
           - core: stm32duino:STM32F4
             board: stm32duino:STM32F4:blackpill_f401
             eeprom: false
+            httpclient: false
             softwareserial: false
             index_url: http://dan.drown.org/stm32duino/package_STM32duino_index.json
 
           - core: rp2040:rp2040
             board: rp2040:rp2040:rpipico
             eeprom: true
+            httpclient: false
             softwareserial: true
             index_url: https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
 
           - core: arduino:mbed_rp2040
             board: arduino:mbed_rp2040:pico
             eeprom: false
+            httpclient: false
             softwareserial: false
 
     steps:
@@ -114,6 +123,10 @@ jobs:
 
       - name: Install core
         run: arduino-cli core install --additional-urls "${{ matrix.index_url }}" ${{ matrix.core }}
+
+      - name: Build ChunkDecoding
+        if: matrix.httpclient
+        run: arduino-cli compile --library . --warnings all -b ${{ matrix.board }} "examples/ChunkDecoding/ChunkDecoding.ino"
 
       - name: Build EepromRead
         if: matrix.eeprom
