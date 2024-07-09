@@ -354,6 +354,8 @@ HTTP servers can send their response in multiple parts using [Chunked Transfer E
 
 `ChunkDecodingStream` and `ChunkDecodingClient` are decorators that decode the chunks and make the response available as a regular stream.
 
+![ChunkDecodingStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/ChunkDecodingStream.svg)
+
 Here is an example using `HTTPClient`:
 
 ```c++
