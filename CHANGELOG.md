@@ -1,6 +1,11 @@
 StreamUtils - Change log
 ========================
 
+1.9.0 (2024/07/10)
+-----
+
+* Add `ChunkDecodingStream` and `ChunkDecodingClient`
+
 1.8.0 (2023/12/05)
 -----
 
