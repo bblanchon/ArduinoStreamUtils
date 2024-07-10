@@ -14,6 +14,7 @@
 #include "StreamUtils/Prints/HammingPrint.hpp"
 #include "StreamUtils/Prints/LoggingPrint.hpp"
 #include "StreamUtils/Prints/StringPrint.hpp"
+#include "StreamUtils/Streams/ChunkDecodingStream.hpp"
 #include "StreamUtils/Streams/EepromStream.hpp"
 #include "StreamUtils/Streams/HammingDecodingStream.hpp"
 #include "StreamUtils/Streams/HammingEncodingStream.hpp"
