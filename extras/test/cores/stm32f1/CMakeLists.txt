@@ -15,4 +15,9 @@ target_compile_definitions(Stm32F1Core
 		ARDUINO_ARCH_STM32F1
 )
 
+target_compile_options(Stm32F1Core
+	INTERFACE
+		-Wno-overloaded-virtual
+)
+
 add_streamutils_test(StreamUtilsTestStm32F1 Stm32F1Core)
