@@ -11,7 +11,7 @@ jobs:
         run: sudo apt-get install -y lcov
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Configure
         run: cmake -DCOVERAGE=true .
@@ -32,13 +32,13 @@ jobs:
         run: mkdir coverage && genhtml coverage_filtered.info -o coverage -t ArduinoJson
 
       - name: Upload coverage report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: coverage
           path: coverage
 
       - name: Upload to Coveralls
-        uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: coverage_filtered.info
@@ -113,7 +113,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Install arduino-cli
         run: curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=/usr/local/bin sh
@@ -213,10 +213,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Set up cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.platformio
@@ -224,7 +224,7 @@ jobs:
           key: ${{ runner.os }}-platformio
 
       - name: Set up Python 3.x
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: '3.x'
 
