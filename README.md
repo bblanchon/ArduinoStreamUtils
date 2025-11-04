@@ -310,7 +310,7 @@ Similarly, there are cases where you have a `String`, but you need to pass a `St
 How to use EEPROM as a stream?
 ------------------------------
 
-SteamUtils also allows using EEPROM as a stream. Create an instance of `EepromStream` and specify the start address and the size of the region you want to expose.
+StreamUtils also allows using EEPROM as a stream. Create an instance of `EepromStream` and specify the start address and the size of the region you want to expose.
 
 ![EepromStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/EepromStream.svg)
 
@@ -333,7 +333,7 @@ deserializeJson(doc, eepromStream);
 How to use `PROGMEM` as a stream?
 ------------------------------
 
-SteamUtils also allows reading `PROGMEM` buffers with a `Stream` interface.
+StreamUtils also allows reading `PROGMEM` buffers with a `Stream` interface.
 
 ![ProgmemStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/ProgmemStream.svg)
 
