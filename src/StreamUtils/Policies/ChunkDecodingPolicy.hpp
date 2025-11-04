@@ -70,11 +70,14 @@ class ChunkDecodingPolicy {
   size_t doReadBytes(TTarget &target, char *buffer, size_t size) {
     size_t result = 0;
     while (size > 0 && !error() && !ended() && goToChunkBody(target, true)) {
-      size_t n = readOrReadBytes(target, buffer, min_(size, remaining_));
-      decreaseRemaining(n);
-      result += n;
-      size -= n;
-      buffer += n;
+      size_t requestedBytes = min_(size, remaining_);
+      size_t returnedBytes = readOrReadBytes(target, buffer, requestedBytes);
+      decreaseRemaining(returnedBytes);
+      result += returnedBytes;
+      size -= returnedBytes;
+      buffer += returnedBytes;
+      if (returnedBytes < requestedBytes)
+        break;  // no more data available right now
     }
     return result;
   }

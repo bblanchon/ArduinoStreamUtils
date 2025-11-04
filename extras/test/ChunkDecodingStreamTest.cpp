@@ -298,7 +298,7 @@ TEST_CASE("ChunkDecodingStream") {
   }
 
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
-  SUBCASE("readBytes() waits timeout") {
+  SUBCASE("readBytes() waits timeout if transmission cuts before final chunk") {
     char buffer[32];
 
     upstream.print(
@@ -308,13 +308,30 @@ TEST_CASE("ChunkDecodingStream") {
     REQUIRE(buffer[0] == 'X');
 
     REQUIRE(log.str() ==
-            "readBytes(1) -> 1"  // 1
+            "readBytes(1) -> 1"  // 4
             "readBytes(1) -> 1"  // \r
             "readBytes(1) -> 1"  // \n
             "readBytes(4) -> 4"  // XXXX
             "readBytes(1) -> 1"  // \r
             "readBytes(1) -> 1"  // \n
             "readBytes(1) -> 0 [timeout]");
+  }
+
+  // Issue #37
+  SUBCASE("readBytes() waits timeout if transmission cuts mid-chunk") {
+    char buffer[32];
+
+    upstream.print(
+        "4\r\n"
+        "XX");
+    REQUIRE(stream.readBytes(buffer, 32) == 2);
+    REQUIRE(buffer[0] == 'X');
+
+    REQUIRE(log.str() ==
+            "readBytes(1) -> 1"  // 4
+            "readBytes(1) -> 1"  // \r
+            "readBytes(1) -> 1"  // \n
+            "readBytes(4) -> 2 [timeout]");
   }
 
   SUBCASE("readBytes() doen't wait if final chunk received") {
