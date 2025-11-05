@@ -1,7 +1,7 @@
 StreamUtils - Change log
 ========================
 
-HEAD
+1.9.1 (2024/11/05)
 ----
 
 * Fix infinite loop in `ChunkDecodingPolicy` when transmission cuts mid-chunk (issue #37)

@@ -4,8 +4,8 @@ StreamUtils: Power-ups for Arduino Streams
 
 [![Continuous Integration](https://github.com/bblanchon/ArduinoStreamUtils/workflows/Continuous%20Integration/badge.svg)](https://github.com/bblanchon/ArduinoStreamUtils/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/bblanchon/ArduinoStreamUtils/badge.svg)](https://coveralls.io/github/bblanchon/ArduinoStreamUtils)
-[![Arduino Library Manager](https://img.shields.io/static/v1?label=Arduino&message=v1.8.0&logo=arduino&logoColor=white&color=blue)](https://www.ardu-badge.com/StreamUtils/1.9.0)
-[![PlatformIO Registry](https://badges.registry.platformio.org/packages/bblanchon/library/StreamUtils.svg?version=1.9.0)](https://registry.platformio.org/packages/libraries/bblanchon/StreamUtils?version=1.9.0) 
+[![Arduino Library Manager](https://img.shields.io/static/v1?label=Arduino&message=v1.8.0&logo=arduino&logoColor=white&color=blue)](https://www.ardu-badge.com/StreamUtils/1.9.1)
+[![PlatformIO Registry](https://badges.registry.platformio.org/packages/bblanchon/library/StreamUtils.svg?version=1.9.1)](https://registry.platformio.org/packages/libraries/bblanchon/StreamUtils?version=1.9.1) 
 
 The *stream* is an essential abstraction in Arduino; we find it in many places:
 
