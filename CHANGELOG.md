@@ -1,6 +1,12 @@
 StreamUtils - Change log
 ========================
 
+HEAD
+----
+
+* Add missing class names in `keywords.txt`
+* Add missing includes in `StreamUtils.hpp` (issue #39)
+
 1.9.1 (2024/11/05)
 ----
 
