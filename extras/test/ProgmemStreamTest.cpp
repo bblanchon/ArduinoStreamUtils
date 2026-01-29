@@ -1,5 +1,5 @@
 // StreamUtils - github.com/bblanchon/ArduinoStreamUtils
-// Copyright Benoit Blanchon 2019-2024
+// Copyright Benoit Blanchon 2019-2026
 // MIT License
 
 #include "StreamUtils/Streams/ProgmemStream.hpp"
