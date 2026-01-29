@@ -35,6 +35,10 @@ Read on to see how StreamUtils can help you!
 How to add buffering to a Stream?
 ---------------------------------
 
+> [!WARNING]
+> Adding a buffer only makes sense for **unbuffered** streams.  
+> For example, there is **no benefit to adding a buffer to serial ports** because they already include an internal buffer.
+
 ### Buffering read operations
 
 Sometimes, you can significantly improve performance by reading many bytes at once. 
@@ -57,16 +61,16 @@ ReadBufferingStream bufferedFile{file, 64};  // <- HERE
 deserializeJson(doc, bufferedFile);
 ```
 
-Unfortunately, this optimization is only possible if:
+> [!IMPORTANT]
+> This optimization only works when:
+>
+> 1. `Stream::readBytes()` is declared `virtual` in the Arduino Core (as it's the case for ESP8266), and
+> 2. the derived class has an optimized implementation of `readBytes()` (as it's the case for SPIFFS' `File`).
+>
+> For this reason, **prefer `ReadBufferingClient` to `ReadBufferingStream`** because `Client::read()` is `virtual` on all platforms.
 
-1. `Stream.readBytes()` is declared `virtual` in your Arduino Code (as it's the case for ESP8266), and
-2. the derived class has an optimized implementation of `readBytes()` (as it's the case for SPIFFS' `File`).
-
-When possible, prefer `ReadBufferingClient` to `ReadBufferingStream` because `Client` defines a `read()` method similar to `readBytes()`, except this one is `virtual` on all platforms.
-
-If memory allocation fails, `ReadBufferingStream` behaves as if no buffer was used: it forwards all calls to the upstream `Stream`.
-
-Adding a buffer only makes sense for **unbuffered** streams. For example, there is **no benefit to adding a buffer to serial ports** because they already include an internal buffer.
+> [!NOTE]
+> If memory allocation fails, `ReadBufferingStream` behaves as if no buffer was used: it forwards all calls to the upstream `Stream`.
 
 ### Buffering write operations
 
@@ -89,18 +93,21 @@ serializeJson(doc, bufferedWifiClient);
 bufferedWifiClient.flush();
 ```
 
-`flush()` sends the remaining data; if you forget to call it, the end of the message will be missing. The destructor of `WriteBufferingStream` calls `flush()`, so you can remove this line if you destroy the decorator immediately.
+> [!CAUTION]
+> `flush()` sends the remaining data; if you forget to call it, the end of the message will be missing.
 
-If memory allocation fails, `WriteBufferingStream` behaves as if no buffer was used: it forwards all calls to the upstream `Stream`.
+> [!TIP]
+> The destructor of `WriteBufferingStream` calls `flush()`, so you can remove this line if you destroy the decorator immediately.
 
-Adding a buffer only makes sense for **unbuffered** streams. For example, there is **no benefit to adding a buffer to serial ports** because they already include an internal buffer.
+> [!NOTE]
+> If memory allocation fails, `WriteBufferingStream` behaves as if no buffer was used: it forwards all calls to the upstream `Stream`.
 
 How to add logging to a stream?
 -------------------------------
 
 ### Logging write operations
 
-When debugging a program that makes HTTP requests, you first want to check whether the request is correct. With this library, you can decorate the `EthernetClient` or the `WiFiClient` to log everything to the serial.
+When debugging a program that makes HTTP requests, you first want to check whether the request is correct. With this library, you can decorate `EthernetClient` or `WiFiClient` to log everything to the serial port.
 
 ![WriteLoggingStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/WriteLogger.svg)
 
@@ -126,7 +133,7 @@ Everything you write to `loggingClient` is written to `client` and logged to `Se
 
 ### Logging read operations
 
-Similarly, you often want to see what the HTTP server sent back. With this library, you can decorate the `EthernetClient` or the `WiFiClient` to log everything to the serial.
+Similarly, you often want to see what the HTTP server sent back. With this library, you can decorate `EthernetClient` or `WiFiClient` to log everything to the serial port.
 
 ![ReadLoggingStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/ReadLogger.svg)
 
@@ -148,8 +155,9 @@ loggingClient.readBytes(response, 256);
 
 `loggingClient` forwards all operations to `client` and logs read operations to `Serial`.
 
-⚠ **WARNING** ⚠   
-If your program receives data from one serial port and logs to another, **ensure the latter runs at a much higher baud rate**. Logging must be at least ten times faster, or it will slow down the receiving port, which may drop incoming bytes.
+> [!CAUTION]
+> If your program receives data from one serial port and logs to another, **ensure the latter runs at a much higher baud rate**.  
+> Logging must be at least 10 times faster, or it will slow down the receiving port, which may drop incoming bytes.
 
 ### Logging read and write operations
 
@@ -185,7 +193,7 @@ How to use error-correction codes (ECC)?
 StreamUtils supports the [Hamming(7, 4)](https://en.wikipedia.org/wiki/Hamming(7,4)) error-correction code, which encodes 4 bits of data into 7 bits by adding three parity bits.
 These extra bits increase the amount of traffic but allow correcting any one-bit error within the 7 bits.
 
-If you use this encoding on an 8-bit channel, it effectively doubles the amount of traffic. However, if you use an [`HardwareSerial`](https://www.arduino.cc/reference/en/language/functions/communication/serial/) instance (like `Serial`, `Serial1`...), you can slightly reduce the overhead by configuring the ports as a 7-bit channel, like so:
+If you use this encoding on an 8-bit channel, it effectively doubles the amount of traffic. However, if you use a [`HardwareSerial`](https://www.arduino.cc/reference/en/language/functions/communication/serial/) instance (like `Serial`, `Serial1`...), you can slightly reduce the overhead by configuring the ports as a 7-bit channel, like so:
 
 ```c++
 // Initialize serial port with 9600 bauds, 7 bits of data, no parity, and one stop bit
@@ -269,7 +277,9 @@ wireStream.print("This is a very very long message that I'm sending!");
 Wire.endTransmission();
 ```
 
-As you can see, we use the `wait()` function as a hook to flush the Wire transmission buffer. Notice that we pass `false` to [`endTransmission()`](https://www.arduino.cc/en/Reference/WireEndTransmission) so that it sends the data but doesn't actually stop the transmission.
+> [!NOTE]
+> We use the `wait()` function as a hook to flush the Wire transmission buffer.  
+> Notice that we pass `false` to [`endTransmission()`](https://www.arduino.cc/en/Reference/WireEndTransmission) so that it sends the data but doesn't actually stop the transmission.
 
 
 How to use a `String` as a stream?
@@ -302,7 +312,7 @@ Temperature = 22.30 °C
 
 ### Reading from a `String`
 
-Similarly, there are cases where you have a `String`, but you need to pass a `Stream` to some other piece of code. In that case, use `StringStream`; it's similar to `StrintPrint`, except you can also read from it.
+Similarly, there are cases where you have a `String`, but you need to pass a `Stream` to some other piece of code. In that case, use `StringStream`; it's similar to `StringPrint`, except you can also read from it.
 
 ![StringStream](https://github.com/bblanchon/ArduinoStreamUtils/raw/master/extras/images/StringStream.svg)
 
@@ -350,7 +360,7 @@ Serial.println(stream.readString());
 How to decode HTTP chunks?
 --------------------------
 
-HTTP servers can send their response in multiple parts using [Chunked Transfer Encoding](https://en.wikipedia.org/wiki/Chunked_transfer_encoding). Clients using HTTP 1.1 must support this encoding as it's not optional and is dictated by the server.
+HTTP servers can send responses in multiple parts using [Chunked Transfer Encoding](https://en.wikipedia.org/wiki/Chunked_transfer_encoding). Clients using HTTP 1.1 must support this encoding as it's not optional and is dictated by the server.
 
 `ChunkDecodingStream` and `ChunkDecodingClient` are decorators that decode the chunks and make the response available as a regular stream.
 
@@ -387,9 +397,13 @@ deserializeJson(doc, response);
 http.end();
 ```
 
-Note that `HTTPClient` already performs chunk decoding **if** you use `getString()`, but you might want to use `getStream()` to avoid buffering the entire response in memory.
+> [!WARNING]
+> `HTTPClient` already performs chunk decoding when you use `getString()`.  
+> Only use `ChunkDecodingStream` if you use `getStream()` as in the example above.
 
-Also, you can avoid chunked transfer encoding by downgrading the HTTP version to 1.0. `HTTPClient` allows you to do that by calling `useHTTP10(true)` before sending the request.
+> [!TIP]
+> You can avoid chunked transfer encoding by downgrading the HTTP version to 1.0.  
+> `HTTPClient` does this if you call `useHTTP10(true)` before sending the request.
 
 Summary
 -------
@@ -413,7 +427,8 @@ See the equivalence table below.
 | Error correction (encode & decode) | `HammingClient`         | `HammingStream`         |                  |
 | Decode HTTP chunks                 | `ChunkDecodingClient`   | `ChunkDecodingStream`   |                  |
 
-Prefer `XxxClient` to `XxxStream` because, unlike `Stream::readBytes()`, `Client::read()` is virtual on all cores and therefore allows optimized implementations.
+> [!TIP]
+> Prefer `XxxClient` to `XxxStream` because, unlike `Stream::readBytes()`, `Client::read()` is virtual on all cores and therefore allows optimized implementations.
 
 
 Portability
@@ -436,5 +451,6 @@ It has been tested on the following cores:
 * [STM32 Roger's Core](https://github.com/rogerclarkmelbourne/Arduino_STM32) (no EEPROM support)
 * [Teensy](https://github.com/PaulStoffregen/cores)
 
-If your core is not supported, please [open an issue](https://github.com/bblanchon/ArduinoStreamUtils/issues/new).
-Thank you for your understanding.
+> [!IMPORTANT]
+> Each Arduino Core includes subtle variations that I cannot anticipate.
+> If the build fails, please [open an issue](https://github.com/bblanchon/ArduinoStreamUtils/issues/new), so I can update the library.
