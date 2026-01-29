@@ -1,5 +1,14 @@
 BufferingPrint	KEYWORD1
+ChunkDecodingClient	KEYWORD1
+ChunkDecodingStream	KEYWORD1
 EepromStream	KEYWORD1
+HammingClient	KEYWORD1
+HammingDecodingClient	KEYWORD1
+HammingDecodingStream	KEYWORD1
+HammingEncodingClient	KEYWORD1
+HammingEncodingStream	KEYWORD1
+HammingPrint	KEYWORD1
+HammingStream	KEYWORD1
 LoggingClient	KEYWORD1
 LoggingPrint	KEYWORD1
 LoggingStream	KEYWORD1
@@ -9,8 +18,12 @@ ReadBufferingStream	KEYWORD1
 ReadLoggingClient	KEYWORD1
 ReadLoggingStream	KEYWORD1
 ReadThrottlingStream	KEYWORD1
+StringPrint	KEYWORD1
 StringStream	KEYWORD1
+WaitingPrint	KEYWORD1
 WriteBufferingClient	KEYWORD1
 WriteBufferingStream	KEYWORD1
 WriteLoggingClient	KEYWORD1
 WriteLoggingStream	KEYWORD1
+WriteWaitingClient	KEYWORD1
+WriteWaitingStream	KEYWORD1
