@@ -1,6 +1,11 @@
 StreamUtils - Change log
 ========================
 
+HEAD
+----
+
+* Remove undocumented `ReadThrottlingStream`
+
 1.9.2 (2026/01/29)
 -----
 

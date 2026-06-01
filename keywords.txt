@@ -17,7 +17,6 @@ ReadBufferingClient	KEYWORD1
 ReadBufferingStream	KEYWORD1
 ReadLoggingClient	KEYWORD1
 ReadLoggingStream	KEYWORD1
-ReadThrottlingStream	KEYWORD1
 StringPrint	KEYWORD1
 StringStream	KEYWORD1
 WaitingPrint	KEYWORD1
