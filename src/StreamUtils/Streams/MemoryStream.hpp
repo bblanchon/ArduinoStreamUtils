@@ -25,11 +25,11 @@ class BasicMemoryStream : public Stream {
   }
 
   int peek() override {
-    return _buffer.isEmpty() ? -1 : _buffer.peek();
+    return _buffer.isEmpty() ? -1 : static_cast<unsigned char>(_buffer.peek());
   }
 
   int read() override {
-    return _buffer.isEmpty() ? -1 : _buffer.read();
+    return _buffer.isEmpty() ? -1 : static_cast<unsigned char>(_buffer.read());
   }
 
 #if STREAMUTILS_STREAM_READBYTES_IS_VIRTUAL
