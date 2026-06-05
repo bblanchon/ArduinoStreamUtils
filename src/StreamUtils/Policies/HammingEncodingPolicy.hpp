@@ -91,7 +91,7 @@ class HammingEncodingPolicy<7, 4, TAllocator> {
 
  private:
   // Encode 4-bits to 7-bits using Hamming(7,4)
-  uint8_t encode(uint8_t input) {
+  uint8_t encode(uint8_t input) { //https://www.gaussianwaves.com/2008/05/hamming-codes-how-it-works/
     static uint8_t table[] = {0x00, 0x71, 0x62, 0x13, 0x54, 0x25, 0x36, 0x47,
                               0x38, 0x49, 0x5A, 0x2B, 0x6C, 0x1D, 0x0E, 0x7F};
     return table[input];
