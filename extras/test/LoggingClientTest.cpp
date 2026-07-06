@@ -2,10 +2,9 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
-#include "StreamUtils/Clients/LoggingClient.hpp"
-#include "StreamUtils/Clients/MemoryClient.hpp"
-#include "StreamUtils/Clients/SpyingClient.hpp"
-#include "StreamUtils/Prints/StringPrint.hpp"
+#include "StreamUtils.hpp"
+
+#if STREAMUTILS_ENABLE_CLIENT
 
 #include "doctest.h"
 
@@ -136,3 +135,4 @@ TEST_CASE("LoggingClient") {
     CHECK(log.str() == "flush()");
   }
 }
+#endif

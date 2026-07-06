@@ -10,11 +10,13 @@
 #include <alloca.h>
 #endif
 
-#include <Client.h>
-#include <Stream.h>
-
 #include "../Configuration.hpp"
 #include "../Helpers.hpp"
+
+#if STREAMUTILS_ENABLE_CLIENT
+#include <Client.h>
+#endif
+#include <Stream.h>
 
 namespace StreamUtils {
 
@@ -67,10 +69,12 @@ class HammingDecodingPolicy<7, 4, TAllocator> {
     return doReadBytes(stream, buffer, size);
   }
 
+#if STREAMUTILS_ENABLE_CLIENT
   int read(Client &client, uint8_t *buffer, size_t size) {
     return static_cast<int>(
         doReadBytes(client, reinterpret_cast<char *>(buffer), size));
   }
+#endif
 
  private:
   // Decode 7-bits to 4-bits using Hamming(7,4)

@@ -2,6 +2,9 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
+#include "StreamUtils/Configuration.hpp"
+
+#if STREAMUTILS_ENABLE_CLIENT
 #include "StreamUtils/Clients/ChunkDecodingClient.hpp"
 #include "StreamUtils/Clients/HammingClient.hpp"
 #include "StreamUtils/Clients/HammingDecodingClient.hpp"
@@ -12,11 +15,15 @@
 #include "StreamUtils/Clients/WriteBufferingClient.hpp"
 #include "StreamUtils/Clients/WriteLoggingClient.hpp"
 #include "StreamUtils/Clients/WriteWaitingClient.hpp"
+#endif
+
 #include "StreamUtils/Prints/BufferingPrint.hpp"
 #include "StreamUtils/Prints/HammingPrint.hpp"
 #include "StreamUtils/Prints/LoggingPrint.hpp"
 #include "StreamUtils/Prints/StringPrint.hpp"
 #include "StreamUtils/Prints/WaitingPrint.hpp"
+
+#if STREAMUTILS_ENABLE_STREAM
 #include "StreamUtils/Streams/ChunkDecodingStream.hpp"
 #include "StreamUtils/Streams/EepromStream.hpp"
 #include "StreamUtils/Streams/HammingDecodingStream.hpp"
@@ -30,3 +37,4 @@
 #include "StreamUtils/Streams/WriteBufferingStream.hpp"
 #include "StreamUtils/Streams/WriteLoggingStream.hpp"
 #include "StreamUtils/Streams/WriteWaitingStream.hpp"
+#endif

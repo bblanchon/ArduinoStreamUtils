@@ -4,7 +4,12 @@
 
 #pragma once
 
+#include "../Configuration.hpp"
+
+#if STREAMUTILS_ENABLE_CLIENT
 #include <Client.h>
+#endif
+#include <Stream.h>
 
 namespace StreamUtils {
 
@@ -33,11 +38,13 @@ class ReadLoggingPolicy {
     return result;
   }
 
+#if STREAMUTILS_ENABLE_CLIENT
   int read(Client &client, uint8_t *buffer, size_t size) {
     int result = client.read(buffer, size);
     _log.write(buffer, result);
     return result;
   }
+#endif
 
  private:
   Print &_log;

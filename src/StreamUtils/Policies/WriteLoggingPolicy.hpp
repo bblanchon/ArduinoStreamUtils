@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include <Client.h>
 #include "../Configuration.hpp"
+
+#include <Print.h>
 
 namespace StreamUtils {
 

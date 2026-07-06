@@ -2,12 +2,11 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
-#include "FailingAllocator.hpp"
+#include "StreamUtils.hpp"
 
-#include "StreamUtils/Clients/MemoryClient.hpp"
-#include "StreamUtils/Clients/ReadLoggingClient.hpp"
-#include "StreamUtils/Clients/SpyingClient.hpp"
-#include "StreamUtils/Prints/StringPrint.hpp"
+#if STREAMUTILS_ENABLE_CLIENT
+
+#include "FailingAllocator.hpp"
 
 #include "doctest.h"
 
@@ -137,3 +136,4 @@ TEST_CASE("ReadLoggingClient") {
     CHECK(log.str() == "flush()");
   }
 }
+#endif

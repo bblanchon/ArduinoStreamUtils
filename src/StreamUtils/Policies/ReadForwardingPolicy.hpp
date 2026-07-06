@@ -25,9 +25,11 @@ struct ReadForwardingPolicy {
     return target.readBytes(buffer, size);
   }
 
+#if STREAMUTILS_ENABLE_CLIENT
   int read(Client &target, uint8_t *buffer, size_t size) {
     return target.read(buffer, size);
   }
+#endif
 };
 
 }  // namespace StreamUtils

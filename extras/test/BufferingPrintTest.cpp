@@ -4,9 +4,8 @@
 
 #include "FailingAllocator.hpp"
 
-#include "StreamUtils/Prints/BufferingPrint.hpp"
+#include "StreamUtils.hpp"
 #include "StreamUtils/Prints/SpyingPrint.hpp"
-#include "StreamUtils/Prints/StringPrint.hpp"
 
 #include "doctest.h"
 

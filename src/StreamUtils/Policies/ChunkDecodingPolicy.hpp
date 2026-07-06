@@ -4,9 +4,13 @@
 
 #pragma once
 
-#include <Client.h>
-#include <assert.h>
+#include "../Configuration.hpp"
 #include "../Helpers.hpp"
+
+#if STREAMUTILS_ENABLE_CLIENT
+#include <Client.h>
+#endif
+#include <assert.h>
 
 namespace StreamUtils {
 
@@ -52,10 +56,12 @@ class ChunkDecodingPolicy {
     return doReadBytes(target, buffer, size);
   }
 
+#if STREAMUTILS_ENABLE_CLIENT
   int read(Client &target, uint8_t *buffer, size_t size) {
     return static_cast<int>(
         doReadBytes(target, reinterpret_cast<char *>(buffer), size));
   }
+#endif
 
   bool error() const {
     return state_ == State::Error;

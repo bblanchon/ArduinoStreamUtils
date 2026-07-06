@@ -2,8 +2,9 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
-#include "StreamUtils/Prints/LoggingPrint.hpp"
-#include "StreamUtils/Streams/MemoryStream.hpp"
+#include "StreamUtils.hpp"
+
+#if STREAMUTILS_ENABLE_STREAM
 
 #include "doctest.h"
 
@@ -39,3 +40,4 @@ TEST_CASE("LoggingPrint") {
   }
 #endif
 }
+#endif

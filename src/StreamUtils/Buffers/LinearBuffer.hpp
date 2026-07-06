@@ -4,11 +4,10 @@
 
 #pragma once
 
-#include <Client.h>
-#include <Stream.h>
-
 #include "../Helpers.hpp"
 #include "CharArray.hpp"
+
+#include <Print.h>
 
 namespace StreamUtils {
 

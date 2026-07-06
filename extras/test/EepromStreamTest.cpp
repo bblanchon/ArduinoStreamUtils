@@ -2,9 +2,9 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
-#include "StreamUtils/Streams/EepromStream.hpp"
+#include "StreamUtils.hpp"
 
-#if STREAMUTILS_ENABLE_EEPROM
+#if STREAMUTILS_ENABLE_EEPROM && STREAMUTILS_ENABLE_STREAM
 
 #include "doctest.h"
 

@@ -45,6 +45,7 @@ class ReadSpyingPolicy {
     return result;
   }
 
+#if STREAMUTILS_ENABLE_CLIENT
   int read(Client &target, uint8_t *buffer, size_t size) {
     int result = target.read(buffer, size);
     _log.print("read(");
@@ -56,6 +57,7 @@ class ReadSpyingPolicy {
     _log.println();
     return result;
   }
+#endif
 
  private:
   Print &_log;

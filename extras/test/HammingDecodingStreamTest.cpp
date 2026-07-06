@@ -2,10 +2,11 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
-#include "SpyingAllocator.hpp"
+#include "StreamUtils.hpp"
 
-#include "StreamUtils/Prints/StringPrint.hpp"
-#include "StreamUtils/Streams/HammingDecodingStream.hpp"
+#if STREAMUTILS_ENABLE_STREAM
+
+#include "SpyingAllocator.hpp"
 #include "StreamUtils/Streams/SpyingStream.hpp"
 #include "StreamUtils/Streams/StringStream.hpp"
 
@@ -288,3 +289,4 @@ TEST_CASE("HammingDecodingStream") {
     CHECK(log.str() == "flush()");
   }
 }
+#endif

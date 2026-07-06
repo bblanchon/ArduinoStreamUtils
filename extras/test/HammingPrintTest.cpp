@@ -2,12 +2,12 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
-#include "SpyingAllocator.hpp"
+#include "StreamUtils.hpp"
 
-#include "StreamUtils/Prints/HammingPrint.hpp"
+#if STREAMUTILS_ENABLE_STREAM
+
+#include "SpyingAllocator.hpp"
 #include "StreamUtils/Prints/SpyingPrint.hpp"
-#include "StreamUtils/Prints/StringPrint.hpp"
-#include "StreamUtils/Streams/MemoryStream.hpp"
 
 #include "doctest.h"
 
@@ -200,3 +200,4 @@ TEST_CASE("HammingPrint") {
     CHECK(log.str() == "write('q') -> 0");
   }
 }
+#endif

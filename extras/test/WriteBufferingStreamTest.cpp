@@ -2,12 +2,12 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
-#include "FailingAllocator.hpp"
+#include "StreamUtils.hpp"
 
-#include "StreamUtils/Prints/StringPrint.hpp"
-#include "StreamUtils/Streams/MemoryStream.hpp"
+#if STREAMUTILS_ENABLE_STREAM
+
+#include "FailingAllocator.hpp"
 #include "StreamUtils/Streams/SpyingStream.hpp"
-#include "StreamUtils/Streams/WriteBufferingStream.hpp"
 
 #include "doctest.h"
 
@@ -164,3 +164,4 @@ TEST_CASE("WriteBufferingStream") {
     CHECK(log.str() == "write('ABC', 3) -> 3");
   }
 }
+#endif

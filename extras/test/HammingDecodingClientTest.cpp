@@ -2,13 +2,11 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
+#include "StreamUtils.hpp"
+
+#if STREAMUTILS_ENABLE_CLIENT
+
 #include "SpyingAllocator.hpp"
-
-#include "StreamUtils/Clients/HammingDecodingClient.hpp"
-#include "StreamUtils/Clients/MemoryClient.hpp"
-#include "StreamUtils/Clients/SpyingClient.hpp"
-#include "StreamUtils/Prints/StringPrint.hpp"
-
 #include "doctest.h"
 
 using namespace StreamUtils;
@@ -135,3 +133,4 @@ TEST_CASE("HammingDecodingClient") {
     }
   }
 }
+#endif

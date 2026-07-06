@@ -1,0 +1,17 @@
+// StreamUtils - github.com/bblanchon/ArduinoStreamUtils
+// Copyright Benoit Blanchon 2019-2026
+// MIT License
+
+#pragma once
+
+#include <Print.h>
+#include <WString.h>
+#include <avr/pgmspace.h>
+
+#include <time.h>
+
+inline unsigned long millis() {
+  return static_cast<unsigned long>(time(NULL));
+}
+
+inline void yield() {}

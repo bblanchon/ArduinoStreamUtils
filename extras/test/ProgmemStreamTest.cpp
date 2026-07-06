@@ -2,7 +2,9 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
-#include "StreamUtils/Streams/ProgmemStream.hpp"
+#include "StreamUtils.hpp"
+
+#if STREAMUTILS_ENABLE_STREAM
 
 #include "doctest.h"
 
@@ -116,3 +118,4 @@ TEST_CASE("ProgmemStream") {
     }
   }
 }
+#endif

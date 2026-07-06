@@ -2,9 +2,10 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
-#include "StreamUtils/Prints/StringPrint.hpp"
-#include "StreamUtils/Streams/LoggingStream.hpp"
-#include "StreamUtils/Streams/MemoryStream.hpp"
+#include "StreamUtils.hpp"
+
+#if STREAMUTILS_ENABLE_STREAM
+
 #include "StreamUtils/Streams/SpyingStream.hpp"
 
 #include "doctest.h"
@@ -91,3 +92,4 @@ TEST_CASE("LoggingStream") {
     CHECK(output.str() == "");
   }
 }
+#endif

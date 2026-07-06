@@ -4,10 +4,13 @@
 
 #pragma once
 
-#include <Stream.h>
-
 #include "../Buffers/LinearBuffer.hpp"
 #include "../Configuration.hpp"
+
+#if STREAMUTILS_ENABLE_STREAM
+#include <Stream.h>
+#endif
+#include <Print.h>
 
 namespace StreamUtils {
 
@@ -55,10 +58,12 @@ struct WriteBufferingPolicy {
     return 1;
   }
 
+#if STREAMUTILS_ENABLE_STREAM
   void flush(Stream &target) {
     _buffer.flushInto(target);
     target.flush();
   }
+#endif
 
   void flush(Print &target) {
     _buffer.flushInto(target);

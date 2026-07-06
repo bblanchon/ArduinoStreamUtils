@@ -2,12 +2,12 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
-#include "FailingAllocator.hpp"
+#include "StreamUtils.hpp"
 
-#include "StreamUtils/Prints/StringPrint.hpp"
-#include "StreamUtils/Streams/MemoryStream.hpp"
+#if STREAMUTILS_ENABLE_STREAM
+
+#include "FailingAllocator.hpp"
 #include "StreamUtils/Streams/SpyingStream.hpp"
-#include "StreamUtils/Streams/WriteWaitingStream.hpp"
 
 #include "doctest.h"
 
@@ -102,3 +102,4 @@ TEST_CASE("WriteWaitingStream") {
     }
   }
 }
+#endif

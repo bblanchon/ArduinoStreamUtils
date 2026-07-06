@@ -2,10 +2,11 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
-#include "StreamUtils/Prints/StringPrint.hpp"
-#include "StreamUtils/Streams/ChunkDecodingStream.hpp"
+#include "StreamUtils.hpp"
+
+#if STREAMUTILS_ENABLE_STREAM
+
 #include "StreamUtils/Streams/SpyingStream.hpp"
-#include "StreamUtils/Streams/StringStream.hpp"
 
 #include "doctest.h"
 
@@ -362,3 +363,4 @@ TEST_CASE("ChunkDecodingStream") {
   }
 #endif
 }
+#endif

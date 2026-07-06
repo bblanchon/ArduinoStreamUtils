@@ -2,12 +2,11 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
-#include "FailingAllocator.hpp"
+#include "StreamUtils.hpp"
 
-#include "StreamUtils/Prints/StringPrint.hpp"
-#include "StreamUtils/Streams/ReadBufferingStream.hpp"
-#include "StreamUtils/Streams/SpyingStream.hpp"
-#include "StreamUtils/Streams/StringStream.hpp"
+#if STREAMUTILS_ENABLE_STREAM
+
+#include "FailingAllocator.hpp"
 
 #include "doctest.h"
 
@@ -316,3 +315,4 @@ TEST_CASE("ReadBufferingStream") {
 #endif
   }
 }
+#endif

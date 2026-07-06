@@ -65,3 +65,27 @@
 #ifndef STREAMUTILS_STACK_BUFFER_MAX_SIZE
 #define STREAMUTILS_STACK_BUFFER_MAX_SIZE 32
 #endif
+
+#ifndef STREAMUTILS_ENABLE_CLIENT
+#if defined(__has_include)
+#if __has_include(<Client.h>)
+#define STREAMUTILS_ENABLE_CLIENT 1
+#else
+#define STREAMUTILS_ENABLE_CLIENT 0
+#endif
+#else
+#define STREAMUTILS_ENABLE_CLIENT 1
+#endif
+#endif
+
+#ifndef STREAMUTILS_ENABLE_STREAM
+#if defined(__has_include)
+#if __has_include(<Stream.h>)
+#define STREAMUTILS_ENABLE_STREAM 1
+#else
+#define STREAMUTILS_ENABLE_STREAM 0
+#endif
+#else
+#define STREAMUTILS_ENABLE_STREAM 1
+#endif
+#endif

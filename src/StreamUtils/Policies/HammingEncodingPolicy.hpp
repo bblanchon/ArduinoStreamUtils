@@ -73,10 +73,12 @@ class HammingEncodingPolicy<7, 4, TAllocator> {
     return 1;
   }
 
+#if STREAMUTILS_ENABLE_STREAM
   void flush(Stream &target) {
     flushRemainder(target);
     target.flush();
   }
+#endif
 
   void flush(Print &target) {
     flushRemainder(target);

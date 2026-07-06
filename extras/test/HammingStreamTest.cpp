@@ -2,10 +2,11 @@
 // Copyright Benoit Blanchon 2019-2026
 // MIT License
 
-#include "SpyingAllocator.hpp"
+#include "StreamUtils.hpp"
 
-#include "StreamUtils/Streams/HammingStream.hpp"
-#include "StreamUtils/Streams/MemoryStream.hpp"
+#if STREAMUTILS_ENABLE_STREAM
+
+#include "SpyingAllocator.hpp"
 
 #include "doctest.h"
 
@@ -28,3 +29,4 @@ TEST_CASE("HammingStream") {
     CHECK(upstream.readString() == "Tq");
   }
 }
+#endif

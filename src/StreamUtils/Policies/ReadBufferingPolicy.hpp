@@ -47,10 +47,12 @@ struct ReadBufferingPolicy {
     return doReadBytes(stream, buffer, size);
   }
 
+#if STREAMUTILS_ENABLE_CLIENT
   int read(Client &client, uint8_t *buffer, size_t size) {
     return static_cast<int>(
         doReadBytes(client, reinterpret_cast<char *>(buffer), size));
   }
+#endif
 
  private:
   bool isEmpty() const {
